@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis de Decisión · Quiz + Machete</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8;
+  --bg-card: #fbf8f0;
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-faint: #8a8a8a;
+  --rule: #d4c9b0;
+  --accent: #b8431a;
+  --accent-soft: #f0e0d4;
+  --ok: #2d6a4f;
+  --ok-soft: #d8eadc;
+  --err: #99211c;
+  --err-soft: #f5d8d4;
+  --highlight: #f3e5a5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 24px 16px;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(180, 150, 100, 0.08) 31px, rgba(180, 150, 100, 0.08) 32px);
+}
+
+.wrapper {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 24px 0 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+header h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(26px, 4.5vw, 36px);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+header .sub {
+  font-family: 'Inter', sans-serif;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+header .author {
+  margin-top: 12px;
+  color: var(--ink-faint);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 32px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+
+.tab:hover { color: var(--ink-soft); }
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Guide selector */
+.guide-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+  padding: 8px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+}
+
+.guide-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 8px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.guide-tab:hover { background: var(--accent-soft); }
+
+.guide-tab.active {
+  background: var(--accent);
+  color: white;
+}
+
+.guide-tab .score {
+  font-size: 11px;
+  opacity: 0.85;
+  margin-left: 4px;
+}
+
+/* Quiz */
+.guide-panel { display: none; }
+.guide-panel.active { display: block; }
+
+.guide-header {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.guide-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.guide-header p {
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+}
+
+.question {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.question-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.q-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.q-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-faint);
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.q-text {
+  font-size: 15px;
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+
+.q-text code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(180, 150, 100, 0.15);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+  text-align: left;
+  font-family: inherit;
+  color: var(--ink);
+}
+
+.option:hover:not(:disabled) {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.option .letter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  min-width: 14px;
+}
+
+.option.correct {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+}
+
+.option.correct .letter {
+  color: var(--ok);
+}
+
+.option.wrong {
+  background: var(--err-soft);
+  border-color: var(--err);
+}
+
+.option.wrong .letter {
+  color: var(--err);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.explanation {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--highlight);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.55;
+  color: var(--ink);
+  display: none;
+}
+
+.explanation.show { display: block; }
+
+.explanation strong { font-weight: 700; }
+
+/* Machete (cheat sheet) */
+.cheat-section {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+.cheat-section h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.cheat-section .tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.cheat-section h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: var(--ink);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cheat-section h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cheat-section p {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--ink-soft);
+}
+
+.formula {
+  background: var(--bg);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  margin: 8px 0 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  overflow-x: auto;
+  border-radius: 4px;
+}
+
+.formula .note {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 4px;
+}
+
+.steps {
+  counter-reset: step;
+  list-style: none;
+  margin: 8px 0 12px;
+  padding-left: 0;
+}
+
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 6px 0 6px 32px;
+  font-size: 14px;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 22px;
+  height: 22px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+table.cheat {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+table.cheat th, table.cheat td {
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+table.cheat th {
+  background: var(--accent-soft);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.callout {
+  background: var(--highlight);
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.55;
+  border-radius: 4px;
+}
+
+.callout strong { font-weight: 700; }
+
+/* Progress */
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s;
+  width: 0%;
+}
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.reset-btn:hover {
+  background: var(--err-soft);
+  border-color: var(--err);
+  color: var(--err);
+}
+
+footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 600px) {
+  body { padding: 16px 10px; }
+  .question, .cheat-section { padding: 16px; }
+  .tab { padding: 10px 14px; font-size: 13px; }
+  .guide-tab { padding: 6px 10px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+<header>
+  <h1>Análisis de Decisión</h1>
+  <div class="sub">Quiz de repaso + machete de fórmulas · TP1 al TP5</div>
+  <div class="author">Preparación de parcial · TJ</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-tab="quiz">Quiz · 50 preguntas</button>
+  <button class="tab" data-tab="machete">Machete · Fórmulas</button>
+</div>
+
+<!-- ================== QUIZ ================== -->
+<div id="quiz" class="panel active">
+
+  <div class="progress">
+    <span id="progress-text">0 / 50 respondidas</span>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <button class="reset-btn" onclick="resetAll()">Reiniciar</button>
+  </div>
+
+  <div class="guide-tabs">
+    <button class="guide-tab active" data-guide="1">TP1 <span class="score" id="score-1"></span></button>
+    <button class="guide-tab" data-guide="2">TP2 <span class="score" id="score-2"></span></button>
+    <button class="guide-tab" data-guide="3">TP3 <span class="score" id="score-3"></span></button>
+    <button class="guide-tab" data-guide="4">TP4 <span class="score" id="score-4"></span></button>
+    <button class="guide-tab" data-guide="5">TP5 <span class="score" id="score-5"></span></button>
+  </div>
+
+  <!-- ============ TP1 ============ -->
+  <div class="guide-panel active" data-guide="1">
+    <div class="guide-header">
+      <h2>TP1 · Decisiones bajo incertidumbre</h2>
+      <p>Maximin · Maximax · Hurwicz · Savage · Laplace</p>
+    </div>
+    <div id="questions-1"></div>
+  </div>
+
+  <!-- ============ TP2 ============ -->
+  <div class="guide-panel" data-guide="2">
+    <div class="guide-header">
+      <h2>TP2 · Decisiones bajo riesgo (VME)</h2>
+      <p>Matriz de pagos · VME · Costo medio esperado · Cruces de rectas</p>
+    </div>
+    <div id="questions-2"></div>
+  </div>
+
+  <!-- ============ TP3 ============ -->
+  <div class="guide-panel" data-guide="3">
+    <div class="guide-header">
+      <h2>TP3 · Utilidad esperada</h2>
+      <p>Curvas de utilidad · Von Neumann-Morgenstern · Aversión al riesgo</p>
+    </div>
+    <div id="questions-3"></div>
+  </div>
+
+  <!-- ============ TP4 ============ -->
+  <div class="guide-panel" data-guide="4">
+    <div class="guide-header">
+      <h2>TP4 · Valor de la información</h2>
+      <p>VEIP · GEIP · Costo del riesgo · Información perfecta</p>
+    </div>
+    <div id="questions-4"></div>
+  </div>
+
+  <!-- ============ TP5 ============ -->
+  <div class="guide-panel" data-guide="5">
+    <div class="guide-header">
+      <h2>TP5 · Árboles de decisión</h2>
+      <p>Nodos de decisión y azar · Rollback · Decisiones encadenadas</p>
+    </div>
+    <div id="questions-5"></div>
+  </div>
+
+</div>
+
+<!-- ================== MACHETE ================== -->
+<div id="machete" class="panel">
+
+  <!-- TP1 -->
+  <div class="cheat-section">
+    <span class="tag">TP1</span>
+    <h2>Decisiones bajo incertidumbre</h2>
+    <p>No conocés las probabilidades de los futuros. Aplicás criterios subjetivos según tu perfil de decisor.</p>
+
+    <h4>Maximin (pesimista)</h4>
+    <div class="formula">
+      A* = argmax<sub>i</sub> ( min<sub>j</sub> a<sub>ij</sub> )
+      <span class="note">De cada fila tomá el mínimo. Quedate con el máximo de los mínimos.</span>
+    </div>
+
+    <h4>Maximax (optimista)</h4>
+    <div class="formula">
+      A* = argmax<sub>i</sub> ( max<sub>j</sub> a<sub>ij</sub> )
+      <span class="note">De cada fila tomá el máximo. Quedate con el máximo de los máximos.</span>
+    </div>
+
+    <h4>Hurwicz (α = coeficiente de optimismo)</h4>
+    <div class="formula">
+      H<sub>i</sub> = α · max<sub>j</sub> + (1−α) · min<sub>j</sub>
+      <span class="note">α=0 → Maximin · α=1 → Maximax · Elegí la fila con mayor H.</span>
+    </div>
+
+    <h4>Savage (arrepentimiento)</h4>
+    <ol class="steps">
+      <li>Construir matriz de arrepentimientos: r<sub>ij</sub> = max(columna j) − a<sub>ij</sub></li>
+      <li>De cada fila tomar el máximo arrepentimiento</li>
+      <li>Elegir la fila con el mínimo de esos máximos</li>
+    </ol>
+
+    <h4>Laplace (razón insuficiente)</h4>
+    <div class="formula">
+      L<sub>i</sub> = (1/n) · Σ a<sub>ij</sub>
+      <span class="note">Asume probabilidades iguales para todos los futuros (1/n cada uno).</span>
+    </div>
+
+    <h3>Gráfico de Hurwicz (rectas)</h3>
+    <p>Cada alternativa es una recta: en α=0 vale su mínimo, en α=1 vale su máximo. La alternativa óptima en cada α es la recta más arriba. Los cruces son los límites de intervalo donde gana cada alternativa.</p>
+  </div>
+
+  <!-- TP2 -->
+  <div class="cheat-section">
+    <span class="tag">TP2</span>
+    <h2>Decisiones bajo riesgo (VME)</h2>
+    <p>Conocés probabilidades. Calculás promedios ponderados.</p>
+
+    <h4>VME (Valor Medio Esperado)</h4>
+    <div class="formula">
+      VME(A<sub>i</sub>) = Σ<sub>j</sub> P(F<sub>j</sub>) · a<sub>ij</sub>
+      <span class="note">Elegí la alternativa con MAYOR VME (si son ganancias) o MENOR CME (si son costos).</span>
+    </div>
+
+    <h4>Matriz de pagos típica (oferta/demanda)</h4>
+    <div class="formula">
+      Pago = Precio · min(A, F) − Costo · A + Recupero · max(0, A − F)
+      <span class="note">A = lo que pediste, F = demanda real. Vendés el mínimo, pagás todo lo pedido.</span>
+    </div>
+
+    <h4>Matriz de costos (stock + faltante)</h4>
+    <div class="formula">
+      Costo = c_compra · A + c_penalización · max(0, F − A)
+      <span class="note">Pagás por todo lo pedido + penalización por faltante.</span>
+    </div>
+
+    <h3>Cruce de rectas (varianza de p)</h3>
+    <p>Cuando p es variable y querés intervalos donde cada alternativa gana:</p>
+    <ol class="steps">
+      <li>Escribir VME de cada alternativa como recta: VME = pago(p=0) + p · [pago(p=1) − pago(p=0)]</li>
+      <li>Identificar ganadores en p=0 y p=1</li>
+      <li>Igualar VMEs de dos alternativas para hallar el cruce</li>
+      <li>Verificar que ninguna otra alternativa esté más arriba en ese cruce</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Alternativa dominada:</strong> aquella que nunca es la mejor en ningún rango de p. Aparecen "tapadas" por otra recta en todo el rango [0, 1].
+    </div>
+  </div>
+
+  <!-- TP3 -->
+  <div class="cheat-section">
+    <span class="tag">TP3</span>
+    <h2>Utilidad esperada</h2>
+    <p>El decisor no maximiza dinero, maximiza una valoración subjetiva (utilidad). Útil cuando hay aversión o propensión al riesgo.</p>
+
+    <h4>UE (Utilidad Esperada)</h4>
+    <div class="formula">
+      UE(A<sub>i</sub>) = Σ<sub>j</sub> P(F<sub>j</sub>) · U(a<sub>ij</sub>)
+      <span class="note">Misma estructura que VME, pero aplicás la función U(x) antes de promediar.</span>
+    </div>
+
+    <h4>Indiferencia → ecuación</h4>
+    <div class="formula">
+      "Me da igual A o B" ⟹ U(A) = UE(B)
+      <span class="note">Cada frase de indiferencia te permite despejar una utilidad desconocida.</span>
+    </div>
+
+    <h3>Tipos de decisor (forma de U(x))</h3>
+    <table class="cheat">
+      <tr><th>Perfil</th><th>Curva</th><th>U(intermedio)</th></tr>
+      <tr><td>Averso al riesgo</td><td>Cóncava (↗ se aplana)</td><td>Mayor que neutral</td></tr>
+      <tr><td>Neutral</td><td>Recta</td><td>Proporcional</td></tr>
+      <tr><td>Propenso al riesgo</td><td>Convexa (↗ se acelera)</td><td>Menor que neutral</td></tr>
+    </table>
+
+    <h4>Utilidad neutral (interpolación lineal)</h4>
+    <div class="formula">
+      U_neutral(x) = (x − mín) / (máx − mín)
+      <span class="note">Compará la U real del decisor con esta para clasificarlo.</span>
+    </div>
+
+    <h4>Equivalente cierto</h4>
+    <p>Monto seguro que da la misma utilidad que una lotería. Si U(x) = √x y UE(lotería) = 110, entonces el equivalente cierto x cumple √x = 110 → x = 12.100.</p>
+
+    <div class="callout">
+      <strong>Supuesto monotónico:</strong> Von Neumann-Morgenstern asume que la utilidad siempre crece con el dinero. Lo que varía es el ritmo, no la dirección.
+    </div>
+  </div>
+
+  <!-- TP4 -->
+  <div class="cheat-section">
+    <span class="tag">TP4</span>
+    <h2>Valor de la información</h2>
+    <p>Cuánto pagarías por reducir o eliminar la incertidumbre.</p>
+
+    <h4>GEIP (Ganancia con Información Perfecta)</h4>
+    <div class="formula">
+      GEIP = Σ<sub>j</sub> P(F<sub>j</sub>) · max(columna j)
+      <span class="note">En cada columna agarrás el mejor pago (lo que harías si supieras el futuro).</span>
+    </div>
+
+    <h4>VEIP / Costo del riesgo</h4>
+    <div class="formula">
+      VEIP = GEIP − VME*
+      <span class="note">VME* es el mejor VME (sin info). Es lo máximo que pagarías por un oráculo perfecto.</span>
+    </div>
+
+    <h3>Con costos (en vez de ganancias)</h3>
+    <table class="cheat">
+      <tr><th>Concepto</th><th>Ganancias</th><th>Costos</th></tr>
+      <tr><td>Decisión óptima</td><td>Máx VME</td><td>Mín CME</td></tr>
+      <tr><td>Info perfecta</td><td>Máx por columna</td><td>Mín por columna</td></tr>
+      <tr><td>VEIP / Costo del riesgo</td><td>GEIP − VME*</td><td>CME* − CEIP</td></tr>
+    </table>
+
+    <div class="callout">
+      <strong>VEIP = Costo del riesgo:</strong> son dos nombres para lo mismo. Lo que ganarías con información = lo que perdés por no tenerla.
+    </div>
+  </div>
+
+  <!-- TP5 -->
+  <div class="cheat-section">
+    <span class="tag">TP5</span>
+    <h2>Árboles de decisión</h2>
+    <p>Representan secuencias temporales de decisiones y eventos de azar. Útiles cuando hay decisiones encadenadas o información intermedia.</p>
+
+    <h4>Convenciones</h4>
+    <table class="cheat">
+      <tr><th>Símbolo</th><th>Tipo</th><th>Quién decide</th></tr>
+      <tr><td>□ Cuadrado</td><td>Nodo de decisión</td><td>Vos</td></tr>
+      <tr><td>○ Círculo</td><td>Nodo de azar</td><td>La naturaleza</td></tr>
+      <tr><td>△ Triángulo</td><td>Nodo terminal</td><td>Resultado final</td></tr>
+    </table>
+
+    <h4>Rollback (inducción hacia atrás)</h4>
+    <ol class="steps">
+      <li>Empezar desde los nodos terminales (extremo derecho)</li>
+      <li>En cada nodo de azar: calcular VME = Σ prob × valor</li>
+      <li>En cada nodo de decisión: quedarse con la rama de mayor VME (o menor CME si son costos)</li>
+      <li>Subir hasta la decisión inicial</li>
+    </ol>
+
+    <h3>Pasos para resolver un problema con árbol</h3>
+    <ol class="steps">
+      <li>Identificar la secuencia temporal de decisiones y nodos de azar</li>
+      <li>Listar los pagos terminales (ganancia o costo de cada combinación final)</li>
+      <li>Dibujar el árbol de izquierda (decisión inicial) a derecha (terminales)</li>
+      <li>Aplicar rollback de derecha a izquierda</li>
+      <li>Identificar la estrategia óptima leyendo el árbol de izquierda a derecha</li>
+    </ol>
+
+    <div class="callout">
+      <strong>¿Cuándo árbol y no matriz?</strong> Cuando hay más de una decisión, o cuando hay información intermedia que llega entre decisiones. Si la decisión es única, una matriz alcanza.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Material de estudio · Análisis de Decisión · Mayo 2026
+</footer>
+
+<!-- Modal de reset -->
+<div id="reset-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:var(--bg-card); border:1px solid var(--rule); border-radius:8px; padding:24px 28px; max-width:380px; width:100%;">
+    <h3 style="font-family:'Inter',sans-serif; font-size:20px; font-weight:500; margin-bottom:8px;">¿Reiniciar el quiz?</h3>
+    <p style="color:var(--ink-soft); font-size:14px; margin-bottom:20px;">Se borrarán todas tus respuestas. Esta acción no se puede deshacer.</p>
+    <div style="display:flex; gap:8px; justify-content:flex-end;">
+      <button onclick="cancelReset()" style="background:transparent; border:1px solid var(--rule); color:var(--ink-soft); padding:8px 16px; border-radius:4px; font-family:inherit; font-size:13px; cursor:pointer;">Cancelar</button>
+      <button onclick="confirmReset()" style="background:var(--err); border:1px solid var(--err); color:white; padding:8px 16px; border-radius:4px; font-family:inherit; font-size:13px; cursor:pointer;">Sí, reiniciar</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ====== DATA: 50 PREGUNTAS ======
+const questions = {
+  1: [ // TP1 - Incertidumbre
+    {
+      type: "teórica",
+      q: "¿Cuál es la diferencia fundamental entre decisión bajo <b>incertidumbre</b> y bajo <b>riesgo</b>?",
+      opts: [
+        "En incertidumbre los pagos son negativos; en riesgo son positivos",
+        "En incertidumbre no se conocen las probabilidades de los futuros; en riesgo sí",
+        "En incertidumbre hay una sola alternativa; en riesgo varias",
+        "En incertidumbre se usa Savage; en riesgo VME"
+      ],
+      correct: 1,
+      explain: "La distinción es la <b>información sobre probabilidades</b>. En incertidumbre no las conocés, en riesgo sí. Por eso en incertidumbre aplicás criterios subjetivos (Maximin, Maximax, etc.) y en riesgo calculás VME."
+    },
+    {
+      type: "práctica",
+      q: "Matriz de ganancias: A₁(20, 50, 10), A₂(30, 25, 35), A₃(15, 60, 20). Aplicando <b>Maximin</b>, ¿qué alternativa elegir?",
+      opts: [
+        "A₁ (mínimo = 10)",
+        "A₂ (mínimo = 25)",
+        "A₃ (mínimo = 15)",
+        "Empate entre A₂ y A₃"
+      ],
+      correct: 1,
+      explain: "Mínimos: A₁=10, A₂=25, A₃=15. Maximin = max(10, 25, 15) = <b>25 → A₂</b>. Es la alternativa que más te garantiza en el peor escenario."
+    },
+    {
+      type: "práctica",
+      q: "Misma matriz que la anterior. Aplicando <b>Maximax</b>, ¿qué alternativa elegir?",
+      opts: [
+        "A₁ (máximo = 50)",
+        "A₂ (máximo = 35)",
+        "A₃ (máximo = 60)",
+        "Cualquiera, todas son válidas"
+      ],
+      correct: 2,
+      explain: "Máximos: A₁=50, A₂=35, A₃=60. Maximax = max(50, 35, 60) = <b>60 → A₃</b>. Elegís la fila con el mejor mejor caso."
+    },
+    {
+      type: "práctica",
+      q: "Para una alternativa con max=80 y min=20, ¿cuánto vale H (Hurwicz) con α = 0.6?",
+      opts: [
+        "50",
+        "56",
+        "60",
+        "44"
+      ],
+      correct: 1,
+      explain: "H = α·max + (1−α)·min = 0.6·80 + 0.4·20 = 48 + 8 = <b>56</b>."
+    },
+    {
+      type: "teórica",
+      q: "Para construir la matriz de arrepentimientos en <b>Savage</b>, ¿qué se hace en cada celda?",
+      opts: [
+        "Se resta el mínimo de cada fila al valor de la celda",
+        "Se resta el máximo de la columna correspondiente al valor de la celda",
+        "Se suma el máximo de cada fila al valor de la celda",
+        "Se divide el valor de la celda por el promedio de la columna"
+      ],
+      correct: 1,
+      explain: "r<sub>ij</sub> = <b>max(columna j) − a<sub>ij</sub></b>. La idea es medir cuánto te arrepentís de no haber elegido la mejor alternativa de esa columna."
+    },
+    {
+      type: "teórica",
+      q: "Una vez construida la matriz de arrepentimientos, ¿cómo se elige la alternativa óptima por Savage?",
+      opts: [
+        "Maximizando el máximo de cada fila",
+        "Minimizando el mínimo de cada fila",
+        "Minimizando el máximo de cada fila (minimax regret)",
+        "Promediando cada fila"
+      ],
+      correct: 2,
+      explain: "Savage busca <b>minimizar el máximo arrepentimiento posible</b>: de cada fila tomás el máximo, y elegís la fila con el menor de esos máximos."
+    },
+    {
+      type: "teórica",
+      q: "El criterio de <b>Laplace</b> se aplica cuando:",
+      opts: [
+        "Se conocen las probabilidades exactas",
+        "Se asume que todos los futuros son igualmente probables",
+        "Solo importa el peor caso",
+        "El decisor es averso al riesgo"
+      ],
+      correct: 1,
+      explain: "Laplace = principio de razón insuficiente. Si no sabés las probabilidades, asumís que todas son iguales: P = <b>1/n</b>. Después calculás un promedio simple por fila."
+    },
+    {
+      type: "teórica",
+      q: "En un <b>gráfico de Hurwicz</b>, cada alternativa se representa como:",
+      opts: [
+        "Un punto fijo",
+        "Una parábola",
+        "Una recta entre su mínimo (α=0) y su máximo (α=1)",
+        "Un círculo de radio proporcional al promedio"
+      ],
+      correct: 2,
+      explain: "H<sub>i</sub>(α) = α·max + (1−α)·min es una <b>recta lineal en α</b>. Empieza en el mínimo cuando α=0 y termina en el máximo cuando α=1."
+    },
+    {
+      type: "práctica",
+      q: "Matriz de costos (no de ganancias). Para aplicar <b>Maximin</b> correctamente en costos, ¿qué se hace?",
+      opts: [
+        "Maximin se aplica igual: max de los min",
+        "Se convierte en Minimax: min de los max (peor caso de costo más bajo)",
+        "Se divide por el promedio antes de aplicar",
+        "Maximin no se puede aplicar con costos"
+      ],
+      correct: 1,
+      explain: "Con costos invertís todo: querés MINIMIZAR. Maximin (pesimista en ganancias) se vuelve <b>Minimax</b> en costos (de cada fila tomás el máximo costo posible, y elegís la fila con el menor de esos máximos)."
+    },
+    {
+      type: "teórica",
+      q: "¿Por qué los distintos criterios de incertidumbre suelen dar alternativas distintas?",
+      opts: [
+        "Por errores de cálculo",
+        "Porque cada uno refleja una personalidad de decisión diferente (pesimista, optimista, etc.)",
+        "Porque las probabilidades cambian",
+        "Porque la matriz cambia según el criterio"
+      ],
+      correct: 1,
+      explain: "No hay un criterio &quot;objetivamente mejor&quot;. Cada uno refleja un <b>perfil de decisor</b>. Por eso el criterio elegido determina la decisión. La elección del criterio es subjetiva y depende del contexto."
+    }
+  ],
+  2: [ // TP2 - VME
+    {
+      type: "teórica",
+      q: "¿Qué representa el <b>VME</b> de una alternativa?",
+      opts: [
+        "El máximo pago posible de esa alternativa",
+        "El pago mínimo garantizado",
+        "El promedio ponderado de los pagos por sus probabilidades",
+        "La probabilidad de que la alternativa sea exitosa"
+      ],
+      correct: 2,
+      explain: "VME = Σ P(F<sub>j</sub>) · a<sub>ij</sub>. Es un <b>promedio ponderado</b>: cada pago se pondera por la probabilidad de que ocurra ese futuro."
+    },
+    {
+      type: "práctica",
+      q: "Alternativa con pagos (100, 50, −30) y probabilidades (0.3, 0.5, 0.2). ¿Cuánto es su VME?",
+      opts: [
+        "40",
+        "49",
+        "55",
+        "60"
+      ],
+      correct: 1,
+      explain: "VME = 0.3(100) + 0.5(50) + 0.2(−30) = 30 + 25 − 6 = <b>49</b>."
+    },
+    {
+      type: "práctica",
+      q: "Pedís 80 unidades, demanda real 60. Precio venta $100, costo unitario $40, sin recupero. ¿Cuál es el beneficio?",
+      opts: [
+        "$2.000",
+        "$2.800",
+        "$3.200",
+        "$4.000"
+      ],
+      correct: 1,
+      explain: "Beneficio = Precio · min(A, F) − Costo · A = 100·min(80,60) − 40·80 = 100·60 − 3200 = 6000 − 3200 = <b>$2.800</b>. Vendiste 60 (lo que te pidieron), pero pagaste por las 80."
+    },
+    {
+      type: "teórica",
+      q: "Si los datos del problema están en <b>costos</b> en vez de ganancias, ¿qué cambia respecto al VME?",
+      opts: [
+        "La fórmula del VME cambia",
+        "Se minimiza en lugar de maximizar (se busca el menor CME)",
+        "Hay que agregar la varianza",
+        "No se puede usar VME con costos"
+      ],
+      correct: 1,
+      explain: "La fórmula es la misma (Σ P·costo), pero ahora querés <b>minimizar el CME</b> (Costo Medio Esperado) en vez de maximizar. La óptima es la del MENOR CME."
+    },
+    {
+      type: "teórica",
+      q: "¿Cuándo el VME &quot;falla&quot; como criterio de decisión?",
+      opts: [
+        "Cuando hay muchas alternativas",
+        "Cuando las probabilidades suman 1",
+        "Cuando la decisión es única y un mal resultado puede ser catastrófico",
+        "Cuando todas las alternativas tienen el mismo VME"
+      ],
+      correct: 2,
+      explain: "VME asume que la decisión se toma muchas veces y los resultados promedian. Si la decisión es <b>única e irreversible</b> con riesgo de quiebra, el promedio no compensa: te puede dejar fuera del juego antes de promediar."
+    },
+    {
+      type: "práctica",
+      q: "Dos alternativas: A=&quot;recibir $5.000 seguros&quot; vs B=&quot;50% de ganar $12.000 y 50% nada&quot;. Por VME, ¿qué elegir?",
+      opts: [
+        "A (es lo seguro)",
+        "B (VME = 6.000 > 5.000)",
+        "Son indiferentes",
+        "Falta información sobre el decisor"
+      ],
+      correct: 1,
+      explain: "VME(A) = 5.000. VME(B) = 0.5·12.000 + 0.5·0 = <b>6.000</b>. Por VME conviene B. (Por utilidad podría ser distinto si hay aversión al riesgo, pero por VME puro gana B.)"
+    },
+    {
+      type: "teórica",
+      q: "Una empresa tiene una alternativa con VME = $100.000 pero que en el peor caso pierde $500.000 (con probabilidad baja). ¿Qué criterio adicional podría considerar?",
+      opts: [
+        "Aplicar Maximax para maximizar el peor caso",
+        "Considerar utilidad esperada con aversión al riesgo",
+        "Multiplicar el VME por la probabilidad",
+        "Dividir el VME entre las alternativas"
+      ],
+      correct: 1,
+      explain: "Cuando una pérdida grande puede ser catastrófica, el <b>VME no alcanza</b>. La utilidad esperada permite incorporar la aversión al riesgo del decisor y descontar más esos malos escenarios."
+    },
+    {
+      type: "práctica",
+      q: "VME de A en función de p: VME(A) = 100 + 200p. VME de B: VME(B) = 250 + 50p. ¿En qué valor de p se cruzan?",
+      opts: [
+        "p = 0.5",
+        "p = 0.75",
+        "p = 1",
+        "p = 0.6"
+      ],
+      correct: 2,
+      explain: "100 + 200p = 250 + 50p → 150p = 150 → <b>p = 1</b>. Esto significa que las rectas no se cruzan dentro del intervalo (0,1), salvo en el extremo."
+    },
+    {
+      type: "teórica",
+      q: "Una alternativa está <b>dominada</b> cuando:",
+      opts: [
+        "Tiene el mayor VME",
+        "Nunca es la mejor en ningún rango de probabilidad",
+        "Aparece más de una vez en el problema",
+        "Tiene probabilidad menor a 0.5"
+      ],
+      correct: 1,
+      explain: "Una alternativa dominada es aquella que <b>siempre tiene otra mejor</b>, sin importar el valor de la probabilidad. Sus rectas quedan &quot;tapadas&quot; por otras en todo el rango."
+    },
+    {
+      type: "práctica",
+      q: "Una compañía dona $100 si no produce nada (caso A). Si produce, gana 0.6·600 + 0.4·(−400). ¿Qué elige?",
+      opts: [
+        "A (donar): VME = 100 > VME(producir)",
+        "Producir: VME = 200 > 100",
+        "Producir: VME = 360 − 160 = 200 > 100",
+        "Son indiferentes"
+      ],
+      correct: 2,
+      explain: "VME(producir) = 0.6·600 + 0.4·(−400) = 360 − 160 = <b>200</b>. VME(A) = 100. Conviene producir."
+    }
+  ],
+  3: [ // TP3 - Utilidad
+    {
+      type: "teórica",
+      q: "La <b>utilidad</b> de un monto monetario es:",
+      opts: [
+        "El monto neto después de impuestos",
+        "Una valoración subjetiva del decisor sobre ese monto, en escala 0 a 1",
+        "El logaritmo del monto",
+        "La probabilidad de obtener ese monto"
+      ],
+      correct: 1,
+      explain: "La utilidad es <b>subjetiva</b>: refleja cuánto vale ese dinero para el decisor concreto, en una escala normalizada de 0 (lo peor) a 1 (lo mejor)."
+    },
+    {
+      type: "teórica",
+      q: "Si U(x) es <b>cóncava</b>, el decisor es:",
+      opts: [
+        "Propenso al riesgo",
+        "Neutral al riesgo",
+        "Averso al riesgo",
+        "No se puede determinar"
+      ],
+      correct: 2,
+      explain: "Cóncava = crece rápido al principio y se aplana. El decisor le da mucha utilidad a montos bajos/medios, &quot;se conforma fácil&quot; → <b>averso al riesgo</b>."
+    },
+    {
+      type: "práctica",
+      q: "Con U(x) = √x, ¿cuál es la utilidad esperada de una lotería que da $0 con prob 0.5 y $40.000 con prob 0.5?",
+      opts: [
+        "100",
+        "150",
+        "200",
+        "20.000"
+      ],
+      correct: 0,
+      explain: "UE = 0.5·√0 + 0.5·√40.000 = 0.5·0 + 0.5·200 = <b>100</b>."
+    },
+    {
+      type: "práctica",
+      q: "Con U(x) = √x, ¿cuál es el equivalente cierto de la lotería anterior (UE = 100)?",
+      opts: [
+        "$10.000",
+        "$20.000",
+        "$15.000",
+        "$5.000"
+      ],
+      correct: 0,
+      explain: "Equivalente cierto: √x = 100 → x = <b>$10.000</b>. Significa que el decisor sería indiferente entre la lotería y recibir $10.000 seguros."
+    },
+    {
+      type: "teórica",
+      q: "El método de <b>Von Neumann-Morgenstern</b> para construir curvas de utilidad usa:",
+      opts: [
+        "Datos históricos del mercado",
+        "Preguntas de indiferencia al decisor",
+        "Funciones logarítmicas estándar",
+        "Promedios ponderados"
+      ],
+      correct: 1,
+      explain: "VNM construye la curva preguntando &quot;¿qué te resulta indiferente?&quot;. Cada respuesta de indiferencia genera una ecuación U(A) = UE(B) que permite despejar puntos de la curva."
+    },
+    {
+      type: "práctica",
+      q: "Un decisor dice: &quot;me da igual recibir $50 seguros que jugar a 30% de perder $200 y 70% de ganar $300&quot;. Si U(−200)=0.1 y U(300)=0.8, ¿cuánto vale U(50)?",
+      opts: [
+        "0.45",
+        "0.59",
+        "0.65",
+        "0.71"
+      ],
+      correct: 1,
+      explain: "U(50) = UE(apuesta) = 0.3·U(−200) + 0.7·U(300) = 0.3·0.1 + 0.7·0.8 = 0.03 + 0.56 = <b>0.59</b>."
+    },
+    {
+      type: "teórica",
+      q: "Un decisor <b>neutral al riesgo</b> elige idénticamente entre maximizar VME y UE porque:",
+      opts: [
+        "Su curva de utilidad es plana",
+        "Su curva de utilidad es una recta proporcional al dinero",
+        "Tiene aversión al riesgo equivalente a la mitad del VME",
+        "Multiplica todos los pagos por la misma constante"
+      ],
+      correct: 1,
+      explain: "Con curva lineal U(x) = ax + b, la utilidad esperada es proporcional al VME. Por eso un decisor neutral toma las mismas decisiones con cualquiera de los dos criterios."
+    },
+    {
+      type: "práctica",
+      q: "Una alternativa con pagos $400 y $1500 tendría utilidad neutral en $1000 de:",
+      opts: [
+        "0.50",
+        "0.44",
+        "0.55",
+        "0.60"
+      ],
+      correct: 2,
+      explain: "U_neutral(1000) = (1000 − 400) / (1500 − 400) = 600/1100 ≈ <b>0.55</b>."
+    },
+    {
+      type: "teórica",
+      q: "Si el decisor asigna a un monto intermedio una utilidad <b>mayor</b> que la utilidad neutral interpolada, es:",
+      opts: [
+        "Propenso al riesgo",
+        "Neutral",
+        "Averso al riesgo",
+        "Confundido"
+      ],
+      correct: 2,
+      explain: "Asignarle más utilidad de la que correspondería linealmente significa que el decisor <b>se conforma fácil</b> con montos intermedios → curva cóncava → averso al riesgo."
+    },
+    {
+      type: "teórica",
+      q: "El supuesto monotónico de la teoría de la utilidad establece que:",
+      opts: [
+        "Las probabilidades suman 1",
+        "Más dinero implica más utilidad (la curva siempre crece)",
+        "La utilidad es siempre positiva",
+        "La utilidad es siempre menor a 1"
+      ],
+      correct: 1,
+      explain: "<b>Monotonía:</b> si x₁ &lt; x₂, entonces U(x₁) &lt; U(x₂). Lo que varía entre decisores es el RITMO de crecimiento (cóncavo, recto, convexo), pero la utilidad siempre crece con el dinero."
+    }
+  ],
+  4: [ // TP4 - Valor de la Información
+    {
+      type: "teórica",
+      q: "El <b>VEIP</b> (Valor Esperado de la Información Perfecta) es:",
+      opts: [
+        "El máximo VME de las alternativas",
+        "Lo máximo que pagarías por un oráculo que te diga el futuro antes de decidir",
+        "El promedio de probabilidades",
+        "El VME multiplicado por las probabilidades"
+      ],
+      correct: 1,
+      explain: "VEIP = lo que ganarías de más si supieras qué futuro va a ocurrir, antes de decidir. Es el <b>tope máximo</b> que estarías dispuesto a pagar por información."
+    },
+    {
+      type: "teórica",
+      q: "El <b>GEIP</b> (Ganancia con Información Perfecta) se calcula:",
+      opts: [
+        "Sumando todos los pagos",
+        "Promediando todos los VME",
+        "Ponderando los máximos de cada columna por sus probabilidades",
+        "Multiplicando el mejor VME por su probabilidad"
+      ],
+      correct: 2,
+      explain: "GEIP = Σ P(F<sub>j</sub>) · max(columna j). Para cada futuro tomás el mejor pago posible (asumiendo que el oráculo te lo dice) y ponderás por la probabilidad."
+    },
+    {
+      type: "práctica",
+      q: "Matriz con futuros F₁(p=0.4) y F₂(p=0.6). Pagos: A₁(80, 30), A₂(50, 70). Calculá VEIP.",
+      opts: [
+        "10",
+        "8",
+        "12",
+        "20"
+      ],
+      correct: 0,
+      explain: "VME(A₁)=0.4·80+0.6·30=50. VME(A₂)=0.4·50+0.6·70=62. VME*=62. Máximos por columna: 80 y 70. GEIP=0.4·80+0.6·70=72. <b>VEIP = 72−62 = 10</b>."
+    },
+    {
+      type: "teórica",
+      q: "El <b>costo del riesgo</b> y el VEIP son:",
+      opts: [
+        "Conceptos opuestos",
+        "Numéricamente iguales pero conceptualmente distintos",
+        "Independientes entre sí",
+        "Lo mismo solo cuando hay 2 futuros"
+      ],
+      correct: 1,
+      explain: "Son <b>el mismo número</b> pero con dos lecturas: VEIP = cuánto pagarías por saber el futuro. Costo del riesgo = cuánto perdés por no saberlo. Lo que ganarías con info = lo que perdés por su ausencia."
+    },
+    {
+      type: "teórica",
+      q: "Si trabajamos con <b>costos</b>, la fórmula del costo del riesgo es:",
+      opts: [
+        "GEIP − VME*",
+        "VME* − GEIP",
+        "CME* − CEIP",
+        "CEIP − CME*"
+      ],
+      correct: 2,
+      explain: "Con costos, queremos minimizar. CME* es el mejor (más bajo) costo medio esperado, y CEIP es el costo esperado con info perfecta (más bajo aún). <b>Costo del riesgo = CME* − CEIP</b> (siempre positivo)."
+    },
+    {
+      type: "práctica",
+      q: "Empresa tiene VME* = $500.000. Le ofrecen un estudio de mercado por $80.000. Si el VEIP es $100.000, ¿conviene contratarlo?",
+      opts: [
+        "No: el estudio cuesta más que el VEIP",
+        "Sí: el estudio cuesta menos que el VEIP",
+        "Conviene solo si el estudio es perfecto",
+        "Falta información para decidir"
+      ],
+      correct: 1,
+      explain: "El VEIP ($100.000) es el TOPE máximo que pagarías por información perfecta. Como el estudio cuesta $80.000 (menos que el tope), <b>conviene contratarlo</b>, asumiendo que da info perfecta."
+    },
+    {
+      type: "teórica",
+      q: "Si VEIP = 0, significa que:",
+      opts: [
+        "No hay incertidumbre",
+        "La mejor alternativa es la misma para todos los futuros (es óptima sin importar qué pase)",
+        "Las probabilidades están mal calculadas",
+        "Hay que volver a calcular el VME"
+      ],
+      correct: 1,
+      explain: "VEIP = 0 significa que la información NO te haría cambiar de decisión. La alternativa óptima sin info es <b>óptima en todos los futuros</b>. No tiene sentido pagar por un oráculo."
+    },
+    {
+      type: "práctica",
+      q: "Matriz de costos. CME(M1)=300, CME(M2)=280, CME(M3)=320. CEIP = 260. ¿Cuál es el costo del riesgo?",
+      opts: [
+        "20",
+        "60",
+        "40",
+        "80"
+      ],
+      correct: 0,
+      explain: "CME* = 280 (M2, el menor). Costo del riesgo = CME* − CEIP = 280 − 260 = <b>20</b>."
+    },
+    {
+      type: "teórica",
+      q: "El VEIP siempre cumple que:",
+      opts: [
+        "Es negativo si hay aversión al riesgo",
+        "Es mayor o igual a cero",
+        "Es siempre menor que VME*",
+        "Es igual al máximo pago"
+      ],
+      correct: 1,
+      explain: "<b>VEIP ≥ 0 siempre</b>. La información perfecta NUNCA puede empeorar tu decisión, porque siempre podés elegir actuar como si no la tuvieras."
+    },
+    {
+      type: "teórica",
+      q: "Si el VEIP es muy alto comparado con el VME*, ¿qué te dice eso del problema?",
+      opts: [
+        "Que las probabilidades están mal calculadas",
+        "Que hay mucha incertidumbre y la decisión es sensible al futuro que ocurra",
+        "Que la alternativa óptima es muy buena",
+        "Que conviene rechazar todas las alternativas"
+      ],
+      correct: 1,
+      explain: "Un VEIP alto indica que las decisiones óptimas <b>cambian mucho entre futuros</b>. Hay alta sensibilidad al estado de la naturaleza y por eso saber el futuro sería muy valioso."
+    }
+  ],
+  5: [ // TP5 - Árboles
+    {
+      type: "teórica",
+      q: "En un árbol de decisión, ¿qué representa un <b>nodo cuadrado</b>?",
+      opts: [
+        "Un nodo de azar (la naturaleza decide)",
+        "Un nodo de decisión (vos decidís)",
+        "Un nodo terminal (resultado final)",
+        "Un nodo de probabilidad"
+      ],
+      correct: 1,
+      explain: "Convención: <b>cuadrado = decisión</b>. Es donde vos tenés que elegir una rama. Círculo = azar (la naturaleza). Triángulo = terminal."
+    },
+    {
+      type: "teórica",
+      q: "El método de <b>rollback</b> resuelve el árbol:",
+      opts: [
+        "De izquierda a derecha (de la decisión inicial a las hojas)",
+        "De derecha a izquierda (de las hojas a la decisión inicial)",
+        "Empezando por la rama con mayor probabilidad",
+        "Empezando por la decisión más importante"
+      ],
+      correct: 1,
+      explain: "Rollback (inducción hacia atrás) va <b>de derecha a izquierda</b>. Empezás por los nodos terminales, calculás VME en cada nodo de azar, decidís en cada nodo de decisión, y subís hasta la raíz."
+    },
+    {
+      type: "teórica",
+      q: "¿Cuándo conviene usar un árbol de decisión en lugar de una matriz?",
+      opts: [
+        "Cuando hay más de 5 alternativas",
+        "Cuando hay decisiones encadenadas o información intermedia entre decisiones",
+        "Cuando los pagos son negativos",
+        "Cuando se usa Savage en vez de VME"
+      ],
+      correct: 1,
+      explain: "Una matriz alcanza para decisiones únicas. El árbol es <b>indispensable cuando hay secuencia temporal</b>: decisión → revelación de información → decisión → revelación → etc."
+    },
+    {
+      type: "práctica",
+      q: "Un nodo de azar tiene 3 ramas: 100 con prob 0.4, 60 con prob 0.4, −50 con prob 0.2. ¿Cuál es su valor (VME)?",
+      opts: [
+        "70",
+        "54",
+        "60",
+        "44"
+      ],
+      correct: 1,
+      explain: "VME = 0.4·100 + 0.4·60 + 0.2·(−50) = 40 + 24 − 10 = <b>54</b>."
+    },
+    {
+      type: "teórica",
+      q: "En un nodo de decisión, durante el rollback, ¿qué valor le asignás?",
+      opts: [
+        "El promedio de las ramas que salen",
+        "La suma de las ramas",
+        "El valor de la rama de mayor VME (o menor CME si son costos)",
+        "El valor de la rama más probable"
+      ],
+      correct: 2,
+      explain: "En un nodo de decisión vos elegís la mejor rama, así que el valor del nodo es el de la <b>rama elegida</b> (mayor VME si son ganancias)."
+    },
+    {
+      type: "práctica",
+      q: "Decisión 1: pagar $20 para participar. Si pagás, con 70% gana $100 (en azar). Si no pagás, gana $0. ¿Conviene pagar?",
+      opts: [
+        "No: VME(pagar) = 50, neto 30",
+        "Sí: VME(pagar) = 70, neto 50 > 0",
+        "Indiferente",
+        "Falta información"
+      ],
+      correct: 1,
+      explain: "VME(pagar) bruto = 0.7·100 + 0.3·0 = 70. Neto = 70 − 20 = <b>50</b>. Como 50 > 0 (no pagar), conviene pagar."
+    },
+    {
+      type: "teórica",
+      q: "¿Qué significa una rama con &quot;valor terminal&quot; negativo?",
+      opts: [
+        "Que la rama está mal calculada",
+        "Que en ese escenario el decisor pierde dinero",
+        "Que la probabilidad es negativa",
+        "Que hay que descartarla del árbol"
+      ],
+      correct: 1,
+      explain: "Un valor terminal negativo significa <b>pérdida</b> en ese escenario. No se descarta: hay que considerarla en el cálculo del VME porque puede ocurrir."
+    },
+    {
+      type: "práctica",
+      q: "Después del rollback, valor de la rama A = 33.500, valor de la rama B = 0 (no actuar). ¿Qué decisión inicial tomar?",
+      opts: [
+        "Rama A: VME 33.500 > 0",
+        "Rama B: es más segura",
+        "Falta más información",
+        "Las dos son indiferentes"
+      ],
+      correct: 0,
+      explain: "Aunque B sea &quot;más segura&quot;, el criterio del VME no considera el riesgo. Como VME(A) = 33.500 &gt; 0, <b>elegís A</b>."
+    },
+    {
+      type: "teórica",
+      q: "La principal ventaja del árbol respecto a la matriz es que:",
+      opts: [
+        "Es más rápido de dibujar",
+        "Permite modelar la secuencia temporal de decisiones y observaciones",
+        "Usa menos datos",
+        "Funciona con cualquier número de alternativas"
+      ],
+      correct: 1,
+      explain: "El árbol muestra <b>la dinámica temporal</b>: primero decidís, después observás algo, después volvés a decidir. Esa secuencia no cabe en una matriz."
+    },
+    {
+      type: "teórica",
+      q: "Si el árbol resuelto da una estrategia con VME total = $0, ¿qué significa?",
+      opts: [
+        "El problema está mal planteado",
+        "Da lo mismo actuar o no actuar (indiferencia)",
+        "Hay que cambiar las probabilidades",
+        "La estrategia óptima es siempre rechazar"
+      ],
+      correct: 1,
+      explain: "VME = 0 significa que <b>actuar tiene el mismo valor esperado que no hacer nada</b>. Indiferencia por VME. (Aunque por otros criterios como utilidad podría cambiar la decisión.)"
+    }
+  ]
+};
+
+// ====== STATE ======
+let state = JSON.parse(localStorage.getItem('ad_quiz_state') || '{}');
+if (!state.answers) state.answers = {};
+
+function saveState() {
+  localStorage.setItem('ad_quiz_state', JSON.stringify(state));
+}
+
+function resetAll() {
+  const modal = document.getElementById('reset-modal');
+  modal.style.display = 'flex';
+}
+
+function confirmReset() {
+  state = { answers: {} };
+  saveState();
+  // Re-render sin recargar
+  [1, 2, 3, 4, 5].forEach(g => renderQuestions(g));
+  updateProgress();
+  document.getElementById('reset-modal').style.display = 'none';
+}
+
+function cancelReset() {
+  document.getElementById('reset-modal').style.display = 'none';
+}
+
+// ====== RENDER ======
+function renderQuestions(guide) {
+  const container = document.getElementById(`questions-${guide}`);
+  const qs = questions[guide];
+  container.innerHTML = '';
+  qs.forEach((q, idx) => {
+    const qid = `g${guide}-q${idx}`;
+    const userAnswer = state.answers[qid];
+    
+    const optsHTML = q.opts.map((opt, i) => {
+      const letter = String.fromCharCode(65 + i);
+      let cls = 'option';
+      if (userAnswer !== undefined) {
+        if (i === q.correct) cls += ' correct';
+        else if (i === userAnswer) cls += ' wrong';
+      }
+      return `<button class="${cls}" data-qid="${qid}" data-idx="${i}" ${userAnswer !== undefined ? 'disabled' : ''}>
+        <span class="letter">${letter}</span><span>${opt}</span>
+      </button>`;
+    }).join('');
+    
+    const showExplain = userAnswer !== undefined ? 'show' : '';
+    
+    container.innerHTML += `
+      <div class="question">
+        <div class="question-header">
+          <span class="q-number">Pregunta ${idx + 1}</span>
+          <span class="q-type">${q.type}</span>
+        </div>
+        <div class="q-text">${q.q}</div>
+        <div class="options">${optsHTML}</div>
+        <div class="explanation ${showExplain}" id="exp-${qid}">${q.explain}</div>
+      </div>
+    `;
+  });
+  
+  // Bind clicks
+  container.querySelectorAll('.option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qid = btn.dataset.qid;
+      const idx = parseInt(btn.dataset.idx);
+      const [g, q] = qid.match(/g(\d+)-q(\d+)/).slice(1).map(Number);
+      const correct = questions[g][q].correct;
+      
+      state.answers[qid] = idx;
+      saveState();
+      
+      // Mark all options
+      const allBtns = container.querySelectorAll(`[data-qid="${qid}"]`);
+      allBtns.forEach((b, i) => {
+        b.disabled = true;
+        if (i === correct) b.classList.add('correct');
+        else if (i === idx) b.classList.add('wrong');
+      });
+      
+      // Show explanation
+      document.getElementById(`exp-${qid}`).classList.add('show');
+      
+      updateProgress();
+    });
+  });
+}
+
+function updateProgress() {
+  const total = 50;
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progress-text').textContent = `${answered} / ${total} respondidas`;
+  document.getElementById('progress-fill').style.width = `${(answered / total) * 100}%`;
+  
+  // Update guide scores
+  for (let g = 1; g <= 5; g++) {
+    let correct = 0, total_g = 10, answered_g = 0;
+    for (let q = 0; q < 10; q++) {
+      const qid = `g${g}-q${q}`;
+      if (state.answers[qid] !== undefined) {
+        answered_g++;
+        if (state.answers[qid] === questions[g][q].correct) correct++;
+      }
+    }
+    const scoreEl = document.getElementById(`score-${g}`);
+    if (answered_g > 0) {
+      scoreEl.textContent = `(${correct}/${answered_g})`;
+    } else {
+      scoreEl.textContent = '';
+    }
+  }
+}
+
+// ====== TABS ======
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.guide-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.guide-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`.guide-panel[data-guide="${tab.dataset.guide}"]`).classList.add('active');
+  });
+});
+
+// ====== INIT ======
+[1, 2, 3, 4, 5].forEach(g => renderQuestions(g));
+updateProgress();
+</script>
+
+</body>
+</html>
