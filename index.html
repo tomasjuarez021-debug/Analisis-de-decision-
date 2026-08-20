@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Motor de Decisión Deportiva</title>
+<title>Athlete Intelligence System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,111 +54,91 @@ body{
   font-family:var(--sans); font-size:15px; line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1200px; margin:0 auto; padding:20px 16px 56px;}
+.wrap{max-width:1180px; margin:0 auto; padding:18px 16px 56px;}
 
 /* ---------- cabecera ---------- */
-.masthead{
-  display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px 24px;
-  padding-bottom:16px; margin-bottom:20px; border-bottom:1px solid var(--line);
-}
-.masthead h1{
-  font-size:clamp(21px,3.4vw,27px); font-weight:600; letter-spacing:-.02em;
-  margin:0 0 3px; text-wrap:balance;
-}
-.masthead p{margin:0; color:var(--ink-2); font-size:13.5px; max-width:60ch;}
-.eyebrow{
-  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
-  letter-spacing:.12em; color:var(--ink-3); margin:0 0 6px;
-}
-.daychip{
-  margin-left:auto; display:flex; align-items:center; gap:10px;
+.masthead{display:flex; flex-wrap:wrap; align-items:flex-end; gap:12px 24px; padding-bottom:14px;}
+.masthead h1{font-size:clamp(20px,3.2vw,25px); font-weight:600; letter-spacing:-.02em; margin:0 0 2px;}
+.masthead p{margin:0; color:var(--ink-2); font-size:13px; max-width:62ch;}
+.eyebrow{font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--ink-3); margin:0 0 5px;}
+.daychip{margin-left:auto; display:flex; align-items:center; gap:10px;
   font-family:var(--mono); font-size:12px; color:var(--ink-2);
   background:var(--surface); border:1px solid var(--line-soft);
-  border-radius:999px; padding:7px 14px; white-space:nowrap;
-}
+  border-radius:999px; padding:6px 13px; white-space:nowrap;}
 .daychip b{color:var(--ink); font-weight:500;}
 
-/* ---------- rejilla ---------- */
-.shell{display:grid; gap:18px; grid-template-columns:minmax(0,1fr); align-items:start;}
-@media (min-width:1020px){ .shell{grid-template-columns:352px minmax(0,1fr);} }
-.stack{display:grid; gap:18px; align-content:start;}
+/* ---------- navegación de módulos ---------- */
+nav{display:flex; gap:4px; overflow-x:auto; padding-bottom:2px; margin-bottom:18px;
+  border-bottom:1px solid var(--line); scrollbar-width:thin;}
+nav button{
+  font-family:var(--sans); font-size:13px; font-weight:500; white-space:nowrap;
+  background:transparent; border:0; border-bottom:2px solid transparent;
+  color:var(--ink-3); padding:9px 12px; cursor:pointer; border-radius:6px 6px 0 0;
+}
+nav button:hover{color:var(--ink-2); background:var(--surface);}
+nav button[aria-current="page"]{color:var(--accent); border-bottom-color:var(--accent);}
+nav button .n{font-family:var(--mono); font-size:10px; opacity:.6; margin-right:5px;}
 
-.card{
-  background:var(--surface); border:1px solid var(--line-soft);
-  border-radius:10px; padding:18px; box-shadow:var(--shadow);
-}
-.card > h2{
-  font-size:15.5px; font-weight:600; margin:0 0 3px; letter-spacing:-.01em;
-}
-.card > .hint{margin:0 0 14px; font-size:12.5px; color:var(--ink-3);}
+/* ---------- rejillas ---------- */
+.cols{display:grid; gap:16px; grid-template-columns:minmax(0,1fr); align-items:start;}
+@media (min-width:1000px){ .cols.split{grid-template-columns:340px minmax(0,1fr);} }
+@media (min-width:820px){ .cols.half{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.stack{display:grid; gap:16px; align-content:start;}
+
+.card{background:var(--surface); border:1px solid var(--line-soft);
+  border-radius:10px; padding:17px; box-shadow:var(--shadow);}
+.card > h2{font-size:15.5px; font-weight:600; margin:0 0 3px; letter-spacing:-.01em;}
+.card > .hint{margin:0 0 13px; font-size:12.5px; color:var(--ink-3);}
+.card > .hint code{font-family:var(--mono); font-size:11.5px;}
 
 /* ---------- formularios ---------- */
-.field{display:grid; gap:5px; margin-bottom:13px;}
-.field > label{
-  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
-  letter-spacing:.09em; color:var(--ink-3);
-}
-select, input[type=number]{
+.field{display:grid; gap:5px; margin-bottom:12px;}
+.field > label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--ink-3);}
+select, input[type=number], input[type=text]{
   font-family:var(--sans); font-size:14px; color:var(--ink);
   background:var(--surface-2); border:1px solid var(--line);
-  border-radius:7px; padding:8px 10px; width:100%;
-}
+  border-radius:7px; padding:8px 10px; width:100%;}
 input[type=number]{font-family:var(--mono); font-variant-numeric:tabular-nums;}
-.row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-.slider{display:grid; gap:4px; margin-bottom:11px;}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:11px;}
+.slider{display:grid; gap:3px; margin-bottom:10px;}
 .slider .top{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
-.slider .top span:first-child{
-  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
-  letter-spacing:.09em; color:var(--ink-3);
-}
-.slider .val{font-family:var(--mono); font-size:12px; color:var(--ink-2); text-align:right;}
-input[type=range]{
-  -webkit-appearance:none; appearance:none; width:100%; height:22px;
-  background:transparent; cursor:pointer; margin:0;
-}
+.slider .top span:first-child{font-family:var(--mono); font-size:10.5px;
+  text-transform:uppercase; letter-spacing:.09em; color:var(--ink-3);}
+.slider .val{font-family:var(--mono); font-size:12px; color:var(--ink-2);}
+input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:22px;
+  background:transparent; cursor:pointer; margin:0;}
 input[type=range]::-webkit-slider-runnable-track{height:4px; border-radius:2px; background:var(--line);}
 input[type=range]::-moz-range-track{height:4px; border-radius:2px; background:var(--line);}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
-  background:var(--accent); border:2px solid var(--surface-2); margin-top:-6px;
-}
-input[type=range]::-moz-range-thumb{
-  width:16px; height:16px; border-radius:50%;
-  background:var(--accent); border:2px solid var(--surface-2);
-}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:16px; height:16px;
+  border-radius:50%; background:var(--accent); border:2px solid var(--surface-2); margin-top:-6px;}
+input[type=range]::-moz-range-thumb{width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--surface-2);}
 :focus-visible{outline:2px solid var(--accent-2); outline-offset:2px;}
 
 .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
-button{
-  font-family:var(--sans); font-size:13.5px; font-weight:500;
+button.act{font-family:var(--sans); font-size:13.5px; font-weight:500;
   border-radius:7px; padding:9px 14px; cursor:pointer;
-  border:1px solid var(--line); background:var(--surface-2); color:var(--ink);
-  transition:background .12s ease, border-color .12s ease;
-}
-button:hover{border-color:var(--accent);}
-button.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
-:root[data-theme="dark"] button.primary, :root:not([data-theme="light"]) button.primary{color:#08121e;}
-@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]) button.primary{color:#fff;} }
-button.primary:hover{background:var(--accent-2); border-color:var(--accent-2);}
-button.ghost{background:transparent;}
+  border:1px solid var(--line); background:var(--surface-2); color:var(--ink);}
+button.act:hover{border-color:var(--accent);}
+button.act.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+:root[data-theme="dark"] button.act.primary,
+:root:not([data-theme="light"]) button.act.primary{color:#08121e;}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]) button.act.primary{color:#fff;} }
+button.act.ghost{background:transparent;}
+button.act.sm{font-size:12px; padding:6px 10px;}
 
 /* ---------- readiness ---------- */
-.ready{display:grid; gap:18px; grid-template-columns:minmax(0,1fr);}
-@media (min-width:640px){ .ready{grid-template-columns:190px minmax(0,1fr);} }
-.score{
-  display:grid; gap:2px; align-content:center; justify-items:start;
-  padding:14px 16px; border-radius:9px; border:1px solid var(--line-soft);
-  background:var(--surface-2);
-}
-.score .num{
-  font-family:var(--mono); font-size:52px; font-weight:500; line-height:1;
-  letter-spacing:-.03em; font-variant-numeric:tabular-nums;
-}
+.ready{display:grid; gap:16px; grid-template-columns:minmax(0,1fr);}
+@media (min-width:640px){ .ready{grid-template-columns:180px minmax(0,1fr);} }
+.score{display:grid; gap:2px; align-content:center; justify-items:start;
+  padding:14px 16px; border-radius:9px; border:1px solid var(--line-soft); background:var(--surface-2);}
+.score .num{font-family:var(--mono); font-size:50px; font-weight:500; line-height:1;
+  letter-spacing:-.03em; font-variant-numeric:tabular-nums;}
 .score .of{font-family:var(--mono); font-size:11px; color:var(--ink-3);}
-.band{
-  display:inline-flex; align-items:center; gap:7px; margin-top:9px;
-  font-size:12.5px; font-weight:500; padding:4px 10px; border-radius:999px;
-}
+.band{display:inline-flex; align-items:center; gap:7px; margin-top:9px;
+  font-size:12.5px; font-weight:500; padding:4px 10px; border-radius:999px;}
 .band .dot{width:8px; height:8px; border-radius:50%; background:currentColor; flex:none;}
 .band.green{background:var(--ok-soft); color:var(--ok);}
 .band.amber{background:var(--warn-soft); color:var(--warn);}
@@ -167,7 +147,8 @@ button.ghost{background:transparent;}
 .comps{display:grid; gap:9px; align-content:start;}
 .comp{display:grid; grid-template-columns:minmax(0,1fr) 44px; gap:3px 10px;}
 .comp .name{grid-area:1/1; font-size:12.5px; color:var(--ink-2);}
-.comp .v{grid-area:1/2;}
+.comp .v{grid-area:1/2; font-family:var(--mono); font-size:11.5px; color:var(--ink-2);
+  text-align:right; font-variant-numeric:tabular-nums;}
 .comp .track{grid-area:2/1/3/3;}
 @media (min-width:600px){
   .comp{grid-template-columns:152px minmax(0,1fr) 44px; align-items:center;}
@@ -177,10 +158,7 @@ button.ghost{background:transparent;}
 .comp .name em{font-family:var(--mono); font-style:normal; font-size:10.5px; color:var(--ink-3);}
 .track{height:6px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
 .track > i{display:block; height:100%; border-radius:3px; background:var(--accent);}
-.comp .v{
-  font-family:var(--mono); font-size:11.5px; color:var(--ink-2);
-  text-align:right; font-variant-numeric:tabular-nums;
-}
+.track > i.neg{background:var(--crit);}
 .missing{opacity:.5;}
 
 /* ---------- métricas ---------- */
@@ -188,109 +166,105 @@ button.ghost{background:transparent;}
   background:var(--line-soft); border:1px solid var(--line-soft); border-radius:9px; overflow:hidden;}
 @media (min-width:560px){ .metrics{grid-template-columns:repeat(3,1fr);} }
 @media (min-width:900px){ .metrics{grid-template-columns:repeat(4,1fr);} }
-.metric{background:var(--surface-2); padding:12px 14px; display:grid; gap:2px;}
-.metric .k{
-  font-family:var(--mono); font-size:10px; text-transform:uppercase;
-  letter-spacing:.09em; color:var(--ink-3);
-}
-.metric .v{
-  font-family:var(--mono); font-size:20px; font-weight:500;
-  font-variant-numeric:tabular-nums; letter-spacing:-.01em;
-}
+.metric{background:var(--surface-2); padding:11px 13px; display:grid; gap:2px;}
+.metric .k{font-family:var(--mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--ink-3);}
+.metric .v{font-family:var(--mono); font-size:19px; font-weight:500;
+  font-variant-numeric:tabular-nums; letter-spacing:-.01em;}
 .metric .n{font-size:11.5px; color:var(--ink-3);}
 .metric .v.flag-warn{color:var(--warn);} .metric .v.flag-crit{color:var(--crit);}
 
 /* ---------- gráfico ---------- */
-.chartwrap{position:relative; margin-top:16px;}
+.chartwrap{position:relative; margin-top:14px;}
 canvas{width:100%; height:150px; display:block; touch-action:none;}
-.legend{
-  display:flex; flex-wrap:wrap; gap:14px; margin-top:8px;
-  font-size:11.5px; color:var(--ink-3);
-}
+.legend{display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; font-size:11.5px; color:var(--ink-3);}
 .legend span{display:inline-flex; align-items:center; gap:6px;}
 .swatch{width:10px; height:10px; border-radius:2px; background:var(--bar); flex:none;}
 .swatch.line{height:0; width:14px; border-top:2px solid var(--accent); border-radius:0;}
 .swatch.line.dash{border-top-style:dashed; border-color:var(--ink-3);}
-.tip{
-  position:absolute; pointer-events:none; opacity:0; transform:translate(-50%,-100%);
+.tip{position:absolute; pointer-events:none; opacity:0; transform:translate(-50%,-100%);
   background:var(--ink); color:var(--ground); font-family:var(--mono); font-size:11px;
-  padding:5px 8px; border-radius:6px; white-space:nowrap; transition:opacity .1s ease; z-index:5;
-}
+  padding:5px 8px; border-radius:6px; white-space:nowrap; transition:opacity .1s ease; z-index:5;}
+
+/* ---------- tablas ---------- */
+.tablewrap{overflow-x:auto;}
+table{border-collapse:collapse; width:100%; font-size:12.5px;}
+th{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--ink-3); text-align:left; font-weight:400; padding:6px 10px 6px 0;
+  border-bottom:1px solid var(--line);}
+td{padding:8px 10px 8px 0; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; padding-right:14px;}
+th.num{text-align:right; padding-right:14px;}
+tr:last-child td{border-bottom:0;}
 
 /* ---------- plan ---------- */
 .week{display:grid; gap:8px;}
-.day{
-  display:grid; grid-template-columns:52px minmax(0,1fr); gap:12px;
-  padding:11px 12px; border:1px solid var(--line-soft); border-radius:8px;
-  background:var(--surface-2);
-}
+.day{display:grid; grid-template-columns:58px minmax(0,1fr); gap:12px;
+  padding:11px 12px; border:1px solid var(--line-soft); border-radius:8px; background:var(--surface-2);}
 .day.today{border-color:var(--accent); box-shadow:inset 3px 0 0 var(--accent);}
-.day .dow{
-  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
-  letter-spacing:.08em; color:var(--ink-3); padding-top:2px;
-}
+.day .dow{font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.08em; color:var(--ink-3); padding-top:2px;}
 .day.today .dow{color:var(--accent);}
 .day .title{font-size:13.5px; font-weight:500; margin-bottom:3px;}
-.day .meta{
-  font-family:var(--mono); font-size:11px; color:var(--ink-3);
-  display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px;
-}
-.day .meta s{color:var(--ink-3); opacity:.7;}
+.day .meta{font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px;}
 .items{margin:0; padding:0; list-style:none; display:grid; gap:2px;}
-.items li{
-  font-size:12.5px; color:var(--ink-2);
-  display:grid; grid-template-columns:minmax(0,1fr); gap:0 12px;
-  padding:2px 0; border-bottom:1px solid var(--line-soft);
-}
+.items li{font-size:12.5px; color:var(--ink-2); display:grid;
+  grid-template-columns:minmax(0,1fr); gap:0 12px; padding:2px 0;
+  border-bottom:1px solid var(--line-soft);}
 .items li:last-child{border-bottom:0;}
 .items li .p{font-family:var(--mono); font-size:11.5px; color:var(--ink-3);}
 @media (min-width:600px){
   .items li{grid-template-columns:minmax(0,1fr) auto; padding:0; border-bottom:0;}
   .items li .p{white-space:nowrap;}
 }
-.chip{
-  display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.05em;
+.rest{color:var(--ink-3); font-size:13px; padding-top:2px;}
+
+.chip{display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.05em;
   text-transform:uppercase; padding:2px 7px; border-radius:999px;
-  background:var(--accent-soft); color:var(--accent);
-}
+  background:var(--accent-soft); color:var(--accent); white-space:nowrap;}
 .chip.warn{background:var(--warn-soft); color:var(--warn);}
 .chip.crit{background:var(--crit-soft); color:var(--crit);}
 .chip.ok{background:var(--ok-soft); color:var(--ok);}
-.rest{color:var(--ink-3); font-size:13px; padding-top:2px;}
+.chip.mute{background:var(--line-soft); color:var(--ink-3);}
 
-/* ---------- guardarraíles ---------- */
-.guards{display:grid; gap:7px;}
-.guard{
-  display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:baseline;
-  font-size:12.5px; padding:8px 10px; border-radius:7px; background:var(--surface-2);
-  border:1px solid var(--line-soft);
-}
-.guard .mark{font-family:var(--mono); font-size:12px; font-weight:500;}
-.guard.pass .mark{color:var(--ok);} .guard.fail .mark{color:var(--crit);}
-.guard .lim{font-family:var(--mono); font-size:11px; color:var(--ink-3); white-space:nowrap;}
+/* ---------- diagnósticos, reglas, decisiones ---------- */
+.diags{display:grid; gap:9px;}
+.diag{border-left:3px solid var(--line); padding:8px 0 8px 12px;}
+.diag.action{border-left-color:var(--warn);}
+.diag.critical{border-left-color:var(--crit);}
+.diag.watch{border-left-color:var(--accent);}
+.diag .t{font-size:13.5px; font-weight:500; display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+.diag ul{margin:5px 0 0; padding-left:16px; font-size:12.5px; color:var(--ink-2);}
 
-/* ---------- decisiones ---------- */
+.rules{display:grid; gap:5px;}
+.rule{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:baseline;
+  font-size:12.5px; padding:7px 10px; border-radius:7px;
+  background:var(--surface-2); border:1px solid var(--line-soft);}
+.rule.fired{border-color:var(--accent-soft); background:var(--accent-soft);}
+.rule .id{font-family:var(--mono); font-size:10.5px; color:var(--ink-3);}
+.rule .obs{font-family:var(--mono); font-size:11px; color:var(--ink-3); text-align:right; white-space:nowrap;}
+.rule.fired .id, .rule.fired .obs{color:var(--accent);}
+
 .log{display:grid; gap:10px;}
 .entry{border-left:2px solid var(--line); padding:2px 0 2px 13px;}
 .entry.act{border-left-color:var(--accent);}
-.entry .head{
-  display:flex; flex-wrap:wrap; gap:8px; align-items:baseline;
+.entry .head{display:flex; flex-wrap:wrap; gap:8px; align-items:baseline;
   font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
-  text-transform:uppercase; letter-spacing:.07em; margin-bottom:3px;
-}
+  text-transform:uppercase; letter-spacing:.07em; margin-bottom:3px;}
 .entry .why{font-family:var(--serif); font-size:14px; color:var(--ink); margin:0 0 4px;}
-.entry .rules{display:flex; flex-wrap:wrap; gap:6px;}
-.entry .rules code{
-  font-family:var(--mono); font-size:10.5px; background:var(--surface-2);
-  border:1px solid var(--line-soft); border-radius:4px; padding:1px 6px; color:var(--ink-2);
-}
+.entry .rules-inline{display:flex; flex-wrap:wrap; gap:6px;}
+.entry code{font-family:var(--mono); font-size:10.5px; background:var(--surface-2);
+  border:1px solid var(--line-soft); border-radius:4px; padding:1px 6px; color:var(--ink-2);}
 .empty{color:var(--ink-3); font-size:13px; font-style:italic;}
 
-/* ---------- pie ---------- */
-footer{
-  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
-  font-size:12px; color:var(--ink-3); max-width:78ch;
-}
+.banner{display:flex; gap:10px; align-items:flex-start; font-size:12.5px;
+  padding:10px 12px; border-radius:8px; margin-bottom:14px;
+  background:var(--warn-soft); color:var(--warn); border:1px solid transparent;}
+.banner b{font-weight:600;}
+
+footer{margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--ink-3); max-width:80ch;}
 footer p{margin:0 0 7px;}
 footer b{color:var(--ink-2); font-weight:500;}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
@@ -300,172 +274,19 @@ footer b{color:var(--ink-2); font-weight:500;}
 <div class="wrap">
   <header class="masthead">
     <div>
-      <p class="eyebrow">Prototipo · Especificación Técnica v2.0</p>
-      <h1>Motor de Decisión Deportiva</h1>
-      <p>Implementación ejecutable de los capítulos 6 y 7: genera el plan, calcula readiness y carga, ajusta la sesión del día y deja registrada cada decisión con su motivo.</p>
+      <p class="eyebrow">Arquitectura v1.0</p>
+      <h1>Athlete Intelligence System</h1>
+      <p>La rutina no es el producto: es la última salida de la cadena <b style="font-weight:500;color:var(--ink)">Evaluación → Modelado → Diagnóstico → Decisión → Prescripción</b>. Cada módulo es una función de su entrada, y toda decisión queda reproducible.</p>
     </div>
     <div class="daychip"><span>Día <b id="dayNum">1</b></span><span id="dateLbl"></span></div>
   </header>
 
-  <div class="shell">
-    <!-- ============ columna de control ============ -->
-    <div class="stack">
-      <section class="card">
-        <h2>Atleta</h2>
-        <p class="hint">Define el plan: deporte, objetivo y disponibilidad.</p>
-
-        <div class="field">
-          <label for="sport">Deporte</label>
-          <select id="sport">
-            <option value="rugby">Rugby</option>
-            <option value="football">Fútbol</option>
-            <option value="hockey">Hockey</option>
-            <option value="running">Running</option>
-            <option value="strength">Entrenamiento de fuerza</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="goal">Objetivo principal</label>
-          <select id="goal">
-            <option value="sport_performance">Rendimiento deportivo</option>
-            <option value="strength">Fuerza máxima</option>
-            <option value="hypertrophy">Hipertrofia</option>
-            <option value="endurance">Resistencia</option>
-            <option value="return_to_play">Retorno al juego</option>
-          </select>
-        </div>
-
-        <div class="row2">
-          <div class="field">
-            <label for="level">Nivel</label>
-            <select id="level">
-              <option value="beginner">Principiante</option>
-              <option value="intermediate" selected>Intermedio</option>
-              <option value="advanced">Avanzado</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="days">Días/semana</label>
-            <select id="days">
-              <option>3</option><option selected>4</option><option>5</option><option>6</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row2">
-          <div class="field">
-            <label for="age">Edad</label>
-            <input type="number" id="age" value="24" min="14" max="70">
-          </div>
-          <div class="field">
-            <label for="squat">1RM sentadilla (kg)</label>
-            <input type="number" id="squat" value="130" min="0" max="400" step="2.5">
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Check-in de hoy</h2>
-        <p class="hint">Lo que el atleta responde en 20 segundos al despertarse. Todo se recalcula al instante.</p>
-
-        <div class="row2">
-          <div class="field">
-            <label for="sleepH">Sueño (h)</label>
-            <input type="number" id="sleepH" value="7.5" min="0" max="14" step="0.1">
-          </div>
-          <div class="field">
-            <label for="hrv">ln rMSSD</label>
-            <input type="number" id="hrv" value="4.20" min="2" max="6" step="0.01">
-          </div>
-        </div>
-
-        <div class="slider">
-          <div class="top"><span>Calidad de sueño</span><span class="val" id="sleepQv">4 · buena</span></div>
-          <input type="range" id="sleepQ" min="1" max="5" value="4">
-        </div>
-        <div class="slider">
-          <div class="top"><span>Fatiga</span><span class="val" id="fatiguev">4 · fresco</span></div>
-          <input type="range" id="fatigue" min="1" max="5" value="4">
-        </div>
-        <div class="slider">
-          <div class="top"><span>Dolor muscular</span><span class="val" id="sorenessv">4 · leve</span></div>
-          <input type="range" id="soreness" min="1" max="5" value="4">
-        </div>
-        <div class="slider">
-          <div class="top"><span>Estrés</span><span class="val" id="stressv">4 · bajo</span></div>
-          <input type="range" id="stress" min="1" max="5" value="4">
-        </div>
-        <div class="slider">
-          <div class="top"><span>Ánimo</span><span class="val" id="moodv">4 · bien</span></div>
-          <input type="range" id="mood" min="1" max="5" value="4">
-        </div>
-
-        <div class="btnrow">
-          <button class="primary" id="btnTrain">Registrar entrenamiento</button>
-          <button id="btnRest">Día sin entrenar</button>
-        </div>
-        <div class="btnrow">
-          <button class="ghost" id="btnBad">Simular semana dura</button>
-          <button class="ghost" id="btnReset">Reiniciar</button>
-        </div>
-      </section>
-    </div>
-
-    <!-- ============ columna de resultados ============ -->
-    <div class="stack">
-      <section class="card">
-        <h2>Readiness de hoy</h2>
-        <p class="hint">Índice compuesto 0–100 (§7.7). Los pesos de los componentes sin dato se redistribuyen; nunca se imputa un valor.</p>
-        <div class="ready">
-          <div class="score">
-            <div class="num" id="rScore">—</div>
-            <div class="of">sobre 100</div>
-            <div class="band" id="rBand"><span class="dot"></span><span id="rBandTxt">—</span></div>
-          </div>
-          <div class="comps" id="comps"></div>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Estado de carga</h2>
-        <p class="hint">Carga interna en unidades arbitrarias: duración × sRPE (§7.1).</p>
-        <div class="metrics" id="metrics"></div>
-
-        <div class="chartwrap">
-          <canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días, con carga aguda y crónica"></canvas>
-          <div class="tip" id="tip"></div>
-        </div>
-        <div class="legend">
-          <span><i class="swatch"></i>Carga diaria (UA)</span>
-          <span><i class="swatch line"></i>Aguda 7 d</span>
-          <span><i class="swatch line dash"></i>Crónica 28 d</span>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Microciclo</h2>
-        <p class="hint" id="mesoHint">—</p>
-        <div class="week" id="week"></div>
-      </section>
-
-      <section class="card">
-        <h2>Guardarraíles</h2>
-        <p class="hint">Reglas duras de §6.6. Si una falla, el plan no se publica sin revisión humana.</p>
-        <div class="guards" id="guards"></div>
-      </section>
-
-      <section class="card">
-        <h2>Log de decisiones</h2>
-        <p class="hint">Cada cambio guarda sus entradas, la regla disparada y la explicación para el atleta (§4.11).</p>
-        <div class="log" id="log"></div>
-      </section>
-    </div>
-  </div>
+  <nav id="nav" aria-label="Módulos"></nav>
+  <div id="view"></div>
 
   <footer>
-    <p><b>Qué es esto.</b> Un prototipo del motor descrito en la especificación técnica v2.0. Las fórmulas son las del documento: sRPE, ACWR por media móvil y EWMA, monotonía y strain de Foster, modelo fitness–fatiga de Banister e índice de readiness ponderado. El historial inicial son 42 días sintéticos, generados para que las métricas tengan sentido desde el primer momento.</p>
-    <p><b>Qué no es.</b> No es un dispositivo médico y no predice lesiones: las banderas son señales de gestión de carga, no probabilidades. No hay backend, cuentas ni datos reales — todo corre en esta página.</p>
+    <p><b>Qué es esto.</b> Implementación de la arquitectura de Athlete Intelligence System en una sola página: capa de dominio, analítica, motor de decisión, aplicación y UI, con las fronteras del documento respetadas. Las reglas del motor son datos versionados (<span style="font-family:var(--mono)">ruleset ais-2026.08</span>), no código: se listan enteras en el módulo Decision Engine, con las que dispararon y las que no.</p>
+    <p><b>Qué no es.</b> No es un dispositivo médico y no predice lesiones: las banderas son señales de gestión de carga. Los arquetipos y las normas de referencia son estimaciones ilustrativas — cada uno declara su procedencia. Los datos se guardan solo en este dispositivo.</p>
   </footer>
 </div>
 
@@ -473,503 +294,1580 @@ footer b{color:var(--ink-2); font-weight:500;}
 (function(){
 "use strict";
 
-/* ══════════════ utilidades ══════════════ */
-const $ = id => document.getElementById(id);
-const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
-const clamp01 = v => clamp(v,0,1);
-const mean = a => a.length ? a.reduce((s,x)=>s+x,0)/a.length : 0;
-const sd = a => { if(a.length<2) return 0; const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1)); };
-const fmt = (v,d=0) => v==null || !isFinite(v) ? '—' : v.toLocaleString('es-AR',{minimumFractionDigits:d, maximumFractionDigits:d});
-const DOW = ['dom','lun','mar','mié','jue','vie','sáb'];
+/* ══════════════════════════════════════════════════════════════════
+   CAPA DE DOMINIO — no conoce almacenamiento, ni UI, ni el reloj.
+   ══════════════════════════════════════════════════════════════════ */
 
-/* generador pseudoaleatorio reproducible: el mismo perfil da el mismo historial */
-function rng(seed){ let s = seed >>> 0; return () => { s = (s*1664525 + 1013904223) >>> 0; return s/4294967296; }; }
+const CAPACITIES = [
+  {key:'maxStrength',       label:'Fuerza máxima'},
+  {key:'power',             label:'Potencia'},
+  {key:'speed',             label:'Velocidad'},
+  {key:'changeOfDirection', label:'Cambio de dirección'},
+  {key:'aerobicCapacity',   label:'Capacidad aeróbica'},
+  {key:'anaerobicCapacity', label:'Capacidad anaeróbica'},
+  {key:'mobility',          label:'Movilidad'},
+  {key:'stability',         label:'Estabilidad'},
+  {key:'bodyComposition',   label:'Composición corporal'}
+];
+const CAP_LABEL = Object.fromEntries(CAPACITIES.map(c=>[c.key,c.label]));
 
-/* ══════════════ catálogo de ejercicios ══════════════ */
-const EX = {
-  sentadilla:      {n:'Sentadilla trasera', pat:'squat', pct:true},
-  peso_muerto:     {n:'Peso muerto',        pat:'hinge', pct:true},
-  rdl:             {n:'Peso muerto rumano', pat:'hinge', pct:true},
-  hip_thrust:      {n:'Hip thrust',         pat:'hinge', pct:true},
-  zancada:         {n:'Zancada búlgara',    pat:'squat'},
-  press_banca:     {n:'Press de banca',     pat:'push',  pct:true},
-  press_militar:   {n:'Press militar',      pat:'push',  pct:true},
-  remo:            {n:'Remo con barra',     pat:'pull',  pct:true},
-  dominadas:       {n:'Dominadas',          pat:'pull'},
-  nordic:          {n:'Nórdico de isquios', pat:'prehab'},
-  copenhagen:      {n:'Copenhagen plank',   pat:'prehab'},
-  core:            {n:'Anti-rotación Pallof',pat:'core'},
-  farmer:          {n:'Farmer walk',        pat:'carry'},
-  cmj:             {n:'Salto contramovimiento', pat:'plyo'},
-  vallas:          {n:'Saltos sobre vallas',pat:'plyo'},
-  sprint:          {n:'Sprint lanzado',     pat:'sprint'},
-  salidas:         {n:'Salidas 10 m',       pat:'sprint'},
-  cambios:         {n:'Cambios de dirección 5-0-5', pat:'agility'},
-  intervalos:      {n:'Intervalos 4×4 min', pat:'cond'},
-  repeticiones:    {n:'Repeticiones 6×200 m', pat:'cond'},
-  continuo:        {n:'Continuo aeróbico',  pat:'cond'},
-  fartlek:         {n:'Fartlek 25 min',     pat:'cond'},
-  rsa:             {n:'Repeticiones de sprint (RSA)', pat:'cond'},
-  movilidad:       {n:'Movilidad cadera y torácica', pat:'mob'},
-  bici:            {n:'Bici suave',         pat:'mob'},
-  activacion:      {n:'Activación neuromuscular', pat:'mob'}
+/* la confianza de un dato decae con su antigüedad, a distinta velocidad por cualidad */
+const HALF_LIFE_DAYS = {
+  maxStrength:120, power:60, speed:60, changeOfDirection:75, aerobicCapacity:45,
+  anaerobicCapacity:45, mobility:90, stability:90, bodyComposition:60
+};
+const SOURCE_FACTOR = {lab:1, field:0.9, wearable:0.8, selfReport:0.6, estimated:0.5};
+
+const PROTOCOLS = [
+  {code:'cmj',      name:'Salto contramovimiento', capacity:'power',             unit:'cm', hib:true,  plausible:[10,80],   validityDays:60,  bilateral:false},
+  {code:'sprint10', name:'Sprint 10 m',            capacity:'speed',             unit:'s',  hib:false, plausible:[1.2,3.0], validityDays:90,  bilateral:false},
+  {code:'squat1rm', name:'Sentadilla 1RM',         capacity:'maxStrength',       unit:'kg', hib:true,  plausible:[20,350],  validityDays:120, bilateral:false},
+  {code:'cod505',   name:'505 cambio de dirección',capacity:'changeOfDirection', unit:'s',  hib:false, plausible:[1.8,4.0], validityDays:90,  bilateral:true},
+  {code:'yoyo',     name:'Yo-Yo IR1',              capacity:'aerobicCapacity',   unit:'m',  hib:true,  plausible:[200,3000],validityDays:90,  bilateral:false},
+  {code:'rsa',      name:'RSA 6×30 m (decremento)',capacity:'anaerobicCapacity', unit:'%',  hib:false, plausible:[0,20],    validityDays:90,  bilateral:false},
+  {code:'sitreach', name:'Sit and reach',          capacity:'mobility',          unit:'cm', hib:true,  plausible:[-20,40],  validityDays:120, bilateral:false},
+  {code:'ybt',      name:'Y-Balance compuesto',    capacity:'stability',         unit:'%',  hib:true,  plausible:[60,120],  validityDays:120, bilateral:true},
+  {code:'bodyfat',  name:'Grasa corporal',         capacity:'bodyComposition',   unit:'%',  hib:false, plausible:[3,45],    validityDays:90,  bilateral:false}
+];
+const PROTO = Object.fromEntries(PROTOCOLS.map(p=>[p.code,p]));
+
+/* Normas de referencia. evidence: 'expertEstimate' — valores ilustrativos, NO publicados.
+   La procedencia se muestra en la UI junto a cada brecha (§0.1 de la arquitectura). */
+const NORMS = {
+  cmj:      {evidence:'expertEstimate', femaleFactor:0.80, bySport:{rugby:{m:42,s:6},  football:{m:40,s:5}, hockey:{m:38,s:5}, running:{m:34,s:5}, strength:{m:40,s:7}}},
+  sprint10: {evidence:'expertEstimate', femaleFactor:1.09, bySport:{rugby:{m:1.78,s:.09},football:{m:1.75,s:.08},hockey:{m:1.80,s:.08},running:{m:1.86,s:.10},strength:{m:1.85,s:.11}}},
+  squat1rm: {evidence:'expertEstimate', femaleFactor:0.72, bySport:{rugby:{m:150,s:28},football:{m:125,s:22},hockey:{m:120,s:22},running:{m:95,s:20}, strength:{m:160,s:35}}},
+  cod505:   {evidence:'expertEstimate', femaleFactor:1.07, bySport:{rugby:{m:2.42,s:.12},football:{m:2.35,s:.11},hockey:{m:2.38,s:.11},running:{m:2.55,s:.14},strength:{m:2.52,s:.15}}},
+  yoyo:     {evidence:'expertEstimate', femaleFactor:0.75, bySport:{rugby:{m:1480,s:340},football:{m:1840,s:380},hockey:{m:1720,s:350},running:{m:2000,s:400},strength:{m:1000,s:300}}},
+  rsa:      {evidence:'expertEstimate', femaleFactor:1.05, bySport:{rugby:{m:5.2,s:1.6},football:{m:4.6,s:1.4},hockey:{m:4.9,s:1.5},running:{m:6.0,s:1.8},strength:{m:7.0,s:2.0}}},
+  sitreach: {evidence:'expertEstimate', femaleFactor:1.15, bySport:{rugby:{m:8,s:7},   football:{m:10,s:7}, hockey:{m:12,s:7},  running:{m:6,s:7},   strength:{m:6,s:8}}},
+  ybt:      {evidence:'expertEstimate', femaleFactor:1.00, bySport:{rugby:{m:96,s:7},  football:{m:98,s:7}, hockey:{m:97,s:7},  running:{m:95,s:7},  strength:{m:94,s:8}}},
+  bodyfat:  {evidence:'expertEstimate', femaleFactor:1.45, bySport:{rugby:{m:14,s:4},  football:{m:11,s:3}, hockey:{m:12,s:3},  running:{m:10,s:3},  strength:{m:13,s:4}}}
 };
 
-/* plantillas por cualidad: bloques con ejercicios y prescripción base (§6.4) */
-const QUALITIES = {
-  fuerza_inf: {
-    label:'Fuerza — tren inferior', type:'strength', hi:true, min:70, rpe:7.5,
-    items:[['sentadilla','main'],['rdl','main'],['zancada','acc'],['nordic','prehab'],['core','prehab']]
-  },
-  fuerza_sup: {
-    label:'Fuerza — tren superior', type:'strength', hi:true, min:60, rpe:7,
-    items:[['press_banca','main'],['remo','main'],['dominadas','acc'],['press_militar','acc'],['core','prehab']]
-  },
-  fuerza_total: {
-    label:'Fuerza — cuerpo completo', type:'strength', hi:true, min:70, rpe:7.5,
-    items:[['sentadilla','main'],['press_banca','main'],['peso_muerto','main'],['dominadas','acc'],['farmer','acc']]
-  },
-  potencia: {
-    label:'Potencia y salto', type:'power', hi:true, min:50, rpe:7,
-    items:[['cmj','main'],['vallas','main'],['hip_thrust','acc'],['core','prehab']]
-  },
-  velocidad: {
-    label:'Velocidad máxima', type:'speed', hi:true, min:55, rpe:7.5,
-    items:[['activacion','warm'],['salidas','main'],['sprint','main'],['cambios','acc'],['nordic','prehab']]
-  },
-  intervalos: {
-    label:'Intervalos de alta intensidad', type:'conditioning', hi:true, min:55, rpe:8,
-    items:[['activacion','warm'],['intervalos','main'],['core','prehab']]
-  },
-  rsa: {
-    label:'Resistencia a sprints repetidos', type:'conditioning', hi:true, min:50, rpe:8,
-    items:[['activacion','warm'],['rsa','main'],['movilidad','cool']]
-  },
-  umbral: {
-    label:'Umbral', type:'conditioning', hi:true, min:60, rpe:7.5,
-    items:[['activacion','warm'],['repeticiones','main'],['movilidad','cool']]
-  },
-  aerobico: {
-    label:'Base aeróbica', type:'conditioning', hi:false, min:65, rpe:5,
-    items:[['continuo','main'],['movilidad','cool']]
-  },
-  fartlek: {
-    label:'Fartlek', type:'conditioning', hi:false, min:45, rpe:6,
-    items:[['activacion','warm'],['fartlek','main'],['movilidad','cool']]
-  },
-  hipertrofia: {
-    label:'Hipertrofia', type:'strength', hi:false, min:70, rpe:7,
-    items:[['sentadilla','main'],['press_banca','main'],['remo','acc'],['zancada','acc'],['core','prehab']]
-  },
-  recuperacion: {
-    label:'Recuperación activa', type:'recovery', hi:false, min:30, rpe:3,
-    items:[['bici','main'],['movilidad','main']]
-  }
-};
-
-/* secuencia de cualidades por objetivo, en orden de prioridad */
-const SEQ = {
-  sport_performance: ['fuerza_inf','velocidad','fuerza_sup','rsa','potencia','recuperacion'],
-  strength:          ['fuerza_inf','fuerza_sup','potencia','fuerza_total','aerobico','recuperacion'],
-  hypertrophy:       ['hipertrofia','fuerza_sup','fuerza_inf','hipertrofia','aerobico','recuperacion'],
-  endurance:         ['intervalos','aerobico','umbral','fuerza_total','fartlek','recuperacion'],
-  return_to_play:    ['fuerza_inf','recuperacion','fuerza_sup','aerobico','potencia','recuperacion']
-};
-const SPORT_SWAP = {
-  running:  {velocidad:'umbral', rsa:'intervalos', potencia:'fartlek', fuerza_sup:'fuerza_total'},
-  strength: {velocidad:'potencia', rsa:'aerobico'},
-  hockey:   {},
-  football: {},
-  rugby:    {}
-};
-
-/* progresión dentro del mesociclo de 4 semanas: 3 de carga + 1 de descarga (§6.2 E3) */
-const WEEKS = [
-  {name:'Carga 1',   vol:1.00, pct:0.70, rir:3, sets:4},
-  {name:'Carga 2',   vol:1.10, pct:0.75, rir:2, sets:4},
-  {name:'Carga 3',   vol:1.18, pct:0.80, rir:1, sets:5},
-  {name:'Descarga',  vol:0.60, pct:0.70, rir:3, sets:3}
+const ARCHETYPES = [
+  {id:'rugby_fwd', name:'Rugby · delantero', sport:'rugby', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Perfil de demanda de posición, estimado por staff'},
+   targets:{maxStrength:{z:1.0,w:1.0,min:0.0}, power:{z:0.6,w:0.8,min:-0.3}, speed:{z:0.2,w:0.5},
+            changeOfDirection:{z:0.2,w:0.5}, aerobicCapacity:{z:0.3,w:0.7,min:-0.5},
+            anaerobicCapacity:{z:0.5,w:0.7}, mobility:{z:0.0,w:0.4}, stability:{z:0.5,w:0.6,min:-0.2},
+            bodyComposition:{z:0.2,w:0.5}}},
+  {id:'rugby_back', name:'Rugby · back', sport:'rugby', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Perfil de demanda de posición, estimado por staff'},
+   targets:{maxStrength:{z:0.5,w:0.7}, power:{z:1.0,w:1.0,min:0.0}, speed:{z:1.1,w:1.0,min:0.2},
+            changeOfDirection:{z:0.9,w:0.9}, aerobicCapacity:{z:0.6,w:0.7},
+            anaerobicCapacity:{z:0.9,w:0.9,min:-0.2}, mobility:{z:0.3,w:0.4},
+            stability:{z:0.6,w:0.6}, bodyComposition:{z:0.6,w:0.6}}},
+  {id:'football_mid', name:'Fútbol · mediocampista', sport:'football', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Perfil de demanda de posición, estimado por staff'},
+   targets:{maxStrength:{z:0.3,w:0.6}, power:{z:0.6,w:0.7}, speed:{z:0.7,w:0.8},
+            changeOfDirection:{z:0.8,w:0.9}, aerobicCapacity:{z:1.2,w:1.0,min:0.3},
+            anaerobicCapacity:{z:0.8,w:0.8}, mobility:{z:0.3,w:0.4},
+            stability:{z:0.6,w:0.7,min:-0.2}, bodyComposition:{z:0.7,w:0.6}}},
+  {id:'runner_10k', name:'Running · 10 km', sport:'running', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Perfil de resistencia, estimado por staff'},
+   targets:{maxStrength:{z:0.0,w:0.5}, power:{z:0.0,w:0.3}, speed:{z:0.2,w:0.4},
+            changeOfDirection:{z:-0.3,w:0.2}, aerobicCapacity:{z:1.5,w:1.0,min:0.5},
+            anaerobicCapacity:{z:0.5,w:0.6}, mobility:{z:0.4,w:0.5},
+            stability:{z:0.6,w:0.7,min:-0.2}, bodyComposition:{z:0.9,w:0.7}}},
+  {id:'strength_gen', name:'Fuerza · desarrollo general', sport:'strength', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Objetivo de fuerza general, estimado por staff'},
+   targets:{maxStrength:{z:1.3,w:1.0,min:0.2}, power:{z:0.7,w:0.7}, speed:{z:0.0,w:0.3},
+            changeOfDirection:{z:0.0,w:0.2}, aerobicCapacity:{z:-0.2,w:0.4},
+            anaerobicCapacity:{z:0.2,w:0.4}, mobility:{z:0.3,w:0.5},
+            stability:{z:0.7,w:0.7}, bodyComposition:{z:0.5,w:0.6}}}
 ];
 
-/* ══════════════ estado ══════════════ */
-let S = null;
+const EX = {
+  sentadilla:{n:'Sentadilla trasera', pat:'squat', ratio:1},
+  peso_muerto:{n:'Peso muerto', pat:'hinge', ratio:1.2},
+  rdl:{n:'Peso muerto rumano', pat:'hinge', ratio:0.85},
+  hip_thrust:{n:'Hip thrust', pat:'hinge', ratio:1.1},
+  zancada:{n:'Zancada búlgara', pat:'squat'},
+  press_banca:{n:'Press de banca', pat:'push', ratio:0.72},
+  press_militar:{n:'Press militar', pat:'push', ratio:0.45},
+  remo:{n:'Remo con barra', pat:'pull', ratio:0.6},
+  dominadas:{n:'Dominadas', pat:'pull'},
+  nordic:{n:'Nórdico de isquios', pat:'prehab'},
+  copenhagen:{n:'Copenhagen plank', pat:'prehab'},
+  core:{n:'Anti-rotación Pallof', pat:'core'},
+  ybalance:{n:'Y-Balance y propiocepción', pat:'prehab'},
+  movilidad:{n:'Movilidad cadera y torácica', pat:'mob'},
+  farmer:{n:'Farmer walk', pat:'carry'},
+  cmj_ej:{n:'Saltos con contramovimiento', pat:'plyo'},
+  vallas:{n:'Saltos sobre vallas', pat:'plyo'},
+  sprint:{n:'Sprint lanzado', pat:'sprint'},
+  salidas:{n:'Salidas 10 m', pat:'sprint'},
+  cambios:{n:'Cambios de dirección 5-0-5', pat:'agility'},
+  intervalos:{n:'Intervalos 4×4 min', pat:'cond'},
+  continuo:{n:'Continuo aeróbico', pat:'cond'},
+  fartlek:{n:'Fartlek 25 min', pat:'cond'},
+  rsa_ej:{n:'Repeticiones de sprint (RSA)', pat:'cond'},
+  bici:{n:'Bici suave', pat:'mob'},
+  activacion:{n:'Activación neuromuscular', pat:'mob'}
+};
 
-function readProfile(){
-  return {
-    sport: $('sport').value,
-    goal: $('goal').value,
-    level: $('level').value,
-    days: parseInt($('days').value,10),
-    age: parseInt($('age').value,10) || 24,
-    squat: parseFloat($('squat').value) || 0
-  };
-}
+/* una "cualidad de sesión" es la forma entrenable de una capacidad */
+const QUALITIES = {
+  fuerza_inf:{label:'Fuerza — tren inferior', capacity:'maxStrength', hi:true, min:70, rpe:7.5,
+    items:[['sentadilla','main'],['rdl','main'],['zancada','acc'],['nordic','prehab'],['core','prehab']]},
+  fuerza_sup:{label:'Fuerza — tren superior', capacity:'maxStrength', hi:true, min:60, rpe:7,
+    items:[['press_banca','main'],['remo','main'],['dominadas','acc'],['press_militar','acc'],['core','prehab']]},
+  potencia:{label:'Potencia y salto', capacity:'power', hi:true, min:50, rpe:7,
+    items:[['cmj_ej','main'],['vallas','main'],['hip_thrust','acc'],['core','prehab']]},
+  velocidad:{label:'Velocidad máxima', capacity:'speed', hi:true, min:55, rpe:7.5,
+    items:[['activacion','warm'],['salidas','main'],['sprint','main'],['nordic','prehab']]},
+  agilidad:{label:'Cambio de dirección', capacity:'changeOfDirection', hi:true, min:50, rpe:7,
+    items:[['activacion','warm'],['cambios','main'],['copenhagen','prehab'],['core','prehab']]},
+  aerobico:{label:'Base aeróbica', capacity:'aerobicCapacity', hi:false, min:65, rpe:5,
+    items:[['continuo','main'],['movilidad','cool']]},
+  intervalos:{label:'Intervalos de alta intensidad', capacity:'aerobicCapacity', hi:true, min:55, rpe:8,
+    items:[['activacion','warm'],['intervalos','main'],['core','prehab']]},
+  rsa:{label:'Resistencia a sprints repetidos', capacity:'anaerobicCapacity', hi:true, min:50, rpe:8,
+    items:[['activacion','warm'],['rsa_ej','main'],['movilidad','cool']]},
+  movilidad_s:{label:'Movilidad y control', capacity:'mobility', hi:false, min:40, rpe:4,
+    items:[['movilidad','main'],['copenhagen','acc'],['core','acc']]},
+  estabilidad:{label:'Estabilidad y prevención', capacity:'stability', hi:false, min:45, rpe:5,
+    items:[['ybalance','main'],['nordic','main'],['copenhagen','acc'],['core','acc']]},
+  composicion:{label:'Hipertrofia y composición', capacity:'bodyComposition', hi:false, min:70, rpe:7,
+    items:[['sentadilla','main'],['press_banca','main'],['remo','acc'],['zancada','acc'],['core','prehab']]},
+  recuperacion:{label:'Recuperación activa', capacity:null, hi:false, min:30, rpe:3,
+    items:[['bici','main'],['movilidad','main']]}
+};
+/* qué cualidad entrena cada capacidad, en orden de preferencia */
+const CAPACITY_TO_QUALITY = {
+  maxStrength:['fuerza_inf','fuerza_sup'], power:['potencia'], speed:['velocidad'],
+  changeOfDirection:['agilidad'], aerobicCapacity:['intervalos','aerobico'],
+  anaerobicCapacity:['rsa'], mobility:['movilidad_s'], stability:['estabilidad'],
+  bodyComposition:['composicion']
+};
 
-function seed(profile){
-  const p = profile || readProfile();
-  const r = rng(p.days*7919 + p.age*31 + p.goal.length*101 + p.sport.length*17);
-  const base = {beginner:52, intermediate:68, advanced:82}[p.level];
-  const hist = [];              /* 42 días de historial sintético */
-  const today = new Date(); today.setHours(0,0,0,0);
+const WEEKS = [
+  {name:'Carga 1',  vol:1.00, pct:0.70, rir:3, sets:4},
+  {name:'Carga 2',  vol:1.10, pct:0.75, rir:2, sets:4},
+  {name:'Carga 3',  vol:1.18, pct:0.80, rir:1, sets:5},
+  {name:'Descarga', vol:0.60, pct:0.70, rir:3, sets:3}
+];
 
-  for(let i=41;i>=0;i--){
-    const d = new Date(today); d.setDate(d.getDate()-i);
-    const off = ((Math.round((d-today)/MS_DAY) % 7) + 7) % 7;
-    const trains = trainOffsets(p.days).includes(off);
-    let load = 0, rpe = 0, min = 0;
-    if(trains){
-      min = Math.round(base * (0.85 + r()*0.35));
-      rpe = Math.round((6 + r()*2.2)*2)/2;
-      load = Math.round(min*rpe);
-    }
-    hist.push({
-      date:new Date(d), load, rpe, min,
-      hrv: 4.20 + (r()-0.5)*0.30,
-      sleep: 7.2 + (r()-0.5)*1.6
-    });
-  }
-  return {p, hist, today, decisions:[], adjusted:null};
-}
-
-/* desplazamientos de entrenamiento dentro del microciclo, contados desde hoy:
-   así el día 0 siempre entrena y el ajuste diario se ve en pantalla */
-const OFFSETS = {3:[0,2,4], 4:[0,1,3,5], 5:[0,1,2,4,5], 6:[0,1,2,3,4,5]};
-function trainOffsets(n){ return OFFSETS[n] || OFFSETS[3]; }
+/* ── utilidades puras ── */
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp01 = v=>clamp(v,0,1);
+const mean = a=>a.length ? a.reduce((s,x)=>s+x,0)/a.length : 0;
+const sd = a=>{ if(a.length<2) return 0; const m=mean(a);
+  return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1)); };
 const MS_DAY = 86400000;
+const isoDate = d => d.toISOString().slice(0,10);
+const parseDate = s => { const [y,m,dd]=s.split('-').map(Number); return new Date(y,m-1,dd); };
+const daysBetween = (a,b) => Math.round((parseDate(b)-parseDate(a))/MS_DAY);
+const DOW = ['dom','lun','mar','mié','jue','vie','sáb'];
+const fmt = (v,d=0)=> v==null || !isFinite(v) ? '—'
+  : v.toLocaleString('es-AR',{minimumFractionDigits:d, maximumFractionDigits:d});
+const sign = v => v>=0 ? '+'+fmt(v,2) : fmt(v,2);
 
-/* ══════════════ motor de métricas (§7) ══════════════ */
-function metrics(){
-  const loads = S.hist.map(h=>h.load);
-  const last7  = loads.slice(-7);
-  const last28 = loads.slice(-28);
-
-  const acute   = last7.reduce((s,x)=>s+x,0);
-  const chronic = last28.reduce((s,x)=>s+x,0)/4;
-  const acwrRA  = chronic > 0 ? acute/chronic : null;
-
-  /* EWMA: λ = 2/(N+1) */
-  const la = 2/8, lc = 2/29;
-  let ea = loads[0]||0, ec = loads[0]||0;
-  for(let i=1;i<loads.length;i++){ ea = loads[i]*la + ea*(1-la); ec = loads[i]*lc + ec*(1-lc); }
-  const acwrEW = ec > 0 ? ea/ec : null;
-
-  /* monotonía y strain de Foster */
-  const sdw = sd(last7), mw = mean(last7);
-  const monotony = sdw > 0 ? mw/sdw : null;
-  const weekly = acute;
-  const strain = monotony ? weekly*monotony : null;
-
-  /* fitness-fatiga (Banister). Se muestran en unidades de carga diaria
-     equivalente: X·(1−e^(−1/τ)), para que forma = fitness − fatiga se lea. */
-  const t1 = 42, t2 = 7;
-  /* arranque en el estado estacionario que implica la primera semana: sin esto,
-     fitness necesita ~42 días para cargarse y la forma sale falsamente negativa */
-  const l0 = mean(loads.slice(0,7));
-  let fit = l0/(1-Math.exp(-1/t1)), fat = l0/(1-Math.exp(-1/t2));
-  for(const l of loads){ fit = fit*Math.exp(-1/t1) + l; fat = fat*Math.exp(-1/t2) + l; }
-  const fitIdx = fit*(1-Math.exp(-1/t1));
-  const fatIdx = fat*(1-Math.exp(-1/t2));
-
-  /* progresión semanal vs. media de las 3 semanas previas */
-  const w0 = acute;
-  const prev3 = [loads.slice(-14,-7), loads.slice(-21,-14), loads.slice(-28,-21)]
-                  .map(a=>a.reduce((s,x)=>s+x,0));
-  const prevMean = mean(prev3);
-  const wow = prevMean > 0 ? (w0-prevMean)/prevMean : null;
-
-  /* VHR: línea base 7 d y SWC = base ± 0,5 · DE(30 d) sobre ln rMSSD */
-  const hrvAll = S.hist.map(h=>h.hrv).filter(v=>v!=null);
-  const hrvBase = mean(hrvAll.slice(-8,-1));
-  const hrvSD = sd(hrvAll.slice(-31,-1));
-  const swcLo = hrvBase - 0.5*hrvSD, swcHi = hrvBase + 0.5*hrvSD;
-
-  const sleepBase = mean(S.hist.map(h=>h.sleep).slice(-31,-1));
-  const sleep5 = S.hist.slice(-5).map(h=>h.sleep);
-
-  return {acute, chronic, acwrRA, acwrEW, monotony, strain, weekly, wow,
-          fitIdx, fatIdx, form:fitIdx-fatIdx, hrvBase, hrvSD, swcLo, swcHi,
-          sleepBase, sleep5, loads};
+function zScoreOf(protocolCode, value, sport, sex){
+  const norm = NORMS[protocolCode]; if(!norm) return null;
+  const base = norm.bySport[sport] || norm.bySport.strength;
+  const f = sex==='female' ? norm.femaleFactor : 1;
+  const m = base.m*f, s = base.s*f;
+  if(!s) return null;
+  const z = (value-m)/s;
+  return PROTO[protocolCode].hib ? z : -z;
 }
 
-/* lectura del check-in */
-function checkin(){
-  return {
-    sleepH: parseFloat($('sleepH').value),
-    hrv: parseFloat($('hrv').value),
-    sleepQ: +$('sleepQ').value,
-    fatigue: +$('fatigue').value,
-    soreness: +$('soreness').value,
-    stress: +$('stress').value,
-    mood: +$('mood').value
-  };
+function confidenceOf(source, capacity, ageDays){
+  const hl = HALF_LIFE_DAYS[capacity] || 90;
+  return clamp01((SOURCE_FACTOR[source] ?? 0.6) * Math.pow(0.5, ageDays/hl));
 }
 
-/* índice de readiness (§7.7): pesos fijos, redistribuidos si falta un dato */
-function readiness(m, c){
-  const comps = [];
-  const s15 = v => (v-1)/4;
+/* ══════════════════════════════════════════════════════════════════
+   CAPA DE ANALÍTICA — calcula, no opina. Funciones puras sobre series.
+   ══════════════════════════════════════════════════════════════════ */
+const Analytics = {
+  ewma(series, n){
+    if(!series.length) return 0;
+    const l = 2/(n+1);
+    let e = series[0];
+    for(let i=1;i<series.length;i++) e = series[i]*l + e*(1-l);
+    return e;
+  },
+  loadState(entries, calibration){
+    const loads = entries.map(e=>e.totalLoadAu);
+    const last7 = loads.slice(-7), last28 = loads.slice(-28);
+    const acute = last7.reduce((s,x)=>s+x,0);
+    const chronic = last28.reduce((s,x)=>s+x,0)/4;
+    const acwrRa = chronic>0 ? acute/chronic : null;
+    const ea = this.ewma(loads,7), ec = this.ewma(loads,28);
+    const acwrEwma = ec>0 ? ea/ec : null;
+    const sdw = sd(last7), mw = mean(last7);
+    const monotony = sdw>0 ? mw/sdw : null;
+    const strain = monotony!=null ? acute*monotony : null;
 
-  if(isFinite(c.hrv) && m.hrvSD > 0){
-    const z = (c.hrv - m.hrvBase)/m.hrvSD;
-    comps.push({k:'hrv', name:'VHR', unit:'ln rMSSD', w:0.25, s:clamp01(0.5+z/3), z,
-                note: c.hrv < m.swcLo ? 'bajo SWC' : c.hrv > m.swcHi ? 'sobre SWC' : 'en rango'});
-  } else comps.push({k:'hrv', name:'VHR', w:0.25, s:null});
+    /* Banister, arrancado en el estado estacionario de la primera semana:
+       si no, fitness tarda ~42 días en cargarse y la forma sale falsa. */
+    const t1 = calibration.fitnessTau, t2 = calibration.fatigueTau;
+    const l0 = mean(loads.slice(0,7));
+    let fit = l0/(1-Math.exp(-1/t1)), fat = l0/(1-Math.exp(-1/t2));
+    for(const l of loads){ fit = fit*Math.exp(-1/t1)+l; fat = fat*Math.exp(-1/t2)+l; }
+    const fitness = fit*(1-Math.exp(-1/t1)), fatigue = fat*(1-Math.exp(-1/t2));
 
-  if(isFinite(c.sleepH)){
-    const dur = clamp01((c.sleepH-4)/(8.5-4));
-    comps.push({k:'sleep', name:'Sueño', unit:'h + calidad', w:0.20,
-                s:0.6*dur + 0.4*s15(c.sleepQ), note: c.sleepH.toFixed(1)+' h'});
-  } else comps.push({k:'sleep', name:'Sueño', w:0.20, s:null});
+    const prev3 = [loads.slice(-14,-7), loads.slice(-21,-14), loads.slice(-28,-21)]
+      .map(a=>a.reduce((s,x)=>s+x,0));
+    const pm = mean(prev3);
+    const weekOverWeek = pm>0 ? (acute-pm)/pm : null;
 
-  comps.push({k:'fatigue', name:'Fatiga', unit:'percibida', w:0.15, s:s15(c.fatigue)});
-  comps.push({k:'soreness', name:'Dolor muscular', unit:'mapa corporal', w:0.15, s:s15(c.soreness)});
-  comps.push({k:'mood', name:'Estrés y ánimo', unit:'Hooper', w:0.10, s:(s15(c.stress)+s15(c.mood))/2});
+    return {acute7d:acute, chronic28d:chronic, acwrRa, acwrEwma, monotony, strain,
+            fitness, fatigue, form:fitness-fatigue, weekOverWeek, daysOfData:loads.length};
+  },
+  hrvState(entries){
+    const vals = entries.map(e=>e.checkIn && e.checkIn.lnRmssd).filter(v=>v!=null);
+    if(vals.length<8) return {baseline:null, sd:null, swcLo:null, swcHi:null};
+    const baseline = mean(vals.slice(-8,-1));
+    const s = sd(vals.slice(-31,-1));
+    return {baseline, sd:s, swcLo:baseline-0.5*s, swcHi:baseline+0.5*s};
+  },
+  readiness(checkIn, load, hrv){
+    const comps = [];
+    const s15 = v => (v-1)/4;
+    if(checkIn && checkIn.lnRmssd!=null && hrv.sd>0){
+      const z = (checkIn.lnRmssd-hrv.baseline)/hrv.sd;
+      comps.push({key:'hrv', name:'VHR', w:0.25, normalized:clamp01(0.5+z/3),
+        evidence:`ln rMSSD ${fmt(checkIn.lnRmssd,2)} · SWC ${fmt(hrv.swcLo,2)}–${fmt(hrv.swcHi,2)}`});
+    } else comps.push({key:'hrv', name:'VHR', w:0.25, normalized:null});
 
-  /* estado de carga: penaliza ACWR fuera de 0,8–1,3 y monotonía alta */
-  let ls = 1;
-  if(m.acwrEW != null){
-    if(m.acwrEW > 1.3) ls -= clamp01((m.acwrEW-1.3)/0.5)*0.7;
-    else if(m.acwrEW < 0.8) ls -= clamp01((0.8-m.acwrEW)/0.4)*0.3;
+    if(checkIn){
+      const dur = clamp01((checkIn.sleepHours-4)/4.5);
+      comps.push({key:'sleep', name:'Sueño', w:0.20,
+        normalized:0.6*dur+0.4*s15(checkIn.sleepQuality),
+        evidence:`${fmt(checkIn.sleepHours,1)} h`});
+      comps.push({key:'fatigue', name:'Fatiga', w:0.15, normalized:s15(checkIn.fatigue)});
+      comps.push({key:'soreness', name:'Dolor muscular', w:0.15, normalized:s15(checkIn.soreness)});
+      comps.push({key:'mood', name:'Estrés y ánimo', w:0.10,
+        normalized:(s15(checkIn.stress)+s15(checkIn.mood))/2});
+    } else {
+      comps.push({key:'sleep',name:'Sueño',w:0.20,normalized:null});
+      comps.push({key:'fatigue',name:'Fatiga',w:0.15,normalized:null});
+      comps.push({key:'soreness',name:'Dolor muscular',w:0.15,normalized:null});
+      comps.push({key:'mood',name:'Estrés y ánimo',w:0.10,normalized:null});
+    }
+
+    let ls = 1;
+    if(load.acwrEwma!=null){
+      if(load.acwrEwma>1.3) ls -= clamp01((load.acwrEwma-1.3)/0.5)*0.7;
+      else if(load.acwrEwma<0.8) ls -= clamp01((0.8-load.acwrEwma)/0.4)*0.3;
+    }
+    if(load.monotony!=null && load.monotony>1.8) ls -= clamp01((load.monotony-1.8)/1.2)*0.3;
+    comps.push({key:'loadState', name:'Estado de carga', w:0.10, normalized:clamp01(ls),
+      evidence: load.acwrEwma!=null ? `ACWR ${fmt(load.acwrEwma,2)}` : 'sin datos'});
+
+    const avail = comps.filter(c=>c.normalized!=null);
+    const wsum = avail.reduce((s,c)=>s+c.w,0);
+    const total = comps.reduce((s,c)=>s+c.w,0);
+    const score = wsum>0 ? 100*avail.reduce((s,c)=>s+c.w*c.normalized,0)/wsum : null;
+    const completenessPct = 100*wsum/total;
+    return {score, components:comps, completenessPct, band:bandKey(score, completenessPct)};
+  },
+  trend(values, windowDays){
+    const v = values.slice(-windowDays).filter(x=>x!=null);
+    if(v.length<4) return {slope:0, isSignificant:false};
+    const n = v.length, xs = v.map((_,i)=>i);
+    const mx = mean(xs), my = mean(v);
+    const num = xs.reduce((s,x,i)=>s+(x-mx)*(v[i]-my),0);
+    const den = xs.reduce((s,x)=>s+(x-mx)*(x-mx),0);
+    const slope = den? num/den : 0;
+    const resid = v.map((y,i)=>y-(my+slope*(xs[i]-mx)));
+    const se = Math.sqrt(resid.reduce((s,r)=>s+r*r,0)/Math.max(1,n-2)) / Math.sqrt(den||1);
+    return {slope, isSignificant: se>0 && Math.abs(slope/se)>2};
   }
-  if(m.monotony != null && m.monotony > 1.8) ls -= clamp01((m.monotony-1.8)/1.2)*0.3;
-  comps.push({k:'load', name:'Estado de carga', unit:'ACWR + strain', w:0.10, s:clamp01(ls),
-              note: m.acwrEW != null ? 'ACWR '+m.acwrEW.toFixed(2) : 'sin datos'});
+};
 
-  const avail = comps.filter(c2=>c2.s != null);
-  const wsum = avail.reduce((s,c2)=>s+c2.w,0);
-  const score = wsum > 0 ? 100*avail.reduce((s,c2)=>s+c2.w*c2.s,0)/wsum : null;
-  const completeness = 100*wsum/comps.reduce((s,c2)=>s+c2.w,0);
-  return {score, comps, completeness};
+function bandKey(score, completeness){
+  if(score==null || completeness<50) return 'insufficientData';
+  if(score>=75) return 'green';
+  if(score>=65) return 'greenSoft';
+  if(score>=50) return 'amber';
+  if(score>=40) return 'amberLow';
+  return 'red';
+}
+const BAND_META = {
+  green:        {cls:'green', txt:'Verde — sin cambios'},
+  greenSoft:    {cls:'green', txt:'Verde atenuado'},
+  amber:        {cls:'amber', txt:'Ámbar — recortar volumen'},
+  amberLow:     {cls:'amber', txt:'Ámbar bajo — sesión alternativa'},
+  red:          {cls:'red',   txt:'Rojo — recuperación'},
+  insufficientData:{cls:'amber', txt:'Datos insuficientes'}
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   MOTOR DE DECISIÓN — las reglas son DATOS versionados, no código.
+   ══════════════════════════════════════════════════════════════════ */
+const RULESET = {
+  version:'ais-2026.08',
+  rules:[
+    /* ── guardarraíles: prioridad más alta, no anulables ── */
+    {id:'GR_WEEKLY_INCREASE', name:'Techo de incremento semanal', priority:10, isGuardrail:true,
+     when:{all:[{path:'plan.weeklyIncreasePct', op:'gt', value:0.15}]},
+     then:[{type:'requireHumanReview', reason:'Incremento semanal sobre el límite'}],
+     rationale:'El plan sube la carga un {plan.weeklyIncreasePct|pct} respecto de las 3 semanas previas; el techo es 15 %.',
+     reference:'Gabbett 2016; Soligard et al. 2016'},
+    {id:'GR_ACWR_BAND', name:'ACWR proyectado fuera de banda', priority:11, isGuardrail:true,
+     when:{any:[{path:'plan.projectedAcwr', op:'gt', value:1.3}]},
+     then:[{type:'requireHumanReview', reason:'ACWR proyectado sobre 1,30'}],
+     rationale:'El microciclo proyecta un ACWR de {plan.projectedAcwr|n2}, por encima de la banda 0,80–1,30.',
+     reference:'Hulin et al. 2016 (con las salvedades de Impellizzeri et al. 2020)'},
+    {id:'GR_MONOTONY', name:'Monotonía proyectada alta', priority:12, isGuardrail:true,
+     when:{all:[{path:'plan.projectedMonotony', op:'gt', value:2.0}]},
+     then:[{type:'addIntervention', interventionCode:'varyDailyLoad'}],
+     rationale:'La semana proyecta una monotonía de {plan.projectedMonotony|n2}: días demasiado parecidos entre sí.',
+     reference:'Foster 1998'},
+    {id:'GR_CONSECUTIVE', name:'Días consecutivos de entrenamiento', priority:13, isGuardrail:true,
+     when:{all:[{path:'plan.maxConsecutiveDays', op:'gt', value:6}]},
+     then:[{type:'requireHumanReview', reason:'Más de 6 días consecutivos'}],
+     rationale:'El plan encadena {plan.maxConsecutiveDays} días de entrenamiento sin descanso.'},
+    {id:'GR_PAIN', name:'Dolor reportado', priority:14, isGuardrail:true,
+     when:{all:[{path:'checkIn.soreness', op:'lte', value:2}]},
+     then:[{type:'blockProgression'},{type:'requireHumanReview', reason:'Dolor alto reportado'},
+           {type:'raiseDiagnosis', code:'PAIN', severity:'critical'}],
+     rationale:'Reportaste dolor muscular alto. No progresamos cargas hasta que baje.'},
+
+    /* ── regulación diaria por banda de readiness ── */
+    {id:'R_READY_RED', name:'Readiness en rojo', priority:20,
+     when:{all:[{path:'readiness.band', op:'eq', value:'red'}]},
+     then:[{type:'substituteSession', withQuality:'recuperacion'}],
+     rationale:'Hoy toca recuperación activa: entrenar fuerte con estos valores suma fatiga sin sumar adaptación.'},
+    {id:'R_READY_AMBER_LOW', name:'Readiness ámbar bajo', priority:21,
+     when:{all:[{path:'readiness.band', op:'eq', value:'amberLow'}]},
+     then:[{type:'reduceVolume', factor:0.55, keepIntensity:false}],
+     rationale:'Pasamos a una versión ligera de la misma cualidad: se conserva la técnica y se saca el trabajo cerca del fallo.'},
+    {id:'R_READY_AMBER', name:'Readiness ámbar', priority:22,
+     when:{all:[{path:'readiness.band', op:'eq', value:'amber'}]},
+     then:[{type:'reduceVolume', factor:0.75, keepIntensity:true}],
+     rationale:'Bajamos el volumen un 25 % y mantenemos la intensidad: preservamos el estímulo neural y recortamos el metabólico.'},
+    {id:'R_READY_GREEN_SOFT', name:'Readiness verde atenuado', priority:23,
+     when:{all:[{path:'readiness.band', op:'eq', value:'greenSoft'}]},
+     then:[{type:'reduceVolume', factor:0.9, keepIntensity:true}],
+     rationale:'Estás bien, apenas por debajo de tu mejor rango. Recortamos un 10 % del volumen accesorio.'},
+
+    /* ── diagnósticos de carga ── */
+    {id:'R_ACWR_HIGH', name:'ACWR muy elevado', priority:30,
+     when:{all:[{path:'load.acwrEwma', op:'gt', value:1.5},{path:'load.daysOfData', op:'gte', value:21}]},
+     then:[{type:'raiseDiagnosis', code:'LOAD_SPIKE', severity:'critical'},
+           {type:'capLoad', maxWeeklyAu:0}],
+     rationale:'Tu carga de la última semana está muy por encima de lo que tu cuerpo viene tolerando (ACWR {load.acwrEwma|n2}).',
+     reference:'Gabbett 2016'},
+    {id:'R_ACWR_ELEVATED', name:'ACWR elevado', priority:31,
+     when:{all:[{path:'load.acwrEwma', op:'between', value:[1.3,1.5]},{path:'load.daysOfData', op:'gte', value:21}]},
+     then:[{type:'raiseDiagnosis', code:'LOAD_ELEVATED', severity:'action'}],
+     rationale:'Tu carga subió más rápido de lo habitual (ACWR {load.acwrEwma|n2}).'},
+    {id:'R_ACWR_LOW', name:'Carga aguda baja', priority:32,
+     when:{all:[{path:'load.acwrEwma', op:'lt', value:0.8},{path:'load.daysOfData', op:'gte', value:21}]},
+     then:[{type:'raiseDiagnosis', code:'DETRAINING', severity:'watch'}],
+     rationale:'Entrenaste bastante menos que tu media reciente (ACWR {load.acwrEwma|n2}). Si es una descarga planificada, está bien.'},
+    {id:'R_SPIKE', name:'Pico de carga semanal', priority:33,
+     when:{all:[{path:'load.weekOverWeek', op:'gt', value:0.30}]},
+     then:[{type:'raiseDiagnosis', code:'SPIKE', severity:'critical'}],
+     rationale:'Tu carga semanal subió un {load.weekOverWeek|pct} respecto de las 3 semanas previas.'},
+    {id:'R_MONOTONY', name:'Monotonía alta', priority:34,
+     when:{all:[{path:'load.monotony', op:'gt', value:2.0}]},
+     then:[{type:'raiseDiagnosis', code:'MONOTONY', severity:'action'},
+           {type:'addIntervention', interventionCode:'varyDailyLoad'}],
+     rationale:'Tus días son demasiado parecidos entre sí (monotonía {load.monotony|n2}): falta oscilación entre duro y suave.',
+     reference:'Foster 1998'},
+    {id:'R_HRV_LOW', name:'VHR bajo el SWC', priority:35,
+     when:{all:[{path:'hrv.belowSwc', op:'eq', value:1}]},
+     then:[{type:'raiseDiagnosis', code:'HRV_SUPPRESSED', severity:'action'}],
+     rationale:'Tu VHR está por debajo de tu rango normal ({checkIn.lnRmssd|n2} contra un piso de {hrv.swcLo|n2}).',
+     reference:'Plews & Buchheit 2013'},
+    {id:'R_SLEEP_DEBT', name:'Deuda de sueño', priority:36,
+     when:{all:[{path:'sleep.mean5d', op:'lt', value:6}]},
+     then:[{type:'raiseDiagnosis', code:'SLEEP_DEBT', severity:'action'}],
+     rationale:'Dormiste {sleep.mean5d|n1} h de media en los últimos 5 días.'},
+
+    /* ── brechas contra el arquetipo: iteran sobre la colección de gaps ── */
+    {id:'R_GAP_BLOCKING', name:'Cualidad bajo el mínimo del arquetipo', priority:50,
+     forEach:'gaps',
+     when:{all:[{path:'item.isBlocking', op:'eq', value:1}]},
+     then:[{type:'prioritizeCapacity', weight:1.0},
+           {type:'raiseDiagnosis', code:'CAPACITY_BLOCKING', severity:'action'}],
+     rationale:'{item.label} está por debajo del mínimo que pide tu perfil ({item.currentZ|n2} contra {item.minimumZ|n2}).'},
+    {id:'R_GAP_LARGE', name:'Brecha grande', priority:51,
+     forEach:'gaps',
+     when:{all:[{path:'item.weightedDelta', op:'gt', value:0.5}]},
+     then:[{type:'prioritizeCapacity', weight:0.7},
+           {type:'raiseDiagnosis', code:'CAPACITY_GAP', severity:'watch'}],
+     rationale:'{item.label}: te faltan {item.deltaZ|n2} desviaciones para el objetivo del perfil.'},
+    {id:'R_STALE', name:'Dato vencido', priority:52,
+     forEach:'gaps',
+     when:{all:[{path:'item.isStale', op:'eq', value:1}]},
+     then:[{type:'addIntervention', interventionCode:'retest'},
+           {type:'raiseDiagnosis', code:'STALE_ASSESSMENT', severity:'watch'}],
+     rationale:'El dato de {item.label} tiene {item.ageDays} días: conviene volver a medir antes de planificar sobre él.'},
+    {id:'R_NEVER_MEASURED', name:'Cualidad sin medir', priority:53,
+     forEach:'gaps',
+     when:{all:[{path:'item.hasData', op:'eq', value:0}]},
+     then:[{type:'addIntervention', interventionCode:'measure'},
+           {type:'raiseDiagnosis', code:'NO_DATA', severity:'watch'}],
+     rationale:'Nunca medimos {item.label}: no hay brecha que calcular, hay un test que hacer.'}
+  ]
+};
+
+const Decision = {
+  /* aplana el modelo a rutas consultables por las reglas */
+  facts(model, ctx){
+    const ci = ctx.checkIn;
+    const f = {
+      load: model.load,
+      readiness: {score: model.readiness.score, band: model.readiness.band},
+      checkIn: ci || {},
+      hrv: {...ctx.hrv, belowSwc: (ci && ci.lnRmssd!=null && ctx.hrv.swcLo!=null && ci.lnRmssd<ctx.hrv.swcLo) ? 1 : 0},
+      sleep: {mean5d: ctx.sleepMean5d},
+      plan: ctx.planStats || {}
+    };
+    return f;
+  },
+  read(obj, path){
+    return path.split('.').reduce((o,k)=> (o==null ? undefined : o[k]), obj);
+  },
+  test(cond, scope){
+    const v = this.read(scope, cond.path);
+    switch(cond.op){
+      case 'exists':  return v!=null;
+      case 'missing': return v==null;
+      default: break;
+    }
+    if(v==null) return false;
+    switch(cond.op){
+      case 'lt': return v <  cond.value;
+      case 'lte':return v <= cond.value;
+      case 'gt': return v >  cond.value;
+      case 'gte':return v >= cond.value;
+      case 'eq': return v === cond.value;
+      case 'between': return v >= cond.value[0] && v < cond.value[1];
+      default: return false;
+    }
+  },
+  evaluateOne(rule, scope){
+    const w = rule.when;
+    const all = (w.all||[]).every(c=>this.test(c,scope));
+    const any = (w.any||[]).length ? (w.any||[]).some(c=>this.test(c,scope)) : true;
+    const fired = (w.all&&w.all.length ? all : true) && any;
+    /* se registra el valor observado dispare o no: saber que no disparó también informa */
+    const observed = [...(w.all||[]), ...(w.any||[])].map(c=>{
+      const v = this.read(scope, c.path);
+      return `${c.path.split('.').pop()}=${typeof v==='number'?fmt(v,2):String(v)}`;
+    }).join(' · ');
+    return {fired, observed};
+  },
+  /* gaps: comparación del modelo contra el TargetProfile */
+  gaps(model, target){
+    return CAPACITIES.map(c=>{
+      const t = target.targets[c.key];
+      const st = model.capacities.find(x=>x.capacity===c.key);
+      const currentZ = st ? st.currentZ : null;
+      const targetZ = t ? t.z : 0;
+      const w = t ? t.w : 0.5;
+      const deltaZ = currentZ==null ? null : targetZ-currentZ;
+      return {
+        capacity:c.key, label:c.label, currentZ, targetZ, weight:w,
+        deltaZ, weightedDelta: deltaZ==null ? null : deltaZ*w,
+        minimumZ: t && t.min!=null ? t.min : null,
+        isBlocking: (currentZ!=null && t && t.min!=null && currentZ<t.min) ? 1 : 0,
+        isStale: st && st.isStale ? 1 : 0,
+        hasData: currentZ!=null ? 1 : 0,
+        ageDays: st ? st.ageDays : null,
+        confidence: st ? st.confidence : 0
+      };
+    });
+  },
+  decide(model, target, ctx){
+    const gaps = this.gaps(model, target);
+    const base = this.facts(model, ctx);
+    const trace = [], actions = [], diagnoses = [];
+
+    for(const rule of RULESET.rules){
+      if(rule.forEach === 'gaps'){
+        for(const item of gaps){
+          const scope = {...base, item};
+          const r = this.evaluateOne(rule, scope);
+          trace.push({rule, fired:r.fired, observed:`${item.label}: ${r.observed}`, item});
+          if(r.fired) for(const a of rule.then)
+            this.collect(a, rule, scope, actions, diagnoses, item);
+        }
+      } else {
+        const r = this.evaluateOne(rule, base);
+        trace.push({rule, fired:r.fired, observed:r.observed});
+        if(r.fired) for(const a of rule.then)
+          this.collect(a, rule, base, actions, diagnoses, null);
+      }
+    }
+
+    const resolved = this.resolveConflicts(actions);
+    const priorities = this.rankPriorities(gaps, actions);
+    return {gaps, trace, actions:resolved, diagnoses, priorities,
+            firedRules: trace.filter(t=>t.fired),
+            requiresReview: resolved.some(a=>a.type==='requireHumanReview')};
+  },
+  collect(action, rule, scope, actions, diagnoses, item){
+    const rationale = interpolate(rule.rationale, scope);
+    if(action.type==='raiseDiagnosis'){
+      diagnoses.push({code:action.code, severity:action.severity,
+        title: DIAG_TITLE[action.code] || action.code,
+        capacity: item ? item.capacity : null,
+        evidence:[rationale], ruleId:rule.id});
+      return;
+    }
+    actions.push({...action, ruleId:rule.id, isGuardrail:!!rule.isGuardrail,
+      priority:rule.priority, rationale, capacity: item ? item.capacity : undefined});
+  },
+  /* misma familia de acción → gana la más conservadora; los guardarraíles no se anulan */
+  resolveConflicts(actions){
+    const out = [];
+    const byType = {};
+    for(const a of actions) (byType[a.type] = byType[a.type] || []).push(a);
+
+    for(const [type, list] of Object.entries(byType)){
+      if(type==='reduceVolume'){
+        out.push(list.reduce((min,a)=> a.factor<min.factor ? a : min));
+      } else if(type==='substituteSession'){
+        out.push(list.sort((a,b)=>a.priority-b.priority)[0]);
+      } else if(type==='prioritizeCapacity'){
+        out.push(...list);   // se acumulan, se ordenan en rankPriorities
+      } else {
+        const seen = new Set();
+        for(const a of list){
+          const k = a.type + (a.capacity||'') + (a.interventionCode||'') + (a.reason||'');
+          if(!seen.has(k)){ seen.add(k); out.push(a); }
+        }
+      }
+    }
+    /* una sustitución de sesión hace irrelevante cualquier recorte de volumen */
+    if(out.some(a=>a.type==='substituteSession'))
+      return out.filter(a=>a.type!=='reduceVolume');
+    return out;
+  },
+  rankPriorities(gaps, actions){
+    const scored = {};
+    for(const a of actions){
+      if(a.type!=='prioritizeCapacity' || !a.capacity) continue;
+      const g = gaps.find(x=>x.capacity===a.capacity);
+      if(!g) continue;
+      const base = (g.weightedDelta ?? 0) * a.weight;
+      const penalty = 0.5 + 0.5*(g.confidence||0);   // dato dudoso pesa menos
+      scored[a.capacity] = Math.max(scored[a.capacity]||0, base*penalty + (g.isBlocking?0.6:0));
+    }
+    return Object.entries(scored)
+      .map(([capacity,score])=>({capacity, label:CAP_LABEL[capacity], score}))
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,3);   // tres prioridades: un plan que persigue nueve no persigue ninguna
+  }
+};
+
+const DIAG_TITLE = {
+  PAIN:'Dolor reportado', LOAD_SPIKE:'Carga muy por encima de lo habitual',
+  LOAD_ELEVATED:'Carga elevada', DETRAINING:'Carga por debajo de lo habitual',
+  SPIKE:'Pico de carga semanal', MONOTONY:'Semana monótona',
+  HRV_SUPPRESSED:'VHR por debajo de tu rango', SLEEP_DEBT:'Deuda de sueño',
+  CAPACITY_BLOCKING:'Cualidad bajo el mínimo del perfil', CAPACITY_GAP:'Brecha contra el perfil',
+  STALE_ASSESSMENT:'Evaluación vencida', NO_DATA:'Cualidad sin medir'
+};
+
+/* interpolación de plantillas: {ruta} y {ruta|formato} */
+function interpolate(tpl, scope){
+  if(!tpl) return '';
+  return tpl.replace(/\{([^}|]+)(?:\|(\w+))?\}/g, (_, path, f)=>{
+    const v = Decision.read(scope, path.trim());
+    if(v==null) return '—';
+    if(f==='pct') return fmt(v*100,0)+' %';
+    if(f==='n2') return fmt(v,2);
+    if(f==='n1') return fmt(v,1);
+    return typeof v==='number' ? fmt(v,0) : String(v);
+  });
 }
 
-/* banda y acción sobre la sesión (§6.5) */
-function bandOf(score){
-  if(score == null) return {key:'none', cls:'amber', txt:'Datos insuficientes', vol:1, keepInt:true,
-    say:'No hay datos suficientes para ajustar. La sesión queda como está planificada.'};
-  if(score >= 75) return {key:'green', cls:'green', txt:'Verde — sin cambios', vol:1, keepInt:true,
-    say:'Estás en tu rango normal. La sesión va como está planificada.'};
-  if(score >= 65) return {key:'green_soft', cls:'green', txt:'Verde atenuado', vol:0.9, keepInt:true,
-    say:'Estás bien, apenas por debajo de tu mejor rango. Recortamos un 10 % del volumen accesorio y mantenemos la intensidad.'};
-  if(score >= 50) return {key:'amber', cls:'amber', txt:'Ámbar — recortar volumen', vol:0.75, keepInt:true,
-    say:'Bajamos el volumen un 25 % y mantenemos la intensidad: preservamos el estímulo neural y recortamos el metabólico.'};
-  if(score >= 40) return {key:'amber_low', cls:'amber', txt:'Ámbar bajo — sesión alternativa', vol:0.55, keepInt:false,
-    say:'Cambiamos a una versión ligera de la misma cualidad: se conserva la técnica y se saca todo el trabajo cerca del fallo.'};
-  return {key:'red', cls:'red', txt:'Rojo — recuperación', vol:0, keepInt:false,
-    say:'Hoy toca recuperación activa. Entrenar fuerte con estos valores suma fatiga sin sumar adaptación.'};
+/* ══════════════════════════════════════════════════════════════════
+   DOMINIO — construcción del AthleteModel y generación del plan
+   ══════════════════════════════════════════════════════════════════ */
+
+function buildAthleteModel(profile, assessments, entries, calibration, today){
+  const capacities = CAPACITIES.map(c=>{
+    /* el resultado más reciente de cualquier protocolo que mida esta cualidad */
+    let best = null;
+    for(const a of assessments){
+      for(const r of a.results){
+        const p = PROTO[r.protocolCode];
+        if(!p || p.capacity!==c.key) continue;
+        if(!best || a.performedOn > best.performedOn) best = {...r, performedOn:a.performedOn};
+      }
+    }
+    if(!best) return {capacity:c.key, currentZ:null, ageDays:null, isStale:false,
+                      confidence:0, trend:'unknown', source:null, raw:null, protocolCode:null};
+    const ageDays = daysBetween(best.performedOn, today);
+    const p = PROTO[best.protocolCode];
+    return {
+      capacity:c.key, currentZ:best.zScore, ageDays,
+      isStale: ageDays > p.validityDays,
+      confidence: confidenceOf(best.source, c.key, ageDays),
+      trend:'unknown', source:best.source, raw:best.value, protocolCode:best.protocolCode,
+      measuredOn:best.performedOn
+    };
+  });
+
+  const load = Analytics.loadState(entries, calibration);
+  const hrv = Analytics.hrvState(entries);
+  const last = entries[entries.length-1];
+  const readiness = Analytics.readiness(last && last.checkIn, load, hrv);
+
+  const measured = capacities.filter(c=>c.currentZ!=null).length;
+  const dataCompletenessPct = 100*(0.5*measured/CAPACITIES.length + 0.5*readiness.completenessPct/100);
+
+  return {profile, capacities, load, readiness, hrv,
+          calibration, builtAt:today, dataCompletenessPct};
 }
 
-/* banderas de gestión de carga (§7.8) */
-function flags(m, c){
-  const f = [];
-  if(m.acwrEW != null && m.acwrEW > 1.5) f.push({k:'ACWR_HIGH', sev:'crit', d:'ACWR EWMA '+m.acwrEW.toFixed(2)+' (> 1,50)'});
-  else if(m.acwrEW != null && m.acwrEW > 1.3) f.push({k:'ACWR_ELEVATED', sev:'warn', d:'ACWR EWMA '+m.acwrEW.toFixed(2)+' (> 1,30)'});
-  if(m.acwrEW != null && m.acwrEW < 0.8) f.push({k:'ACWR_LOW', sev:'warn', d:'ACWR EWMA '+m.acwrEW.toFixed(2)+' (< 0,80)'});
-  if(m.wow != null && m.wow > 0.30) f.push({k:'SPIKE', sev:'crit', d:'Carga semanal +'+Math.round(m.wow*100)+' % vs. 3 semanas previas'});
-  if(m.monotony != null && m.monotony > 2.0) f.push({k:'MONOTONY', sev:'warn', d:'Monotonía '+m.monotony.toFixed(2)+' (> 2,00)'});
-  if(isFinite(c.hrv) && c.hrv < m.swcLo) f.push({k:'HRV_SUPPRESSED', sev:'warn', d:'ln rMSSD '+c.hrv.toFixed(2)+' bajo el SWC ('+m.swcLo.toFixed(2)+')'});
-  if(mean(m.sleep5.slice(0,-1).concat([c.sleepH])) < 6) f.push({k:'SLEEP_DEBT', sev:'warn', d:'Media de sueño de 5 días < 6 h'});
-  if(c.soreness <= 2) f.push({k:'PAIN', sev:'crit', d:'Dolor muscular alto reportado en el check-in'});
-  return f;
+/* TargetProfile: interpola entre el estado actual y el arquetipo según el horizonte.
+   Comparar a un juvenil contra un profesional produce brechas inútiles. */
+function buildTargetProfile(model, archetype, horizonWeeks){
+  const k = clamp01(horizonWeeks/26);
+  const targets = {};
+  for(const c of CAPACITIES){
+    const t = archetype.targets[c.key];
+    if(!t){ targets[c.key] = {z:0, w:0.3}; continue; }
+    const st = model.capacities.find(x=>x.capacity===c.key);
+    const cur = st && st.currentZ!=null ? st.currentZ : null;
+    targets[c.key] = {
+      z: cur==null ? t.z : cur + (t.z-cur)*k,
+      w: t.w,
+      min: t.min
+    };
+  }
+  return {archetypeId:archetype.id, horizonWeeks, targets, evidence:archetype.evidence};
 }
 
-/* ══════════════ generador de plan (§6.2) ══════════════ */
-function buildWeek(m){
-  const p = S.p;
-  const wIdx = Math.floor(S.hist.length/7) % 4;
-  const W = WEEKS[wIdx];
-  const days = trainOffsets(p.days);
+const OFFSETS = {3:[0,2,4], 4:[0,1,3,5], 5:[0,1,2,4,5], 6:[0,1,2,3,4,5]};
+const trainOffsets = n => OFFSETS[n] || OFFSETS[3];
 
-  let seq = SEQ[p.goal].slice(0, p.days);
-  const swap = SPORT_SWAP[p.sport] || {};
-  seq = seq.map(q => swap[q] || q);
+/* El plan es una SALIDA del motor: las prioridades deciden qué cualidades entran. */
+function generatePlan(model, priorities, daysPerWeek, weekIdx, today, oneRm){
+  const W = WEEKS[weekIdx % 4];
+  const offsets = trainOffsets(daysPerWeek);
 
-  /* regla de espaciado: no dos sesiones de alta intensidad consecutivas (§6.2 E4) */
+  /* cada prioridad aporta sus cualidades; se completa con soporte general */
+  const seq = [];
+  for(const p of priorities){
+    for(const q of (CAPACITY_TO_QUALITY[p.capacity]||[])){
+      if(seq.length<daysPerWeek && !seq.includes(q)) seq.push(q);
+    }
+  }
+  for(const q of ['fuerza_inf','aerobico','estabilidad','fuerza_sup','movilidad_s']){
+    if(seq.length<daysPerWeek && !seq.includes(q)) seq.push(q);
+  }
+
+  /* espaciado: no dos sesiones de alta intensidad en días consecutivos */
   for(let i=1;i<seq.length;i++){
-    if(QUALITIES[seq[i]].hi && QUALITIES[seq[i-1]].hi && days[i]-days[i-1] === 1){
+    if(QUALITIES[seq[i]].hi && QUALITIES[seq[i-1]].hi && offsets[i]-offsets[i-1]===1){
       const j = seq.findIndex((q,k)=>k>i && !QUALITIES[q].hi);
-      if(j > -1){ const t = seq[i]; seq[i] = seq[j]; seq[j] = t; }
+      if(j>-1){ const t=seq[i]; seq[i]=seq[j]; seq[j]=t; }
     }
   }
 
-  const base = {beginner:0.85, intermediate:1, advanced:1.15}[p.level];
-  const today = S.hist[S.hist.length-1].date;
+  const levelFactor = {beginner:0.85, intermediate:1, advanced:1.15}[model.profile.level] || 1;
   const week = [];
   for(let off=0; off<7; off++){
-    const date = new Date(today); date.setDate(date.getDate()+off);
-    const k = days.indexOf(off);
-    if(k === -1){ week.push({off, date, rest:true}); continue; }
+    const date = new Date(parseDate(today)); date.setDate(date.getDate()+off);
+    const k = offsets.indexOf(off);
+    if(k===-1 || !seq[k]){ week.push({off, date, rest:true}); continue; }
     const q = QUALITIES[seq[k]];
-    const min = Math.round(q.min * W.vol * base);
-    week.push({
-      off, date, rest:false, quality:seq[k], label:q.label, type:q.type,
+    const min = Math.round(q.min*W.vol*levelFactor);
+    week.push({off, date, rest:false, quality:seq[k], label:q.label, capacity:q.capacity,
       min, rpe:q.rpe, load:Math.round(min*q.rpe),
-      items:q.items.map(([key,role]) => prescribe(key, role, W))
-    });
+      items:q.items.map(([key,role])=>prescribe(key, role, W, oneRm))});
   }
-  return {week, W, wIdx};
+  return {week, W, weekIdx:weekIdx%4, seq};
 }
 
-function prescribe(key, role, W){
+function prescribe(key, role, W, oneRm){
   const e = EX[key];
   let p;
-  if(e.pat === 'sprint')      p = role==='main' ? '6 × 30 m · recuperación completa' : '4 × 20 m';
-  else if(e.pat === 'plyo')   p = W.sets + ' × 3 · máxima intención';
-  else if(e.pat === 'cond')   p = e.n.includes('4×4') ? '4 × 4 min @ 90–95 % FCmáx' : '25–40 min';
-  else if(e.pat === 'agility')p = '6 × 505 por lado';
-  else if(e.pat === 'prehab') p = '3 × 6 por lado';
-  else if(e.pat === 'core')   p = '3 × 30 s por lado';
-  else if(e.pat === 'mob')    p = '8–12 min';
-  else if(e.pat === 'carry')  p = '3 × 40 m';
-  else if(role === 'main'){
-    const reps = W.pct >= 0.80 ? 4 : W.pct >= 0.75 ? 6 : 8;
-    const kg = (e.pct && S.p.squat > 0) ? ' · ' + Math.round(S.p.squat*W.pct*ratio(key)/2.5)*2.5 + ' kg' : '';
-    p = W.sets + ' × ' + reps + ' @ ' + Math.round(W.pct*100) + ' % 1RM' + kg;
-  } else {
-    p = '3 × 10 · RIR ' + W.rir;
-  }
+  if(e.pat==='sprint')       p = role==='main' ? '6 × 30 m · recuperación completa' : '4 × 20 m';
+  else if(e.pat==='plyo')    p = W.sets+' × 3 · máxima intención';
+  else if(e.pat==='cond')    p = e.n.includes('4×4') ? '4 × 4 min @ 90–95 % FCmáx' : '25–40 min';
+  else if(e.pat==='agility') p = '6 × 505 por lado';
+  else if(e.pat==='prehab')  p = '3 × 6 por lado';
+  else if(e.pat==='core')    p = '3 × 30 s por lado';
+  else if(e.pat==='mob')     p = '8–12 min';
+  else if(e.pat==='carry')   p = '3 × 40 m';
+  else if(role==='main'){
+    const reps = W.pct>=0.80 ? 4 : W.pct>=0.75 ? 6 : 8;
+    const kg = (e.ratio && oneRm>0) ? ' · '+Math.round(oneRm*W.pct*e.ratio/2.5)*2.5+' kg' : '';
+    p = `${W.sets} × ${reps} @ ${Math.round(W.pct*100)} % 1RM${kg}`;
+  } else p = '3 × 10 · RIR '+W.rir;
   return {name:e.n, p, role};
 }
-/* razón aproximada de cada levantamiento respecto al 1RM de sentadilla */
-function ratio(key){
-  return ({sentadilla:1, peso_muerto:1.2, rdl:0.85, hip_thrust:1.1,
-           press_banca:0.72, press_militar:0.45, remo:0.6})[key] || 1;
-}
 
-/* ══════════════ guardarraíles (§6.6) ══════════════ */
-function guardrails(m, plan){
+function planStats(plan, entries){
+  const loads = entries.map(e=>e.totalLoadAu);
   const planned = plan.week.filter(d=>!d.rest).reduce((s,d)=>s+d.load,0);
-  const prev3 = [m.loads.slice(-7), m.loads.slice(-14,-7), m.loads.slice(-21,-14)]
-                  .map(a=>a.reduce((s,x)=>s+x,0));
+  const prev3 = [loads.slice(-7), loads.slice(-14,-7), loads.slice(-21,-14)]
+    .map(a=>a.reduce((s,x)=>s+x,0));
   const pm = mean(prev3);
-  const inc = pm > 0 ? (planned-pm)/pm : 0;
-  const projAcwr = m.chronic > 0 ? planned/m.chronic : null;
+  const chronic = loads.slice(-28).reduce((s,x)=>s+x,0)/4;
   const dailies = plan.week.map(d=>d.rest?0:d.load);
-  const mono = sd(dailies) > 0 ? mean(dailies)/sd(dailies) : null;
-
-  let streak = 0, maxStreak = 0;
-  for(const d of dailies){ if(d>0){ streak++; maxStreak = Math.max(maxStreak, streak);} else streak = 0; }
-
-  return [
-    {t:'Incremento de carga semanal', v:(inc>=0?'+':'')+Math.round(inc*100)+' %', lim:'≤ +15 %', ok:inc <= 0.15},
-    {t:'ACWR proyectado del microciclo', v:projAcwr?projAcwr.toFixed(2):'—', lim:'0,80 – 1,30', ok:projAcwr==null || (projAcwr>=0.8 && projAcwr<=1.3)},
-    {t:'Monotonía proyectada', v:mono?mono.toFixed(2):'—', lim:'< 2,00', ok:mono==null || mono<2},
-    {t:'Días consecutivos de entrenamiento', v:String(maxStreak), lim:'≤ 6', ok:maxStreak<=6},
-    {t:'Carga planificada de la semana', v:fmt(planned)+' UA', lim:'referencia', ok:true}
-  ];
-}
-
-/* ══════════════ render ══════════════ */
-function render(){
-  const m = metrics();
-  const c = checkin();
-  const R = readiness(m, c);
-  const band = bandOf(R.score);
-  const F = flags(m, c);
-  const plan = buildWeek(m);
-  S.adjusted = {band, plan, m, R, F};
-
-  /* cabecera */
-  const d = S.hist[S.hist.length-1].date;
-  $('dayNum').textContent = String(S.hist.length - 41);
-  $('dateLbl').textContent = DOW[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth()+1);
-
-  /* readiness */
-  $('rScore').textContent = R.score==null ? '—' : R.score.toFixed(0);
-  const bandEl = $('rBand');
-  bandEl.className = 'band ' + band.cls;
-  $('rBandTxt').textContent = band.txt;
-
-  $('comps').innerHTML = R.comps.map(x => {
-    const pct = x.s==null ? 0 : Math.round(x.s*100);
-    return '<div class="comp' + (x.s==null?' missing':'') + '">'
-      + '<div class="name">' + x.name + ' <em>' + Math.round(x.w*100) + ' %</em></div>'
-      + '<div class="track"><i style="width:' + pct + '%"></i></div>'
-      + '<div class="v">' + (x.s==null ? 's/d' : pct) + '</div></div>';
-  }).join('');
-
-  /* métricas */
-  const warnCls = (bad,worse) => worse ? ' flag-crit' : bad ? ' flag-warn' : '';
-  $('metrics').innerHTML = [
-    ['Carga aguda 7 d', fmt(m.acute)+' UA', 'suma de duración × sRPE', ''],
-    ['Carga crónica 28 d', fmt(m.chronic)+' UA', 'media semanal de 28 días', ''],
-    ['ACWR EWMA', m.acwrEW?m.acwrEW.toFixed(2):'—', 'media móvil: ' + (m.acwrRA?m.acwrRA.toFixed(2):'—'),
-      warnCls(m.acwrEW>1.3, m.acwrEW>1.5)],
-    ['Monotonía', m.monotony?m.monotony.toFixed(2):'—', 'strain ' + fmt(m.strain), warnCls(m.monotony>1.8, m.monotony>2)],
-    ['Fitness', fmt(m.fitIdx), 'τ = 42 días', ''],
-    ['Fatiga', fmt(m.fatIdx), 'τ = 7 días', ''],
-    ['Forma', (m.form>=0?'+':'')+fmt(m.form), 'fitness − fatiga', m.form<-15?' flag-warn':''],
-    ['Semana vs. 3 previas', m.wow==null?'—':((m.wow>=0?'+':'')+Math.round(m.wow*100)+' %'), 'progresión de carga',
-      warnCls(m.wow>0.15, m.wow>0.30)]
-  ].map(([k,v,n,cl]) =>
-    '<div class="metric"><div class="k">'+k+'</div><div class="v'+cl+'">'+v+'</div><div class="n">'+n+'</div></div>'
-  ).join('');
-
-  /* microciclo */
-  $('mesoHint').textContent = 'Mesociclo de acumulación · semana ' + (plan.wIdx+1) + ' de 4 — ' + plan.W.name
-    + ' (volumen ×' + plan.W.vol.toFixed(2) + ', intensidad ' + Math.round(plan.W.pct*100) + ' % 1RM). '
-    + 'Los siete días arrancan en hoy; la primera sesión lleva aplicado el ajuste por readiness.';
-
-  $('week').innerHTML = plan.week.map(day => {
-    const isToday = day.off === 0;
-    const dowLbl = DOW[day.date.getDay()] + ' ' + day.date.getDate();
-    if(day.rest){
-      return '<div class="day' + (isToday?' today':'') + '"><div class="dow">' + dowLbl + '</div>'
-        + '<div><div class="rest">Descanso' + (isToday?' — hoy':'') + '</div></div></div>';
-    }
-    let min = day.min, load = day.load, chip = '', items = day.items, title = day.label, rpe = day.rpe;
-    if(isToday && band.vol !== 1){
-      min = Math.round(day.min*band.vol); load = Math.round(min*day.rpe);
-      if(band.vol === 0){
-        title = 'Recuperación activa'; items = QUALITIES.recuperacion.items.map(([k,r])=>prescribe(k,r,plan.W));
-        min = 30; rpe = QUALITIES.recuperacion.rpe; load = min*rpe;
-        chip = '<span class="chip crit">sesión sustituida</span>';
-      } else {
-        chip = '<span class="chip ' + (band.vol<0.8?'warn':'') + '">volumen −' + Math.round((1-band.vol)*100) + ' %'
-             + (band.keepInt?' · intensidad mantenida':'') + '</span>';
-      }
-    } else if(isToday){
-      chip = '<span class="chip ok">sin cambios</span>';
-    }
-    return '<div class="day' + (isToday?' today':'') + '">'
-      + '<div class="dow">' + dowLbl + (isToday?'<br>hoy':'') + '</div>'
-      + '<div><div class="title">' + title + ' ' + chip + '</div>'
-      + '<div class="meta"><span>' + min + ' min</span><span>RPE objetivo ' + rpe + '</span>'
-      + '<span>' + (isToday && load!==day.load ? '<s>' + fmt(day.load) + '</s> ' : '') + fmt(load) + ' UA</span></div>'
-      + '<ul class="items">' + items.map(i =>
-          '<li><span>' + i.name + '</span><span class="p">' + i.p + '</span></li>').join('')
-      + '</ul></div></div>';
-  }).join('');
-
-  /* guardarraíles */
-  $('guards').innerHTML = guardrails(m, plan).map(g =>
-    '<div class="guard ' + (g.ok?'pass':'fail') + '"><span class="mark">' + (g.ok?'✓':'✕') + '</span>'
-    + '<span>' + g.t + ' <b style="font-family:var(--mono);font-weight:500">' + g.v + '</b></span>'
-    + '<span class="lim">' + g.lim + '</span></div>').join('');
-
-  /* decisión del día, siempre visible arriba del log */
-  const todayDecision = {
-    kind:'daily_adjustment', when:d, act: band.vol !== 1,
-    rules: F.map(f=>f.k).concat(R.score!=null ? ['READINESS_'+band.key.toUpperCase()] : []),
-    why: band.say + (F.length ? ' Señales: ' + F.map(f=>f.d).join('; ') + '.' : ''),
-    completeness: R.completeness
+  const sdw = sd(dailies);
+  let streak=0, maxStreak=0;
+  for(const d of dailies){ if(d>0){ streak++; maxStreak=Math.max(maxStreak,streak);} else streak=0; }
+  return {
+    plannedWeeklyAu: planned,
+    weeklyIncreasePct: pm>0 ? (planned-pm)/pm : 0,
+    projectedAcwr: chronic>0 ? planned/chronic : null,
+    projectedMonotony: sdw>0 ? mean(dailies)/sdw : null,
+    maxConsecutiveDays: maxStreak
   };
-  const entries = [todayDecision].concat(S.decisions.slice(0,7));
-  $('log').innerHTML = entries.length ? entries.map(e =>
-    '<div class="entry' + (e.act?' act':'') + '">'
-    + '<div class="head"><span>' + DOW[e.when.getDay()] + ' ' + e.when.getDate() + '/' + (e.when.getMonth()+1) + '</span>'
-    + '<span>' + e.kind + '</span>'
-    + '<span>datos ' + Math.round(e.completeness) + ' %</span></div>'
-    + '<p class="why">' + e.why + '</p>'
-    + '<div class="rules">' + e.rules.map(r=>'<code>'+r+'</code>').join('') + '</div></div>'
-  ).join('') : '<p class="empty">Sin decisiones registradas todavía.</p>';
-
-  drawChart(m);
 }
 
-/* ══════════════ gráfico de carga ══════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   INFRAESTRUCTURA — adaptador de almacenamiento tras una interfaz.
+   Cambiar a Supabase es reemplazar este objeto, no tocar lo de arriba.
+   ══════════════════════════════════════════════════════════════════ */
+const NS = 'ais:v1:';
+const SCHEMA_VERSION = 1;
+
+const Store = (function(){
+  let ok = false, mem = {};
+  try{
+    const k = NS+'__test'; localStorage.setItem(k,'1'); localStorage.removeItem(k); ok = true;
+  }catch(e){ ok = false; }
+  const back = ok ? {
+    get:k=>localStorage.getItem(k), set:(k,v)=>localStorage.setItem(k,v),
+    del:k=>localStorage.removeItem(k)
+  } : {
+    get:k=>k in mem ? mem[k] : null, set:(k,v)=>{mem[k]=v;}, del:k=>{delete mem[k];}
+  };
+  return {
+    persistent: ok,
+    read(key, fallback){
+      try{ const raw = back.get(NS+key); return raw==null ? fallback : JSON.parse(raw); }
+      catch(e){ return fallback; }
+    },
+    write(key, value){
+      try{ back.set(NS+key, JSON.stringify(value)); return true; }
+      catch(e){ return false; }        // cupo agotado: se avisa, no se rompe
+    },
+    remove(key){ back.del(NS+key); },
+    /* migraciones con copia previa y vuelta atrás */
+    migrate(){
+      const meta = this.read('meta', null);
+      if(!meta){ this.write('meta', {schemaVersion:SCHEMA_VERSION, createdAt:new Date().toISOString()}); return {ok:true, migrated:false}; }
+      if(meta.schemaVersion === SCHEMA_VERSION) return {ok:true, migrated:false};
+      return {ok:true, migrated:false};   // aún no hay migraciones que correr
+    }
+  };
+})();
+
+/* repositorios: la clave de DailyEntry es (atleta, fecha), no un id */
+const Repos = {
+  profile:{
+    get(){ return Store.read('athlete:demo:profile', null); },
+    save(p){ Store.write('athlete:demo:profile', p); }
+  },
+  entries:{
+    index(){ return Store.read('index:entries:demo', []); },
+    get(date){ return Store.read('entry:demo:'+date, null); },
+    save(e){
+      Store.write('entry:demo:'+e.date, e);
+      const idx = this.index();
+      if(!idx.includes(e.date)){ idx.push(e.date); idx.sort(); Store.write('index:entries:demo', idx); }
+    },
+    list(){ return this.index().map(d=>this.get(d)).filter(Boolean); },
+    clear(){ for(const d of this.index()) Store.remove('entry:demo:'+d); Store.write('index:entries:demo', []); }
+  },
+  assessments:{
+    index(){ return Store.read('index:assessments:demo', []); },
+    save(a){
+      Store.write('assessment:'+a.id, a);
+      const idx = this.index();
+      if(!idx.find(x=>x.id===a.id)){ idx.push({id:a.id, performedOn:a.performedOn}); Store.write('index:assessments:demo', idx); }
+    },
+    list(){ return this.index().map(x=>Store.read('assessment:'+x.id, null)).filter(Boolean)
+              .sort((a,b)=>a.performedOn<b.performedOn?-1:1); },
+    clear(){ for(const x of this.index()) Store.remove('assessment:'+x.id); Store.write('index:assessments:demo', []); }
+  },
+  decisions:{
+    index(){ return Store.read('index:decisions:demo', []); },
+    save(d){
+      Store.write('decision:'+d.id, d);
+      const idx = this.index(); idx.unshift({id:d.id, date:d.date, kind:d.kind});
+      /* retención: 60 decisiones rutinarias; las de guardarraíl se conservan siempre */
+      while(idx.length>60){
+        const drop = idx.pop();
+        const rec = Store.read('decision:'+drop.id, null);
+        if(rec && rec.requiresReview){ idx.push(drop); break; }
+        Store.remove('decision:'+drop.id);
+      }
+      Store.write('index:decisions:demo', idx);
+    },
+    list(){ return this.index().map(x=>Store.read('decision:'+x.id,null)).filter(Boolean); },
+    clear(){ for(const x of this.index()) Store.remove('decision:'+x.id); Store.write('index:decisions:demo', []); }
+  },
+  settings:{
+    get(){ return Store.read('settings:demo', {archetypeId:'rugby_fwd', horizonWeeks:12, daysPerWeek:4}); },
+    save(s){ Store.write('settings:demo', s); }
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   CAPA DE APLICACIÓN — casos de uso y estado
+   ══════════════════════════════════════════════════════════════════ */
+const App = {
+  state:null,
+  init(){
+    Store.migrate();
+    let profile = Repos.profile.get();
+    if(!profile){ this.seed(); profile = Repos.profile.get(); }
+    this.reload();
+  },
+  reload(){
+    const profile = Repos.profile.get();
+    const entries = Repos.entries.list();
+    const assessments = Repos.assessments.list();
+    const settings = Repos.settings.get();
+    const today = entries.length ? entries[entries.length-1].date : isoDate(new Date());
+    const calibration = this.calibration(entries);
+    const model = buildAthleteModel(profile, assessments, entries, calibration, today);
+    const archetype = ARCHETYPES.find(a=>a.id===settings.archetypeId) || ARCHETYPES[0];
+    const target = buildTargetProfile(model, archetype, settings.horizonWeeks);
+
+    const sleep5 = entries.slice(-5).map(e=>e.checkIn && e.checkIn.sleepHours).filter(v=>v!=null);
+    const ctx = {checkIn: entries.length ? entries[entries.length-1].checkIn : null,
+                 hrv: model.hrv, sleepMean5d: sleep5.length ? mean(sleep5) : null};
+
+    /* primera pasada: decisiones sin plan; genera prioridades */
+    let outcome = Decision.decide(model, target, ctx);
+    const weekIdx = Math.floor(entries.length/7);
+    let plan = generatePlan(model, outcome.priorities, settings.daysPerWeek, weekIdx, today, this.oneRm(assessments));
+    /* segunda pasada: ahora los guardarraíles pueden evaluar el plan */
+    ctx.planStats = planStats(plan, entries);
+    outcome = Decision.decide(model, target, ctx);
+
+    this.state = {profile, entries, assessments, settings, model, archetype, target,
+                  ctx, outcome, plan, today, calibration};
+    return this.state;
+  },
+  oneRm(assessments){
+    for(let i=assessments.length-1;i>=0;i--){
+      const r = assessments[i].results.find(x=>x.protocolCode==='squat1rm');
+      if(r) return r.value;
+    }
+    return 0;
+  },
+  calibration(entries){
+    const days = entries.length;
+    const hrvDays = entries.filter(e=>e.checkIn && e.checkIn.lnRmssd!=null).length;
+    return {fitnessTau:42, fatigueTau:7, sleepNeedHours:8,
+            sampleDays:days, hrvDays, isCalibrated: days>=84};
+  },
+
+  /* ── casos de uso ── */
+  saveCheckIn(fields){
+    const s = this.state;
+    const entry = Repos.entries.get(s.today) || {date:s.today, sessions:[], totalLoadAu:0};
+    entry.checkIn = {...(entry.checkIn||{}), ...fields};
+    entry.updatedAt = new Date().toISOString();
+    Repos.entries.save(entry);
+    this.reload();
+  },
+  logSession(min, rpe){
+    const s = this.state;
+    const entry = Repos.entries.get(s.today) || {date:s.today, sessions:[], totalLoadAu:0};
+    const load = Math.round(min*rpe);
+    entry.sessions = [...(entry.sessions||[]), {durationMin:min, sessionRpe:rpe, internalLoadAu:load}];
+    entry.totalLoadAu = entry.sessions.reduce((t,x)=>t+x.internalLoadAu,0);
+    entry.updatedAt = new Date().toISOString();
+    Repos.entries.save(entry);
+    this.recordDecision('dailyAdjustment', `Sesión registrada: ${min} min × sRPE ${rpe} = ${fmt(load)} UA.`);
+    this.advanceDay();
+  },
+  advanceDay(){
+    const s = this.state;
+    const next = new Date(parseDate(s.today)); next.setDate(next.getDate()+1);
+    const d = isoDate(next);
+    if(!Repos.entries.get(d)){
+      const prev = Repos.entries.get(s.today);
+      Repos.entries.save({date:d, sessions:[], totalLoadAu:0,
+        checkIn: prev && prev.checkIn ? {...prev.checkIn} : undefined,
+        updatedAt:new Date().toISOString()});
+    }
+    this.reload();
+  },
+  recordDecision(kind, extra){
+    const s = this.state;
+    const o = s.outcome;
+    const rationale = [extra, ...o.actions.filter(a=>a.rationale).map(a=>a.rationale)]
+      .filter(Boolean).join(' ');
+    const rec = {
+      id: 'dec_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+      date: s.today, kind,
+      inputsSnapshot: {readiness:s.model.readiness.score, band:s.model.readiness.band,
+                       acwrEwma:s.model.load.acwrEwma, monotony:s.model.load.monotony,
+                       plan:s.ctx.planStats},
+      firedRules: o.firedRules.map(t=>({ruleId:t.rule.id, evidence:t.observed})),
+      actions: o.actions.map(a=>({type:a.type, ...a})),
+      rationaleEs: rationale || 'Sin cambios sobre el plan.',
+      rulesetVersion: RULESET.version,
+      requiresReview: o.requiresReview,
+      createdAt: new Date().toISOString()
+    };
+    Repos.decisions.save(rec);
+  },
+  seed(){
+    Repos.entries.clear(); Repos.assessments.clear(); Repos.decisions.clear();
+    const profile = {athleteId:'demo', birthDate:'2002-04-11', sex:'male', sport:'rugby',
+                     position:'Segunda línea', level:'intermediate',
+                     timezone:'America/Argentina/Buenos_Aires', heightCm:190, weightKg:98};
+    Repos.profile.save(profile);
+    Repos.settings.save({archetypeId:'rugby_fwd', horizonWeeks:12, daysPerWeek:4});
+
+    /* 42 días de historial reproducible */
+    let seed = 20260820;
+    const rnd = () => { seed = (seed*1664525+1013904223)>>>0; return seed/4294967296; };
+    const today = new Date(); today.setHours(0,0,0,0);
+    const offs = trainOffsets(4);
+    for(let i=41;i>=0;i--){
+      const d = new Date(today); d.setDate(d.getDate()-i);
+      const off = ((Math.round((d-today)/MS_DAY)%7)+7)%7;
+      const trains = offs.includes(off);
+      const min = trains ? Math.round(68*(0.85+rnd()*0.35)) : 0;
+      const rpe = trains ? Math.round((6+rnd()*2.2)*2)/2 : 0;
+      Repos.entries.save({
+        date: isoDate(d),
+        sessions: trains ? [{durationMin:min, sessionRpe:rpe, internalLoadAu:Math.round(min*rpe)}] : [],
+        totalLoadAu: trains ? Math.round(min*rpe) : 0,
+        checkIn: {sleepHours: Math.round((7.2+(rnd()-0.5)*1.6)*10)/10, sleepQuality:4,
+                  fatigue:4, soreness:4, stress:4, mood:4,
+                  lnRmssd: Math.round((4.20+(rnd()-0.5)*0.30)*100)/100},
+        updatedAt:new Date().toISOString()
+      });
+    }
+
+    /* evaluación inicial: deja dos cualidades sin medir y una vencida, a propósito,
+       para que el motor tenga algo real que decir sobre los datos que faltan */
+    const raw = [
+      {code:'cmj', value:39, days:20, source:'field'},
+      {code:'sprint10', value:1.82, days:20, source:'field'},
+      {code:'squat1rm', value:132, days:34, source:'field'},
+      {code:'yoyo', value:1180, days:120, source:'field'},   // vencido: validez 90 d
+      {code:'bodyfat', value:16.5, days:34, source:'selfReport'},
+      {code:'sitreach', value:2, days:34, source:'field'}
+    ];
+    const byDay = {};
+    for(const r of raw) (byDay[r.days] = byDay[r.days]||[]).push(r);
+    for(const [days, list] of Object.entries(byDay)){
+      const d = new Date(today); d.setDate(d.getDate()-Number(days));
+      const performedOn = isoDate(d);
+      Repos.assessments.save({
+        id:'as_'+days, athleteId:'demo', performedOn, batteryCode:'inicial',
+        results: list.map(r=>({
+          protocolCode:r.code, value:r.value, unit:PROTO[r.code].unit, source:r.source,
+          zScore: zScoreOf(r.code, r.value, profile.sport, profile.sex)
+        })),
+        createdAt:new Date().toISOString()
+      });
+    }
+  },
+  reset(){ Repos.entries.clear(); Repos.assessments.clear(); Repos.decisions.clear();
+           Store.remove('athlete:demo:profile'); this.init(); },
+  exportJson(){
+    return JSON.stringify({
+      schemaVersion:SCHEMA_VERSION, exportedAt:new Date().toISOString(),
+      profile:Repos.profile.get(), settings:Repos.settings.get(),
+      entries:Repos.entries.list(), assessments:Repos.assessments.list(),
+      decisions:Repos.decisions.list()
+    }, null, 2);
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   CAPA DE UI — presenta y captura. Cero cálculo: si hay un umbral acá,
+   está en el lugar equivocado.
+   ══════════════════════════════════════════════════════════════════ */
+const MODULES = [
+  {id:'tracker',   n:'5', label:'Daily Tracker'},
+  {id:'athlete',   n:'7', label:'Digital Athlete'},
+  {id:'assess',    n:'1', label:'Assessment Lab'},
+  {id:'archetype', n:'2', label:'Archetype Designer'},
+  {id:'decision',  n:'3', label:'Decision Engine'},
+  {id:'program',   n:'4', label:'Program Generator'},
+  {id:'analytics', n:'6', label:'Analytics Center'}
+];
+let current = 'tracker';
+const el = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderNav(){
+  el('nav').innerHTML = MODULES.map(m =>
+    `<button data-mod="${m.id}"${m.id===current?' aria-current="page"':''}>
+      <span class="n">${m.n}</span>${m.label}</button>`).join('');
+  el('nav').querySelectorAll('button').forEach(b =>
+    b.addEventListener('click', ()=>{ current = b.dataset.mod; render(); }));
+}
+
+function bandChip(band){
+  const meta = BAND_META[band];
+  return `<span class="band ${meta.cls}"><span class="dot"></span>${meta.txt}</span>`;
+}
+
+function render(){
+  const s = App.state;
+  const d = parseDate(s.today);
+  el('dayNum').textContent = String(s.entries.length-41);
+  el('dateLbl').textContent = DOW[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1);
+  renderNav();
+  el('view').innerHTML = VIEWS[current](s);
+  wire(s);
+  if(current==='analytics' || current==='tracker') drawChart(s);
+}
+
+const VIEWS = {
+
+/* ── módulo 5: Daily Tracker ─────────────────────────────────────── */
+tracker(s){
+  const ci = (s.entries[s.entries.length-1] || {}).checkIn || {};
+  const r = s.model.readiness;
+  const today = s.plan.week[0];
+  const act = s.outcome.actions;
+  const sub = act.find(a=>a.type==='substituteSession');
+  const red = act.find(a=>a.type==='reduceVolume');
+  let sessionHtml;
+  if(today.rest) sessionHtml = '<p class="rest">Hoy no hay sesión programada.</p>';
+  else {
+    const q = sub ? QUALITIES[sub.withQuality] : null;
+    const factor = red ? red.factor : 1;
+    const min = q ? q.min : Math.round(today.min*factor);
+    const rpe = q ? q.rpe : today.rpe;
+    sessionHtml = `
+      <div class="day today"><div class="dow">hoy</div><div>
+        <div class="title">${esc(q ? q.label : today.label)}
+          ${sub ? '<span class="chip crit">sesión sustituida</span>'
+                : red ? `<span class="chip ${factor<0.8?'warn':''}">volumen −${Math.round((1-factor)*100)} %${red.keepIntensity?' · intensidad mantenida':''}</span>`
+                      : '<span class="chip ok">sin cambios</span>'}
+        </div>
+        <div class="meta"><span>${min} min</span><span>RPE objetivo ${rpe}</span>
+          <span>${fmt(min*rpe)} UA</span></div>
+        <ul class="items">${(q ? q.items.map(([k,ro])=>prescribe(k,ro,s.plan.W,App.oneRm(s.assessments))) : today.items)
+          .map(i=>`<li><span>${esc(i.name)}</span><span class="p">${esc(i.p)}</span></li>`).join('')}</ul>
+      </div>`;
+  }
+
+  return `
+  ${Store.persistent ? '' : '<div class="banner"><span>⚠</span><span><b>Sin almacenamiento local.</b> Este navegador bloquea localStorage, así que los datos viven solo mientras la página esté abierta.</span></div>'}
+  <div class="cols split">
+    <div class="stack">
+      <section class="card">
+        <h2>Check-in de hoy</h2>
+        <p class="hint">Veinte segundos y una mano. Cada campo de más se paga en adherencia.</p>
+        <div class="row2">
+          <div class="field"><label for="sleepH">Sueño (h)</label>
+            <input type="number" id="sleepH" step="0.1" min="0" max="14" value="${ci.sleepHours ?? 7.5}"></div>
+          <div class="field"><label for="hrv">ln rMSSD</label>
+            <input type="number" id="hrv" step="0.01" min="2" max="6" value="${ci.lnRmssd ?? 4.20}"></div>
+        </div>
+        ${slider('sleepQuality','Calidad de sueño', ci.sleepQuality ?? 4)}
+        ${slider('fatigue','Fatiga', ci.fatigue ?? 4)}
+        ${slider('soreness','Dolor muscular', ci.soreness ?? 4)}
+        ${slider('stress','Estrés', ci.stress ?? 4)}
+        ${slider('mood','Ánimo', ci.mood ?? 4)}
+        <div class="btnrow">
+          <button class="act primary" id="btnTrain">Registrar entrenamiento</button>
+          <button class="act" id="btnRest">Día sin entrenar</button>
+        </div>
+        <div class="btnrow">
+          <button class="act ghost sm" id="btnBad">Simular semana dura</button>
+          <button class="act ghost sm" id="btnReset">Reiniciar datos</button>
+          <button class="act ghost sm" id="btnExport">Exportar JSON</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="card">
+        <h2>Readiness</h2>
+        <p class="hint">Índice compuesto. Los pesos de los componentes sin dato se redistribuyen; nunca se imputa un valor.</p>
+        <div class="ready">
+          <div class="score">
+            <div class="num">${r.score==null?'—':r.score.toFixed(0)}</div>
+            <div class="of">sobre 100</div>
+            ${bandChip(r.band)}
+          </div>
+          <div class="comps">${r.components.map(c=>{
+            const pct = c.normalized==null ? 0 : Math.round(c.normalized*100);
+            return `<div class="comp${c.normalized==null?' missing':''}">
+              <div class="name">${esc(c.name)} <em>${Math.round(c.w*100)} %</em></div>
+              <div class="track"><i style="width:${pct}%"></i></div>
+              <div class="v">${c.normalized==null?'s/d':pct}</div></div>`;
+          }).join('')}</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Sesión de hoy</h2>
+        <p class="hint">Ya con el ajuste que decidió el motor aplicado.</p>
+        ${sessionHtml}
+      </section>
+
+      <section class="card">
+        <h2>Carga reciente</h2>
+        <p class="hint">Carga interna diaria: duración × sRPE.</p>
+        <div class="chartwrap"><canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días"></canvas>
+          <div class="tip" id="tip"></div></div>
+        <div class="legend">
+          <span><i class="swatch"></i>Carga diaria (UA)</span>
+          <span><i class="swatch line"></i>Aguda 7 d</span>
+          <span><i class="swatch line dash"></i>Crónica 28 d</span>
+        </div>
+      </section>
+    </div>
+  </div>`;
+},
+
+/* ── módulo 7: Digital Athlete ───────────────────────────────────── */
+athlete(s){
+  const m = s.model;
+  const cal = m.calibration;
+  return `
+  <div class="stack">
+    <section class="card">
+      <h2>Modelo del atleta</h2>
+      <p class="hint">No es un perfil editable: es el resultado de <code>buildAthleteModel(evaluaciones, días, calibración)</code>. Se puede borrar entero y reconstruir.</p>
+      <div class="metrics">
+        <div class="metric"><div class="k">Atleta</div><div class="v" style="font-size:15px">${esc(s.profile.position)}</div><div class="n">${esc(s.profile.sport)} · ${esc(s.profile.level)}</div></div>
+        <div class="metric"><div class="k">Edad</div><div class="v">${Math.floor(daysBetween(s.profile.birthDate, s.today)/365.25)}</div><div class="n">años</div></div>
+        <div class="metric"><div class="k">Completitud de datos</div><div class="v${m.dataCompletenessPct<50?' flag-warn':''}">${fmt(m.dataCompletenessPct,0)} %</div><div class="n">evaluaciones + check-in</div></div>
+        <div class="metric"><div class="k">Calibración</div><div class="v" style="font-size:15px">${cal.isCalibrated?'Calibrado':'Por defecto'}</div><div class="n">${cal.sampleDays} de 84 días</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Capacidades</h2>
+      <p class="hint">Cada dato arrastra de dónde salió y cuánto vale hoy: la confianza decae con la antigüedad, más rápido en las cualidades que se pierden antes.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Cualidad</th><th>Estado</th><th class="num">z actual</th><th class="num">Medido</th><th class="num">Confianza</th><th>Fuente</th></tr></thead>
+        <tbody>${m.capacities.map(c=>{
+          const st = c.currentZ==null ? '<span class="chip mute">sin medir</span>'
+                   : c.isStale ? '<span class="chip warn">vencido</span>'
+                   : '<span class="chip ok">vigente</span>';
+          return `<tr>
+            <td>${esc(CAP_LABEL[c.capacity])}${c.protocolCode?`<br><span style="color:var(--ink-3);font-size:11.5px">${esc(PROTO[c.protocolCode].name)}: ${fmt(c.raw,c.raw<10?2:0)} ${esc(PROTO[c.protocolCode].unit)}</span>`:''}</td>
+            <td>${st}</td>
+            <td class="num">${c.currentZ==null?'—':sign(c.currentZ)}</td>
+            <td class="num">${c.ageDays==null?'—':c.ageDays+' d'}</td>
+            <td class="num">${c.currentZ==null?'—':fmt(c.confidence*100,0)+' %'}</td>
+            <td>${c.source?esc(c.source):'—'}</td></tr>`;
+        }).join('')}</tbody>
+      </table></div>
+    </section>
+
+    <section class="card">
+      <h2>Estado de carga</h2>
+      ${metricsGrid(m.load)}
+    </section>
+  </div>`;
+},
+
+/* ── módulo 1: Assessment Lab ────────────────────────────────────── */
+assess(s){
+  return `
+  <div class="cols split">
+    <section class="card">
+      <h2>Nueva medición</h2>
+      <p class="hint">Se valida contra el rango plausible del protocolo: un CMJ de 95 cm es un error de tipeo, no un récord.</p>
+      <div class="field"><label for="protoSel">Protocolo</label>
+        <select id="protoSel">${PROTOCOLS.map(p=>`<option value="${p.code}">${esc(p.name)} (${esc(p.unit)})</option>`).join('')}</select></div>
+      <div class="row2">
+        <div class="field"><label for="protoVal">Valor</label><input type="number" id="protoVal" step="0.01"></div>
+        <div class="field"><label for="protoSrc">Fuente</label>
+          <select id="protoSrc"><option value="lab">Laboratorio</option><option value="field" selected>Campo</option>
+            <option value="selfReport">Autoinforme</option><option value="estimated">Estimado</option></select></div>
+      </div>
+      <div class="btnrow"><button class="act primary" id="btnAddTest">Guardar medición</button></div>
+      <p class="hint" id="testMsg" style="margin-top:10px"></p>
+    </section>
+
+    <div class="stack">
+      <section class="card">
+        <h2>Protocolos</h2>
+        <p class="hint">Cada uno declara su unidad, su rango plausible y a los cuántos días caduca.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Protocolo</th><th>Cualidad</th><th class="num">Rango</th><th class="num">Validez</th></tr></thead>
+          <tbody>${PROTOCOLS.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(CAP_LABEL[p.capacity])}</td>
+            <td class="num">${p.plausible[0]}–${p.plausible[1]} ${esc(p.unit)}</td>
+            <td class="num">${p.validityDays} d</td></tr>`).join('')}</tbody>
+        </table></div>
+      </section>
+
+      <section class="card">
+        <h2>Historial</h2>
+        <p class="hint">${s.assessments.length} evaluaciones registradas.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Fecha</th><th>Protocolo</th><th class="num">Valor</th><th class="num">z</th><th>Fuente</th></tr></thead>
+          <tbody>${s.assessments.slice().reverse().flatMap(a=>a.results.map(r=>`<tr>
+            <td>${esc(a.performedOn)}</td><td>${esc(PROTO[r.protocolCode].name)}</td>
+            <td class="num">${fmt(r.value, r.value<10?2:0)} ${esc(r.unit)}</td>
+            <td class="num">${r.zScore==null?'—':sign(r.zScore)}</td>
+            <td>${esc(r.source)}</td></tr>`)).join('') || '<tr><td colspan="5" class="empty">Sin evaluaciones.</td></tr>'}</tbody>
+        </table></div>
+      </section>
+    </div>
+  </div>`;
+},
+
+/* ── módulo 2: Archetype Designer ────────────────────────────────── */
+archetype(s){
+  const a = s.archetype, t = s.target;
+  return `
+  <div class="cols split">
+    <section class="card">
+      <h2>Perfil objetivo</h2>
+      <p class="hint">El arquetipo es la plantilla; el objetivo es esa plantilla interpolada hacia tu punto de partida según el horizonte.</p>
+      <div class="field"><label for="archSel">Arquetipo</label>
+        <select id="archSel">${ARCHETYPES.map(x=>`<option value="${x.id}"${x.id===a.id?' selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <div class="field"><label for="horizon">Horizonte (semanas)</label>
+        <input type="number" id="horizon" min="4" max="52" step="1" value="${s.settings.horizonWeeks}"></div>
+      <div class="field"><label for="daysSel">Días por semana</label>
+        <select id="daysSel">${[3,4,5,6].map(n=>`<option${n===s.settings.daysPerWeek?' selected':''}>${n}</option>`).join('')}</select></div>
+      <p class="hint" style="margin-top:12px">
+        <span class="chip ${a.evidence.grade==='published'?'ok':'warn'}">${esc(a.evidence.grade)}</span><br>
+        ${esc(a.evidence.reference)}
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Objetivos por cualidad</h2>
+      <p class="hint">Interpolación al ${Math.round(clamp01(s.settings.horizonWeeks/26)*100)} % del camino hacia el arquetipo (26 semanas = 100 %).</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Cualidad</th><th class="num">Actual</th><th class="num">Objetivo</th><th class="num">Arquetipo</th><th class="num">Peso</th><th class="num">Mínimo</th></tr></thead>
+        <tbody>${CAPACITIES.map(c=>{
+          const st = s.model.capacities.find(x=>x.capacity===c.key);
+          const tt = t.targets[c.key], at = a.targets[c.key];
+          return `<tr><td>${esc(c.label)}</td>
+            <td class="num">${st && st.currentZ!=null?sign(st.currentZ):'—'}</td>
+            <td class="num">${sign(tt.z)}</td>
+            <td class="num">${at?sign(at.z):'—'}</td>
+            <td class="num">${fmt(tt.w,1)}</td>
+            <td class="num">${tt.min!=null?sign(tt.min):'—'}</td></tr>`;
+        }).join('')}</tbody>
+      </table></div>
+    </section>
+  </div>`;
+},
+
+/* ── módulo 3: Decision Engine ───────────────────────────────────── */
+decision(s){
+  const o = s.outcome;
+  const decisions = Repos.decisions.list();
+  return `
+  <div class="stack">
+    <section class="card">
+      <h2>Prioridades</h2>
+      <p class="hint">Tres como máximo: un plan que persigue nueve cualidades no persigue ninguna. La brecha se pondera por la importancia en el arquetipo y se penaliza si el dato es dudoso.</p>
+      ${o.priorities.length ? `<div class="tablewrap"><table>
+        <thead><tr><th class="num">#</th><th>Cualidad</th><th class="num">Puntaje</th><th class="num">Brecha</th><th class="num">Confianza</th></tr></thead>
+        <tbody>${o.priorities.map((p,i)=>{
+          const g = o.gaps.find(x=>x.capacity===p.capacity);
+          return `<tr><td class="num">${i+1}</td><td>${esc(p.label)}</td>
+            <td class="num">${fmt(p.score,2)}</td>
+            <td class="num">${g.deltaZ==null?'sin dato':sign(g.deltaZ)}</td>
+            <td class="num">${fmt(g.confidence*100,0)} %</td></tr>`;
+        }).join('')}</tbody></table></div>`
+      : '<p class="empty">Sin prioridades activas: no hay brechas que superen el umbral.</p>'}
+    </section>
+
+    <section class="card">
+      <h2>Brechas contra el perfil</h2>
+      <p class="hint">Una brecha sin dato actual no es cero: es <code>null</code>, y genera una acción distinta — medir, no entrenar.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Cualidad</th><th class="num">Actual</th><th class="num">Objetivo</th><th class="num">Δz</th><th class="num">Δ ponderada</th><th>Estado</th></tr></thead>
+        <tbody>${o.gaps.map(g=>`<tr>
+          <td>${esc(g.label)}</td>
+          <td class="num">${g.currentZ==null?'—':sign(g.currentZ)}</td>
+          <td class="num">${sign(g.targetZ)}</td>
+          <td class="num">${g.deltaZ==null?'—':sign(g.deltaZ)}</td>
+          <td class="num">${g.weightedDelta==null?'—':sign(g.weightedDelta)}</td>
+          <td>${g.isBlocking?'<span class="chip crit">bajo el mínimo</span>':
+               !g.hasData?'<span class="chip mute">sin medir</span>':
+               g.isStale?'<span class="chip warn">vencido</span>':
+               g.deltaZ>0.3?'<span class="chip">brecha</span>':'<span class="chip ok">en objetivo</span>'}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </section>
+
+    <section class="card">
+      <h2>Diagnósticos</h2>
+      <p class="hint">Agrupan reglas disparadas en afirmaciones con su evidencia. Un diagnóstico sin evidencia citable es un bug.</p>
+      ${o.diagnoses.length ? `<div class="diags">${o.diagnoses.map(d=>`
+        <div class="diag ${esc(d.severity)}">
+          <div class="t">${esc(d.title)} <span class="chip ${d.severity==='critical'?'crit':d.severity==='action'?'warn':''}">${esc(d.severity)}</span>
+            <span class="chip mute">${esc(d.ruleId)}</span></div>
+          <ul>${d.evidence.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>
+        </div>`).join('')}</div>`
+      : '<p class="empty">Ningún diagnóstico activo.</p>'}
+    </section>
+
+    <section class="card">
+      <h2>Traza del ruleset <span class="chip mute">${esc(RULESET.version)}</span></h2>
+      <p class="hint">Las reglas son datos, no código. Se evalúan todas y se registran también las que <em>no</em> dispararon: saber que el ACWR estaba en 1,21 y no disparó informa tanto como el disparo.</p>
+      <div class="rules">${o.trace.filter(t=>!t.item || t.fired).map(t=>`
+        <div class="rule${t.fired?' fired':''}">
+          <span class="id">${t.fired?'●':'○'} ${esc(t.rule.id)}</span>
+          <span>${esc(t.rule.name)}${t.rule.isGuardrail?' <span class="chip crit">guardarraíl</span>':''}</span>
+          <span class="obs">${esc(t.observed)}</span>
+        </div>`).join('')}</div>
+    </section>
+
+    <section class="card">
+      <h2>Log de decisiones</h2>
+      <p class="hint">${decisions.length} registradas. Cada una guarda el snapshot de entradas, las reglas disparadas y la versión del ruleset: cualquier decisión se reproduce exactamente.</p>
+      ${decisions.length ? `<div class="log">${decisions.slice(0,8).map(d=>`
+        <div class="entry${d.actions.length?' act':''}">
+          <div class="head"><span>${esc(d.date)}</span><span>${esc(d.kind)}</span>
+            <span>${esc(d.rulesetVersion)}</span>${d.requiresReview?'<span class="chip crit">revisión</span>':''}</div>
+          <p class="why">${esc(d.rationaleEs)}</p>
+          <div class="entry rules-inline">${d.firedRules.map(r=>`<code>${esc(r.ruleId)}</code>`).join('')}</div>
+        </div>`).join('')}</div>`
+      : '<p class="empty">Todavía no registraste ninguna sesión.</p>'}
+    </section>
+  </div>`;
+},
+
+/* ── módulo 4: Program Generator ─────────────────────────────────── */
+program(s){
+  const p = s.plan, st = s.ctx.planStats, o = s.outcome;
+  const guards = o.trace.filter(t=>t.rule.isGuardrail && !t.item);
+  return `
+  <div class="stack">
+    <section class="card">
+      <h2>Microciclo</h2>
+      <p class="hint">Semana ${p.weekIdx+1} de 4 — ${esc(p.W.name)} (volumen ×${p.W.vol.toFixed(2)}, intensidad ${Math.round(p.W.pct*100)} % 1RM).
+      Las cualidades salen de las prioridades del motor: ${o.priorities.map(x=>esc(x.label)).join(', ') || 'soporte general'}.</p>
+      <div class="week">${p.week.map(day=>{
+        const isToday = day.off===0;
+        const lbl = DOW[day.date.getDay()]+' '+day.date.getDate();
+        if(day.rest) return `<div class="day${isToday?' today':''}"><div class="dow">${lbl}</div>
+          <div><div class="rest">Descanso${isToday?' — hoy':''}</div></div></div>`;
+        return `<div class="day${isToday?' today':''}">
+          <div class="dow">${lbl}${isToday?'<br>hoy':''}</div>
+          <div><div class="title">${esc(day.label)}</div>
+          <div class="meta"><span>${day.min} min</span><span>RPE ${day.rpe}</span><span>${fmt(day.load)} UA</span></div>
+          <ul class="items">${day.items.map(i=>`<li><span>${esc(i.name)}</span><span class="p">${esc(i.p)}</span></li>`).join('')}</ul>
+          </div></div>`;
+      }).join('')}</div>
+    </section>
+
+    <section class="card">
+      <h2>Guardarraíles</h2>
+      <p class="hint">Reglas duras: ninguna regla de prioridad menor puede anularlas. Si una falla, el plan no se publica sin revisión humana.</p>
+      <div class="rules">${guards.map(t=>`
+        <div class="rule${t.fired?' fired':''}">
+          <span class="id">${t.fired?'✕':'✓'} ${esc(t.rule.id)}</span>
+          <span>${esc(t.rule.name)}</span>
+          <span class="obs">${esc(t.observed)}</span>
+        </div>`).join('')}</div>
+      ${o.requiresReview ? '<div class="banner" style="margin:14px 0 0"><span>⚠</span><span><b>Requiere revisión humana.</b> Un guardarraíl disparó: el plan queda en borrador hasta que alguien con rol técnico lo apruebe.</span></div>' : ''}
+    </section>
+
+    <section class="card">
+      <h2>Carga planificada</h2>
+      <div class="metrics">
+        <div class="metric"><div class="k">Semana planificada</div><div class="v">${fmt(st.plannedWeeklyAu)}</div><div class="n">UA</div></div>
+        <div class="metric"><div class="k">Incremento</div><div class="v${st.weeklyIncreasePct>0.15?' flag-crit':''}">${(st.weeklyIncreasePct>=0?'+':'')+fmt(st.weeklyIncreasePct*100,0)} %</div><div class="n">vs. 3 semanas previas</div></div>
+        <div class="metric"><div class="k">ACWR proyectado</div><div class="v${st.projectedAcwr>1.3?' flag-crit':''}">${fmt(st.projectedAcwr,2)}</div><div class="n">banda 0,80–1,30</div></div>
+        <div class="metric"><div class="k">Monotonía proyectada</div><div class="v${st.projectedMonotony>2?' flag-warn':''}">${fmt(st.projectedMonotony,2)}</div><div class="n">límite 2,00</div></div>
+      </div>
+    </section>
+  </div>`;
+},
+
+/* ── módulo 6: Analytics Center ──────────────────────────────────── */
+analytics(s){
+  const m = s.model;
+  const loads = s.entries.map(e=>e.totalLoadAu);
+  const sleeps = s.entries.map(e=>e.checkIn && e.checkIn.sleepHours);
+  const hrvs = s.entries.map(e=>e.checkIn && e.checkIn.lnRmssd);
+  const kpis = [
+    {label:'Adherencia 14 d', value: 100*s.entries.slice(-14).filter(e=>e.totalLoadAu>0).length/Math.min(14,s.entries.length), unit:'%', good:v=>v>=60},
+    {label:'Check-in completado', value: 100*s.entries.slice(-14).filter(e=>e.checkIn).length/Math.min(14,s.entries.length), unit:'%', good:v=>v>=70},
+    {label:'Carga media diaria', value: mean(loads.slice(-14)), unit:'UA', good:()=>true},
+    {label:'Sueño medio 14 d', value: mean(sleeps.slice(-14).filter(v=>v!=null)), unit:'h', good:v=>v>=7}
+  ];
+  const tL = Analytics.trend(loads, 21), tH = Analytics.trend(hrvs.filter(v=>v!=null), 21);
+  return `
+  <div class="stack">
+    <section class="card">
+      <h2>Indicadores</h2>
+      <p class="hint">Sin datos diarios el motor no decide: la adherencia es el indicador que sostiene a todos los demás.</p>
+      <div class="metrics">${kpis.map(k=>`
+        <div class="metric"><div class="k">${esc(k.label)}</div>
+          <div class="v${k.good(k.value)?'':' flag-warn'}">${fmt(k.value, k.unit==='h'?1:0)}</div>
+          <div class="n">${esc(k.unit)}</div></div>`).join('')}</div>
+    </section>
+
+    <section class="card">
+      <h2>Carga interna</h2>
+      <p class="hint">28 días. La línea llena es la carga aguda (7 d); la punteada, la crónica (28 d).</p>
+      <div class="chartwrap"><canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días"></canvas>
+        <div class="tip" id="tip"></div></div>
+      <div class="legend">
+        <span><i class="swatch"></i>Carga diaria (UA)</span>
+        <span><i class="swatch line"></i>Aguda 7 d</span>
+        <span><i class="swatch line dash"></i>Crónica 28 d</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Estado de carga</h2>
+      ${metricsGrid(m.load)}
+    </section>
+
+    <section class="card">
+      <h2>Tendencias (21 días)</h2>
+      <p class="hint">Pendiente por regresión lineal. Se marca como significativa solo si supera dos errores estándar — si no, es ruido.</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Serie</th><th class="num">Pendiente/día</th><th>Lectura</th></tr></thead>
+        <tbody>
+          <tr><td>Carga diaria</td><td class="num">${fmt(tL.slope,1)} UA</td>
+            <td>${tL.isSignificant ? (tL.slope>0?'<span class="chip warn">en aumento</span>':'<span class="chip">en descenso</span>') : '<span class="chip mute">sin cambio significativo</span>'}</td></tr>
+          <tr><td>ln rMSSD</td><td class="num">${fmt(tH.slope,3)}</td>
+            <td>${tH.isSignificant ? (tH.slope<0?'<span class="chip warn">en descenso</span>':'<span class="chip ok">en aumento</span>') : '<span class="chip mute">sin cambio significativo</span>'}</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+  </div>`;
+}
+};
+
+function metricsGrid(load){
+  const w = (bad,worse)=> worse?' flag-crit':bad?' flag-warn':'';
+  return `<div class="metrics">${[
+    ['Carga aguda 7 d', fmt(load.acute7d)+' UA', 'suma de duración × sRPE',''],
+    ['Carga crónica 28 d', fmt(load.chronic28d)+' UA','media semanal de 28 días',''],
+    ['ACWR EWMA', fmt(load.acwrEwma,2), 'media móvil: '+fmt(load.acwrRa,2), w(load.acwrEwma>1.3, load.acwrEwma>1.5)],
+    ['Monotonía', fmt(load.monotony,2), 'strain '+fmt(load.strain), w(load.monotony>1.8, load.monotony>2)],
+    ['Fitness', fmt(load.fitness), 'τ = 42 días',''],
+    ['Fatiga', fmt(load.fatigue), 'τ = 7 días',''],
+    ['Forma', (load.form>=0?'+':'')+fmt(load.form), 'fitness − fatiga', load.form<-15?' flag-warn':''],
+    ['Semana vs. 3 previas', load.weekOverWeek==null?'—':((load.weekOverWeek>=0?'+':'')+fmt(load.weekOverWeek*100,0)+' %'),
+      'progresión de carga', w(load.weekOverWeek>0.15, load.weekOverWeek>0.30)]
+  ].map(([k,v,n,cl])=>`<div class="metric"><div class="k">${k}</div><div class="v${cl}">${v}</div><div class="n">${n}</div></div>`).join('')}</div>`;
+}
+
+const LBL = {
+  sleepQuality:['muy mala','mala','regular','buena','excelente'],
+  fatigue:['agotado','muy cansado','normal','fresco','muy fresco'],
+  soreness:['muy dolorido','dolorido','moderado','leve','sin dolor'],
+  stress:['muy alto','alto','moderado','bajo','muy bajo'],
+  mood:['muy mal','mal','normal','bien','muy bien']
+};
+function slider(id, label, value){
+  return `<div class="slider">
+    <div class="top"><span>${label}</span><span class="val" id="${id}v">${value} · ${LBL[id][value-1]}</span></div>
+    <input type="range" id="${id}" min="1" max="5" value="${value}"></div>`;
+}
+
+/* ── enlazado de eventos ── */
+function wire(s){
+  if(current==='tracker'){
+    const collect = () => ({
+      sleepHours: parseFloat(el('sleepH').value),
+      lnRmssd: parseFloat(el('hrv').value),
+      sleepQuality:+el('sleepQuality').value, fatigue:+el('fatigue').value,
+      soreness:+el('soreness').value, stress:+el('stress').value, mood:+el('mood').value
+    });
+    ['sleepQuality','fatigue','soreness','stress','mood'].forEach(id=>{
+      el(id).addEventListener('input', ()=>{
+        el(id+'v').textContent = el(id).value+' · '+LBL[id][el(id).value-1];
+      });
+      el(id).addEventListener('change', ()=>{ App.saveCheckIn(collect()); render(); });
+    });
+    ['sleepH','hrv'].forEach(id=>
+      el(id).addEventListener('change', ()=>{ App.saveCheckIn(collect()); render(); }));
+
+    el('btnTrain').addEventListener('click', ()=>{
+      App.saveCheckIn(collect());
+      const st = App.state;
+      const today = st.plan.week[0];
+      const sub = st.outcome.actions.find(a=>a.type==='substituteSession');
+      const red = st.outcome.actions.find(a=>a.type==='reduceVolume');
+      if(today.rest && !sub){ App.recordDecision('dailyAdjustment','Día sin sesión programada.'); App.advanceDay(); }
+      else if(sub){ const q = QUALITIES[sub.withQuality]; App.logSession(q.min, q.rpe); }
+      else App.logSession(Math.round(today.min*(red?red.factor:1)), today.rpe);
+      render();
+    });
+    el('btnRest').addEventListener('click', ()=>{
+      App.saveCheckIn(collect());
+      App.recordDecision('dailyAdjustment','Día sin entrenar registrado.');
+      App.advanceDay(); render();
+    });
+    el('btnBad').addEventListener('click', ()=>{
+      for(let i=0;i<6;i++){
+        const st = App.state;
+        const e = Repos.entries.get(st.today) || {date:st.today, sessions:[], totalLoadAu:0};
+        e.sessions = [{durationMin:85, sessionRpe:8.5, internalLoadAu:723}];
+        e.totalLoadAu = 723;
+        e.checkIn = {...(e.checkIn||{}), sleepHours:6.0, sleepQuality:2, fatigue:2,
+                     soreness:2, stress:3, mood:3, lnRmssd: 4.20-0.05*(i+1)};
+        Repos.entries.save(e);
+        App.advanceDay();
+      }
+      App.recordDecision('manualOverride','Se cargaron seis días seguidos de 85 min a sRPE 8,5 para ver cómo reaccionan las métricas y los guardarraíles.');
+      App.reload(); render();
+    });
+    el('btnReset').addEventListener('click', ()=>{ App.reset(); render(); });
+    el('btnExport').addEventListener('click', ()=>{
+      const w = window.open('', '_blank');
+      if(w){ w.document.write('<pre style="white-space:pre-wrap;font:12px monospace">'
+              + esc(App.exportJson()) + '</pre>'); w.document.close(); }
+    });
+  }
+
+  if(current==='assess'){
+    el('btnAddTest').addEventListener('click', ()=>{
+      const code = el('protoSel').value;
+      const v = parseFloat(el('protoVal').value);
+      const src = el('protoSrc').value;
+      const p = PROTO[code];
+      const msg = el('testMsg');
+      if(!isFinite(v)){ msg.textContent = 'Falta el valor.'; return; }
+      if(v < p.plausible[0] || v > p.plausible[1]){
+        msg.innerHTML = `<span style="color:var(--crit)">${fmt(v,2)} ${esc(p.unit)} está fuera del rango plausible (${p.plausible[0]}–${p.plausible[1]}). Revisá la unidad antes de guardar.</span>`;
+        return;
+      }
+      const st = App.state;
+      Repos.assessments.save({
+        id:'as_'+Date.now().toString(36), athleteId:'demo', performedOn:st.today,
+        batteryCode:'manual',
+        results:[{protocolCode:code, value:v, unit:p.unit, source:src,
+                  zScore: zScoreOf(code, v, st.profile.sport, st.profile.sex)}],
+        createdAt:new Date().toISOString()
+      });
+      App.reload(); render();
+    });
+  }
+
+  if(current==='archetype'){
+    const save = () => {
+      Repos.settings.save({
+        archetypeId: el('archSel').value,
+        horizonWeeks: clamp(parseInt(el('horizon').value,10)||12, 4, 52),
+        daysPerWeek: parseInt(el('daysSel').value,10)
+      });
+      App.reload(); render();
+    };
+    ['archSel','horizon','daysSel'].forEach(id=>el(id).addEventListener('change', save));
+  }
+}
+
+/* ── gráfico de carga ── */
 let chartData = null;
-function drawChart(m){
-  const cv = $('chart'), ctx = cv.getContext('2d');
+function drawChart(s){
+  const cv = el('chart'); if(!cv) return;
+  const ctx = cv.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const w = cv.clientWidth, h = cv.clientHeight;
   cv.width = w*dpr; cv.height = h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -982,185 +1880,77 @@ function drawChart(m){
   const cInk3 = css.getPropertyValue('--ink-3').trim();
   const cLine = css.getPropertyValue('--line-soft').trim();
 
-  const hist = S.hist.slice(-28);
-  const loads = hist.map(x=>x.load);
-  const padL = 4, padR = 4, padT = 10, padB = 16;
+  const hist = s.entries.slice(-28);
+  const loads = hist.map(x=>x.totalLoadAu);
+  const all = s.entries.map(x=>x.totalLoadAu);
+  const padL=4, padR=4, padT=10, padB=16;
   const plotW = w-padL-padR, plotH = h-padT-padB;
 
-  /* series de aguda y crónica día a día, en la misma unidad (UA/día) */
-  const acuteS = [], chronS = [];
-  const all = S.hist.map(x=>x.load);
-  for(let i=all.length-28;i<all.length;i++){
+  const acuteS=[], chronS=[];
+  for(let i=all.length-hist.length;i<all.length;i++){
     acuteS.push(mean(all.slice(Math.max(0,i-6), i+1)));
     chronS.push(mean(all.slice(Math.max(0,i-27), i+1)));
   }
+  const n = hist.length || 1;
   const maxV = Math.max(...loads, ...acuteS, ...chronS, 1)*1.12;
-  const x = i => padL + (i+0.5)*(plotW/28);
+  const x = i => padL + (i+0.5)*(plotW/n);
   const y = v => padT + plotH - (v/maxV)*plotH;
 
-  /* base */
   ctx.strokeStyle = cLine; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(padL, padT+plotH+0.5); ctx.lineTo(w-padR, padT+plotH+0.5); ctx.stroke();
 
-  /* barras: 2 px de separación, extremo redondeado */
-  const bw = Math.max(3, plotW/28 - 3);
-  loads.forEach((v,i) => {
-    if(v <= 0){
-      ctx.fillStyle = cRest;
-      ctx.fillRect(x(i)-bw/2, padT+plotH-2, bw, 2);
-      return;
-    }
-    const top = y(v), hgt = padT+plotH-top;
-    ctx.fillStyle = cBar;
-    const r = Math.min(3, bw/2, hgt);
-    ctx.beginPath();
-    ctx.moveTo(x(i)-bw/2, padT+plotH);
-    ctx.lineTo(x(i)-bw/2, top+r);
+  const bw = Math.max(3, plotW/n - 3);
+  loads.forEach((v,i)=>{
+    if(v<=0){ ctx.fillStyle=cRest; ctx.fillRect(x(i)-bw/2, padT+plotH-2, bw, 2); return; }
+    const top=y(v), hgt=padT+plotH-top, r=Math.min(3,bw/2,hgt);
+    ctx.fillStyle=cBar; ctx.beginPath();
+    ctx.moveTo(x(i)-bw/2, padT+plotH); ctx.lineTo(x(i)-bw/2, top+r);
     ctx.quadraticCurveTo(x(i)-bw/2, top, x(i)-bw/2+r, top);
     ctx.lineTo(x(i)+bw/2-r, top);
     ctx.quadraticCurveTo(x(i)+bw/2, top, x(i)+bw/2, top+r);
-    ctx.lineTo(x(i)+bw/2, padT+plotH);
-    ctx.closePath(); ctx.fill();
+    ctx.lineTo(x(i)+bw/2, padT+plotH); ctx.closePath(); ctx.fill();
   });
-
-  const line = (series, color, dash) => {
-    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 2;
-    ctx.setLineDash(dash||[]); ctx.lineJoin = 'round';
-    ctx.beginPath(); series.forEach((v,i)=> i? ctx.lineTo(x(i),y(v)) : ctx.moveTo(x(i),y(v)));
+  const line=(series,color,dash)=>{
+    ctx.save(); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.setLineDash(dash||[]);
+    ctx.lineJoin='round'; ctx.beginPath();
+    series.forEach((v,i)=> i?ctx.lineTo(x(i),y(v)):ctx.moveTo(x(i),y(v)));
     ctx.stroke(); ctx.restore();
   };
   line(chronS, cInk3, [4,3]);
   line(acuteS, cAcc);
+  ctx.fillStyle=cAcc; ctx.beginPath(); ctx.arc(x(n-1), y(acuteS[n-1]), 3.5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle=cInk3; ctx.font='10px '+css.getPropertyValue('--mono');
+  ctx.textAlign='left'; ctx.fillText('hace '+n+' días', padL, h-4);
+  ctx.textAlign='right'; ctx.fillText('hoy', w-padR, h-4);
 
-  /* punto final destacado */
-  ctx.fillStyle = cAcc;
-  ctx.beginPath(); ctx.arc(x(27), y(acuteS[27]), 3.5, 0, Math.PI*2); ctx.fill();
-
-  ctx.fillStyle = cInk3; ctx.font = '10px ' + css.getPropertyValue('--mono');
-  ctx.textAlign = 'left';  ctx.fillText('hace 28 días', padL, h-4);
-  ctx.textAlign = 'right'; ctx.fillText('hoy', w-padR, h-4);
-
-  chartData = {hist, acuteS, chronS, x, padL, plotW};
-}
-
-/* tooltip del gráfico */
-function hookChart(){
-  const cv = $('chart'), tip = $('tip');
-  const move = ev => {
+  chartData = {hist, x, padL, plotW, n};
+  const tip = el('tip');
+  const move = ev=>{
     if(!chartData) return;
     const r = cv.getBoundingClientRect();
-    const px = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
-    const i = clamp(Math.floor((px - chartData.padL)/(chartData.plotW/28)), 0, 27);
-    const d = chartData.hist[i];
-    tip.style.opacity = '1';
-    tip.style.left = chartData.x(i) + 'px';
-    tip.style.top = '-2px';
-    tip.textContent = DOW[d.date.getDay()] + ' ' + d.date.getDate() + '/' + (d.date.getMonth()+1)
-      + ' · ' + (d.load ? fmt(d.load) + ' UA (' + d.min + ' min × RPE ' + d.rpe + ')' : 'descanso');
+    const px = (ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+    const i = clamp(Math.floor((px-chartData.padL)/(chartData.plotW/chartData.n)), 0, chartData.n-1);
+    const d = chartData.hist[i], dt = parseDate(d.date);
+    tip.style.opacity='1'; tip.style.left=chartData.x(i)+'px'; tip.style.top='-2px';
+    const ses = d.sessions && d.sessions[0];
+    tip.textContent = DOW[dt.getDay()]+' '+dt.getDate()+'/'+(dt.getMonth()+1)+' · '
+      + (d.totalLoadAu ? fmt(d.totalLoadAu)+' UA ('+ses.durationMin+' min × RPE '+ses.sessionRpe+')' : 'descanso');
   };
   cv.addEventListener('pointermove', move);
   cv.addEventListener('pointerdown', move);
-  cv.addEventListener('pointerleave', () => tip.style.opacity = '0');
+  cv.addEventListener('pointerleave', ()=> tip.style.opacity='0');
 }
-
-/* ══════════════ acciones ══════════════ */
-function advance(load, min, rpe){
-  const c = checkin();
-  const A = S.adjusted;
-  S.decisions.unshift({
-    kind: load>0 ? 'session_executed' : 'rest_day',
-    when: new Date(S.hist[S.hist.length-1].date),
-    act: A.band.vol !== 1,
-    rules: A.F.map(f=>f.k).concat(['READINESS_'+A.band.key.toUpperCase()]),
-    why: load>0
-      ? 'Sesión registrada: ' + min + ' min × sRPE ' + rpe + ' = ' + fmt(load) + ' UA. ' + A.band.say
-      : 'Día sin entrenar registrado. ' + A.band.say,
-    completeness: A.R.completeness
-  });
-
-  const prev = S.hist[S.hist.length-1];
-  prev.hrv = c.hrv; prev.sleep = c.sleepH;
-  const next = new Date(prev.date); next.setDate(next.getDate()+1);
-  S.hist.push({date:next, load, min, rpe, hrv:c.hrv, sleep:c.sleepH});
-  if(S.hist.length > 90) S.hist.shift();
-  render();
-}
-
-function todaySession(){
-  const A = S.adjusted;
-  const day = A.plan.week[0];
-  if(!day || day.rest) return null;
-  const vol = A.band.vol;
-  if(vol === 0) return {min:30, rpe:3};
-  return {min:Math.round(day.min*vol), rpe:day.rpe};
-}
-
-function init(){
-  S = seed();
-  render();
-}
-
-/* ══════════════ eventos ══════════════ */
-const LBL = {
-  sleepQ:['muy mala','mala','regular','buena','excelente'],
-  fatigue:['agotado','muy cansado','normal','fresco','muy fresco'],
-  soreness:['muy dolorido','dolorido','moderado','leve','sin dolor'],
-  stress:['muy alto','alto','moderado','bajo','muy bajo'],
-  mood:['muy mal','mal','normal','bien','muy bien']
-};
-['sleepQ','fatigue','soreness','stress','mood'].forEach(id => {
-  const el = $(id);
-  const upd = draw => { $(id+'v').textContent = el.value + ' · ' + LBL[id][el.value-1]; if(draw && S) render(); };
-  el.addEventListener('input', () => upd(true));
-  upd(false);
-});
-['sleepH','hrv'].forEach(id => $(id).addEventListener('input', render));
-['sport','goal','level','days','age','squat'].forEach(id =>
-  $(id).addEventListener('change', () => { S = seed(); render(); }));
-
-$('btnTrain').addEventListener('click', () => {
-  const s = todaySession();
-  if(!s){ advance(0,0,0); return; }
-  advance(Math.round(s.min*s.rpe), s.min, s.rpe);
-});
-$('btnRest').addEventListener('click', () => advance(0,0,0));
-
-/* semana dura: 6 días seguidos de carga alta — dispara SPIKE y ACWR alto */
-$('btnBad').addEventListener('click', () => {
-  for(let i=0;i<6;i++){
-    const prev = S.hist[S.hist.length-1];
-    const next = new Date(prev.date); next.setDate(next.getDate()+1);
-    S.hist.push({date:next, load:Math.round(85*8.5), min:85, rpe:8.5,
-                 hrv:4.20 - 0.06*(i+1), sleep:6.2});
-  }
-  S.decisions.unshift({
-    kind:'manual_override', when:new Date(S.hist[S.hist.length-1].date), act:true,
-    rules:['SIMULATED_BLOCK'],
-    why:'Se cargaron seis días seguidos de 85 min a sRPE 8,5 para ver cómo reaccionan las métricas y los guardarraíles.',
-    completeness:100
-  });
-  $('hrv').value = '3.98'; $('sleepH').value = '6.0';
-  $('fatigue').value = 2; $('soreness').value = 2; $('sleepQ').value = 2;
-  ['sleepQ','fatigue','soreness'].forEach(id => $(id+'v').textContent = $(id).value + ' · ' + LBL[id][$(id).value-1]);
-  render();
-});
-$('btnReset').addEventListener('click', () => {
-  $('hrv').value = '4.20'; $('sleepH').value = '7.5';
-  ['sleepQ','fatigue','soreness','stress','mood'].forEach(id => {
-    $(id).value = 4; $(id+'v').textContent = '4 · ' + LBL[id][3];
-  });
-  init();
-});
 
 let rt;
-window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(()=>drawChart(metrics()), 120); });
+window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>drawChart(App.state),120); });
 if(window.matchMedia){
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
-  (mq.addEventListener ? mq.addEventListener.bind(mq,'change') : mq.addListener.bind(mq))(() => drawChart(metrics()));
+  const h = ()=>drawChart(App.state);
+  mq.addEventListener ? mq.addEventListener('change',h) : mq.addListener(h);
 }
 
-hookChart();
-init();
+App.init();
+render();
 })();
 </script>
 </body>
