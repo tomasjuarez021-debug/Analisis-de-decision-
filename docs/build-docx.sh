@@ -4,8 +4,13 @@
 set -euo pipefail
 
 cd "$(dirname "$0")"
-SRC="especificacion-tecnica-v2.md"
-OUT="Especificacion_Tecnica_App_Deportiva_v2.docx"
+# Uso: ./build-docx.sh [archivo.md]   (por defecto, la especificación v2)
+SRC="${1:-especificacion-tecnica-v2.md}"
+case "$SRC" in
+  especificacion-tecnica-v2.md) OUT="Especificacion_Tecnica_App_Deportiva_v2.docx" ;;
+  arquitectura-ais.md)          OUT="Arquitectura_Athlete_Intelligence_System_v1.docx" ;;
+  *)                            OUT="${SRC%.md}.docx" ;;
+esac
 
 pandoc "$SRC" -o "$OUT" \
   --reference-doc=assets/reference.docx \
