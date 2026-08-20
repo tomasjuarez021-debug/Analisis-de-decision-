@@ -1,1535 +1,1167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Análisis de Decisión · Quiz + Machete</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<title>Motor de Decisión Deportiva</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital@0;1&display=swap">
+
 <style>
-:root {
-  --bg: #f5f1e8;
-  --bg-card: #fbf8f0;
-  --ink: #1a1a1a;
-  --ink-soft: #4a4a4a;
-  --ink-faint: #8a8a8a;
-  --rule: #d4c9b0;
-  --accent: #b8431a;
-  --accent-soft: #f0e0d4;
-  --ok: #2d6a4f;
-  --ok-soft: #d8eadc;
-  --err: #99211c;
-  --err-soft: #f5d8d4;
-  --highlight: #f3e5a5;
+:root{
+  --ground:#e9edf2; --surface:#f7f9fb; --surface-2:#ffffff;
+  --line:#c6d2e0; --line-soft:#dbe4ee;
+  --ink:#132030; --ink-2:#455a70; --ink-3:#71879e;
+  --accent:#1f51a8; --accent-2:#3d78d8; --accent-soft:#dce8f9;
+  --ok:#2b7a58; --ok-soft:#d8ece1;
+  --warn:#98670f; --warn-soft:#f2e7cd;
+  --crit:#a83a2c; --crit-soft:#f4dedb;
+  --bar:#4f80cf; --bar-rest:#c2cddb;
+  --shadow:0 1px 2px rgba(19,32,48,.05), 0 10px 26px -16px rgba(19,32,48,.28);
+  --sans:'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --serif:'IBM Plex Serif', Georgia, serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0d151e; --surface:#141e2a; --surface-2:#1b2735;
+    --line:#2c3d51; --line-soft:#243244;
+    --ink:#e7eef6; --ink-2:#a4b5c8; --ink-3:#77889c;
+    --accent:#74a6ff; --accent-2:#9cc0ff; --accent-soft:#152e4c;
+    --ok:#5cbf90; --ok-soft:#123024;
+    --warn:#dda948; --warn-soft:#32270f;
+    --crit:#e5786a; --crit-soft:#371d19;
+    --bar:#5a8ede; --bar-rest:#2b3b4e;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.75);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0d151e; --surface:#141e2a; --surface-2:#1b2735;
+  --line:#2c3d51; --line-soft:#243244;
+  --ink:#e7eef6; --ink-2:#a4b5c8; --ink-3:#77889c;
+  --accent:#74a6ff; --accent-2:#9cc0ff; --accent-soft:#152e4c;
+  --ok:#5cbf90; --ok-soft:#123024;
+  --warn:#dda948; --warn-soft:#32270f;
+  --crit:#e5786a; --crit-soft:#371d19;
+  --bar:#5a8ede; --bar-rest:#2b3b4e;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.75);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--sans); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1200px; margin:0 auto; padding:20px 16px 56px;}
 
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Inter', sans-serif;
-  line-height: 1.6;
-  min-height: 100vh;
-  padding: 24px 16px;
-  background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(180, 150, 100, 0.08) 31px, rgba(180, 150, 100, 0.08) 32px);
+/* ---------- cabecera ---------- */
+.masthead{
+  display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px 24px;
+  padding-bottom:16px; margin-bottom:20px; border-bottom:1px solid var(--line);
+}
+.masthead h1{
+  font-size:clamp(21px,3.4vw,27px); font-weight:600; letter-spacing:-.02em;
+  margin:0 0 3px; text-wrap:balance;
+}
+.masthead p{margin:0; color:var(--ink-2); font-size:13.5px; max-width:60ch;}
+.eyebrow{
+  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--ink-3); margin:0 0 6px;
+}
+.daychip{
+  margin-left:auto; display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:12px; color:var(--ink-2);
+  background:var(--surface); border:1px solid var(--line-soft);
+  border-radius:999px; padding:7px 14px; white-space:nowrap;
+}
+.daychip b{color:var(--ink); font-weight:500;}
+
+/* ---------- rejilla ---------- */
+.shell{display:grid; gap:18px; grid-template-columns:minmax(0,1fr); align-items:start;}
+@media (min-width:1020px){ .shell{grid-template-columns:352px minmax(0,1fr);} }
+.stack{display:grid; gap:18px; align-content:start;}
+
+.card{
+  background:var(--surface); border:1px solid var(--line-soft);
+  border-radius:10px; padding:18px; box-shadow:var(--shadow);
+}
+.card > h2{
+  font-size:15.5px; font-weight:600; margin:0 0 3px; letter-spacing:-.01em;
+}
+.card > .hint{margin:0 0 14px; font-size:12.5px; color:var(--ink-3);}
+
+/* ---------- formularios ---------- */
+.field{display:grid; gap:5px; margin-bottom:13px;}
+.field > label{
+  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--ink-3);
+}
+select, input[type=number]{
+  font-family:var(--sans); font-size:14px; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--line);
+  border-radius:7px; padding:8px 10px; width:100%;
+}
+input[type=number]{font-family:var(--mono); font-variant-numeric:tabular-nums;}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.slider{display:grid; gap:4px; margin-bottom:11px;}
+.slider .top{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+.slider .top span:first-child{
+  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--ink-3);
+}
+.slider .val{font-family:var(--mono); font-size:12px; color:var(--ink-2); text-align:right;}
+input[type=range]{
+  -webkit-appearance:none; appearance:none; width:100%; height:22px;
+  background:transparent; cursor:pointer; margin:0;
+}
+input[type=range]::-webkit-slider-runnable-track{height:4px; border-radius:2px; background:var(--line);}
+input[type=range]::-moz-range-track{height:4px; border-radius:2px; background:var(--line);}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--surface-2); margin-top:-6px;
+}
+input[type=range]::-moz-range-thumb{
+  width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--surface-2);
+}
+:focus-visible{outline:2px solid var(--accent-2); outline-offset:2px;}
+
+.btnrow{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
+button{
+  font-family:var(--sans); font-size:13.5px; font-weight:500;
+  border-radius:7px; padding:9px 14px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface-2); color:var(--ink);
+  transition:background .12s ease, border-color .12s ease;
+}
+button:hover{border-color:var(--accent);}
+button.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+:root[data-theme="dark"] button.primary, :root:not([data-theme="light"]) button.primary{color:#08121e;}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]) button.primary{color:#fff;} }
+button.primary:hover{background:var(--accent-2); border-color:var(--accent-2);}
+button.ghost{background:transparent;}
+
+/* ---------- readiness ---------- */
+.ready{display:grid; gap:18px; grid-template-columns:minmax(0,1fr);}
+@media (min-width:640px){ .ready{grid-template-columns:190px minmax(0,1fr);} }
+.score{
+  display:grid; gap:2px; align-content:center; justify-items:start;
+  padding:14px 16px; border-radius:9px; border:1px solid var(--line-soft);
+  background:var(--surface-2);
+}
+.score .num{
+  font-family:var(--mono); font-size:52px; font-weight:500; line-height:1;
+  letter-spacing:-.03em; font-variant-numeric:tabular-nums;
+}
+.score .of{font-family:var(--mono); font-size:11px; color:var(--ink-3);}
+.band{
+  display:inline-flex; align-items:center; gap:7px; margin-top:9px;
+  font-size:12.5px; font-weight:500; padding:4px 10px; border-radius:999px;
+}
+.band .dot{width:8px; height:8px; border-radius:50%; background:currentColor; flex:none;}
+.band.green{background:var(--ok-soft); color:var(--ok);}
+.band.amber{background:var(--warn-soft); color:var(--warn);}
+.band.red{background:var(--crit-soft); color:var(--crit);}
+
+.comps{display:grid; gap:9px; align-content:start;}
+.comp{display:grid; grid-template-columns:minmax(0,1fr) 44px; gap:3px 10px;}
+.comp .name{grid-area:1/1; font-size:12.5px; color:var(--ink-2);}
+.comp .v{grid-area:1/2;}
+.comp .track{grid-area:2/1/3/3;}
+@media (min-width:600px){
+  .comp{grid-template-columns:152px minmax(0,1fr) 44px; align-items:center;}
+  .comp .name{grid-area:auto; white-space:nowrap;}
+  .comp .v{grid-area:auto;} .comp .track{grid-area:auto;}
+}
+.comp .name em{font-family:var(--mono); font-style:normal; font-size:10.5px; color:var(--ink-3);}
+.track{height:6px; border-radius:3px; background:var(--line-soft); overflow:hidden;}
+.track > i{display:block; height:100%; border-radius:3px; background:var(--accent);}
+.comp .v{
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-2);
+  text-align:right; font-variant-numeric:tabular-nums;
+}
+.missing{opacity:.5;}
+
+/* ---------- métricas ---------- */
+.metrics{display:grid; gap:1px; grid-template-columns:repeat(2,1fr);
+  background:var(--line-soft); border:1px solid var(--line-soft); border-radius:9px; overflow:hidden;}
+@media (min-width:560px){ .metrics{grid-template-columns:repeat(3,1fr);} }
+@media (min-width:900px){ .metrics{grid-template-columns:repeat(4,1fr);} }
+.metric{background:var(--surface-2); padding:12px 14px; display:grid; gap:2px;}
+.metric .k{
+  font-family:var(--mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--ink-3);
+}
+.metric .v{
+  font-family:var(--mono); font-size:20px; font-weight:500;
+  font-variant-numeric:tabular-nums; letter-spacing:-.01em;
+}
+.metric .n{font-size:11.5px; color:var(--ink-3);}
+.metric .v.flag-warn{color:var(--warn);} .metric .v.flag-crit{color:var(--crit);}
+
+/* ---------- gráfico ---------- */
+.chartwrap{position:relative; margin-top:16px;}
+canvas{width:100%; height:150px; display:block; touch-action:none;}
+.legend{
+  display:flex; flex-wrap:wrap; gap:14px; margin-top:8px;
+  font-size:11.5px; color:var(--ink-3);
+}
+.legend span{display:inline-flex; align-items:center; gap:6px;}
+.swatch{width:10px; height:10px; border-radius:2px; background:var(--bar); flex:none;}
+.swatch.line{height:0; width:14px; border-top:2px solid var(--accent); border-radius:0;}
+.swatch.line.dash{border-top-style:dashed; border-color:var(--ink-3);}
+.tip{
+  position:absolute; pointer-events:none; opacity:0; transform:translate(-50%,-100%);
+  background:var(--ink); color:var(--ground); font-family:var(--mono); font-size:11px;
+  padding:5px 8px; border-radius:6px; white-space:nowrap; transition:opacity .1s ease; z-index:5;
 }
 
-.wrapper {
-  max-width: 880px;
-  margin: 0 auto;
+/* ---------- plan ---------- */
+.week{display:grid; gap:8px;}
+.day{
+  display:grid; grid-template-columns:52px minmax(0,1fr); gap:12px;
+  padding:11px 12px; border:1px solid var(--line-soft); border-radius:8px;
+  background:var(--surface-2);
 }
-
-header {
-  text-align: center;
-  margin-bottom: 32px;
-  padding: 24px 0 16px;
-  border-bottom: 1px solid var(--rule);
+.day.today{border-color:var(--accent); box-shadow:inset 3px 0 0 var(--accent);}
+.day .dow{
+  font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.08em; color:var(--ink-3); padding-top:2px;
 }
-
-header h1 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: clamp(26px, 4.5vw, 36px);
-  letter-spacing: -0.02em;
-  margin-bottom: 8px;
+.day.today .dow{color:var(--accent);}
+.day .title{font-size:13.5px; font-weight:500; margin-bottom:3px;}
+.day .meta{
+  font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px;
 }
-
-header .sub {
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-soft);
-  font-size: 14px;
-  font-weight: 400;
+.day .meta s{color:var(--ink-3); opacity:.7;}
+.items{margin:0; padding:0; list-style:none; display:grid; gap:2px;}
+.items li{
+  font-size:12.5px; color:var(--ink-2);
+  display:grid; grid-template-columns:minmax(0,1fr); gap:0 12px;
+  padding:2px 0; border-bottom:1px solid var(--line-soft);
 }
-
-header .author {
-  margin-top: 12px;
-  color: var(--ink-faint);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.items li:last-child{border-bottom:0;}
+.items li .p{font-family:var(--mono); font-size:11.5px; color:var(--ink-3);}
+@media (min-width:600px){
+  .items li{grid-template-columns:minmax(0,1fr) auto; padding:0; border-bottom:0;}
+  .items li .p{white-space:nowrap;}
 }
-
-/* Tabs */
-.tabs {
-  display: flex;
-  gap: 4px;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 32px;
+.chip{
+  display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.05em;
+  text-transform:uppercase; padding:2px 7px; border-radius:999px;
+  background:var(--accent-soft); color:var(--accent);
 }
+.chip.warn{background:var(--warn-soft); color:var(--warn);}
+.chip.crit{background:var(--crit-soft); color:var(--crit);}
+.chip.ok{background:var(--ok-soft); color:var(--ok);}
+.rest{color:var(--ink-3); font-size:13px; padding-top:2px;}
 
-.tab {
-  background: none;
-  border: none;
-  padding: 12px 24px;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink-faint);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.15s;
+/* ---------- guardarraíles ---------- */
+.guards{display:grid; gap:7px;}
+.guard{
+  display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:baseline;
+  font-size:12.5px; padding:8px 10px; border-radius:7px; background:var(--surface-2);
+  border:1px solid var(--line-soft);
 }
+.guard .mark{font-family:var(--mono); font-size:12px; font-weight:500;}
+.guard.pass .mark{color:var(--ok);} .guard.fail .mark{color:var(--crit);}
+.guard .lim{font-family:var(--mono); font-size:11px; color:var(--ink-3); white-space:nowrap;}
 
-.tab:hover { color: var(--ink-soft); }
-
-.tab.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+/* ---------- decisiones ---------- */
+.log{display:grid; gap:10px;}
+.entry{border-left:2px solid var(--line); padding:2px 0 2px 13px;}
+.entry.act{border-left-color:var(--accent);}
+.entry .head{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:baseline;
+  font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
+  text-transform:uppercase; letter-spacing:.07em; margin-bottom:3px;
 }
-
-.panel { display: none; }
-.panel.active { display: block; }
-
-/* Guide selector */
-.guide-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 24px;
-  padding: 8px;
-  background: var(--bg-card);
-  border-radius: 8px;
-  border: 1px solid var(--rule);
+.entry .why{font-family:var(--serif); font-size:14px; color:var(--ink); margin:0 0 4px;}
+.entry .rules{display:flex; flex-wrap:wrap; gap:6px;}
+.entry .rules code{
+  font-family:var(--mono); font-size:10.5px; background:var(--surface-2);
+  border:1px solid var(--line-soft); border-radius:4px; padding:1px 6px; color:var(--ink-2);
 }
+.empty{color:var(--ink-3); font-size:13px; font-style:italic;}
 
-.guide-tab {
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 8px 14px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-soft);
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.15s;
+/* ---------- pie ---------- */
+footer{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--ink-3); max-width:78ch;
 }
-
-.guide-tab:hover { background: var(--accent-soft); }
-
-.guide-tab.active {
-  background: var(--accent);
-  color: white;
-}
-
-.guide-tab .score {
-  font-size: 11px;
-  opacity: 0.85;
-  margin-left: 4px;
-}
-
-/* Quiz */
-.guide-panel { display: none; }
-.guide-panel.active { display: block; }
-
-.guide-header {
-  background: var(--bg-card);
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
-}
-
-.guide-header h2 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: -0.01em;
-  margin-bottom: 6px;
-}
-
-.guide-header p {
-  color: var(--ink-soft);
-  font-size: 13px;
-  font-family: 'Inter', sans-serif;
-}
-
-.question {
-  background: var(--bg-card);
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  padding: 20px 24px;
-  margin-bottom: 16px;
-}
-
-.question-header {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.q-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.q-type {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--ink-faint);
-  padding: 2px 8px;
-  border: 1px solid var(--rule);
-  border-radius: 3px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.q-text {
-  font-size: 15px;
-  margin-bottom: 14px;
-  line-height: 1.55;
-}
-
-.q-text code {
-  font-family: 'JetBrains Mono', monospace;
-  background: rgba(180, 150, 100, 0.15);
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 13px;
-}
-
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.option {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
-  background: var(--bg);
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.15s;
-  text-align: left;
-  font-family: inherit;
-  color: var(--ink);
-}
-
-.option:hover:not(:disabled) {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-}
-
-.option .letter {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-faint);
-  flex-shrink: 0;
-  min-width: 14px;
-}
-
-.option.correct {
-  background: var(--ok-soft);
-  border-color: var(--ok);
-}
-
-.option.correct .letter {
-  color: var(--ok);
-}
-
-.option.wrong {
-  background: var(--err-soft);
-  border-color: var(--err);
-}
-
-.option.wrong .letter {
-  color: var(--err);
-}
-
-.option:disabled {
-  cursor: default;
-}
-
-.explanation {
-  margin-top: 12px;
-  padding: 12px 14px;
-  background: var(--highlight);
-  border-left: 3px solid var(--accent);
-  border-radius: 4px;
-  font-size: 13.5px;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.55;
-  color: var(--ink);
-  display: none;
-}
-
-.explanation.show { display: block; }
-
-.explanation strong { font-weight: 700; }
-
-/* Machete (cheat sheet) */
-.cheat-section {
-  background: var(--bg-card);
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  padding: 24px 28px;
-  margin-bottom: 20px;
-}
-
-.cheat-section h2 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 22px;
-  letter-spacing: -0.01em;
-  margin-bottom: 4px;
-}
-
-.cheat-section .tag {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-}
-
-.cheat-section h3 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  margin-top: 20px;
-  margin-bottom: 8px;
-  color: var(--ink);
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--rule);
-}
-
-.cheat-section h4 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  margin-top: 14px;
-  margin-bottom: 6px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.cheat-section p {
-  font-size: 14px;
-  margin-bottom: 10px;
-  color: var(--ink-soft);
-}
-
-.formula {
-  background: var(--bg);
-  border-left: 3px solid var(--accent);
-  padding: 10px 14px;
-  margin: 8px 0 12px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  overflow-x: auto;
-  border-radius: 4px;
-}
-
-.formula .note {
-  display: block;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--ink-faint);
-  margin-top: 4px;
-}
-
-.steps {
-  counter-reset: step;
-  list-style: none;
-  margin: 8px 0 12px;
-  padding-left: 0;
-}
-
-.steps li {
-  counter-increment: step;
-  position: relative;
-  padding: 6px 0 6px 32px;
-  font-size: 14px;
-}
-
-.steps li::before {
-  content: counter(step);
-  position: absolute;
-  left: 0;
-  top: 6px;
-  width: 22px;
-  height: 22px;
-  background: var(--accent);
-  color: white;
-  border-radius: 50%;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-table.cheat {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0;
-  font-size: 13px;
-}
-
-table.cheat th, table.cheat td {
-  border: 1px solid var(--rule);
-  padding: 8px 12px;
-  text-align: left;
-}
-
-table.cheat th {
-  background: var(--accent-soft);
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.callout {
-  background: var(--highlight);
-  border-left: 3px solid var(--accent);
-  padding: 10px 14px;
-  margin: 10px 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
-  line-height: 1.55;
-  border-radius: 4px;
-}
-
-.callout strong { font-weight: 700; }
-
-/* Progress */
-.progress {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  font-size: 12px;
-  color: var(--ink-faint);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.progress-bar {
-  flex: 1;
-  height: 4px;
-  background: var(--rule);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--accent);
-  transition: width 0.3s;
-  width: 0%;
-}
-
-.reset-btn {
-  background: transparent;
-  border: 1px solid var(--rule);
-  color: var(--ink-soft);
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.reset-btn:hover {
-  background: var(--err-soft);
-  border-color: var(--err);
-  color: var(--err);
-}
-
-footer {
-  margin-top: 48px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule);
-  text-align: center;
-  font-size: 12px;
-  color: var(--ink-faint);
-  font-family: 'Inter', sans-serif;
-}
-
-@media (max-width: 600px) {
-  body { padding: 16px 10px; }
-  .question, .cheat-section { padding: 16px; }
-  .tab { padding: 10px 14px; font-size: 13px; }
-  .guide-tab { padding: 6px 10px; font-size: 12px; }
-}
+footer p{margin:0 0 7px;}
+footer b{color:var(--ink-2); font-weight:500;}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
 </head>
 <body>
-
-<div class="wrapper">
-
-<header>
-  <h1>Análisis de Decisión</h1>
-  <div class="sub">Quiz de repaso + machete de fórmulas · TP1 al TP5</div>
-  <div class="author">Preparación de parcial</div>
-</header>
-
-<div class="tabs">
-  <button class="tab active" data-tab="quiz">Quiz · 50 preguntas</button>
-  <button class="tab" data-tab="machete">Machete · Fórmulas</button>
-</div>
-
-<!-- ================== QUIZ ================== -->
-<div id="quiz" class="panel active">
-
-  <div class="progress">
-    <span id="progress-text">0 / 50 respondidas</span>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <button class="reset-btn" onclick="resetAll()">Reiniciar</button>
-  </div>
-
-  <div class="guide-tabs">
-    <button class="guide-tab active" data-guide="1">TP1 <span class="score" id="score-1"></span></button>
-    <button class="guide-tab" data-guide="2">TP2 <span class="score" id="score-2"></span></button>
-    <button class="guide-tab" data-guide="3">TP3 <span class="score" id="score-3"></span></button>
-    <button class="guide-tab" data-guide="4">TP4 <span class="score" id="score-4"></span></button>
-    <button class="guide-tab" data-guide="5">TP5 <span class="score" id="score-5"></span></button>
-  </div>
-
-  <!-- ============ TP1 ============ -->
-  <div class="guide-panel active" data-guide="1">
-    <div class="guide-header">
-      <h2>TP1 · Decisiones bajo incertidumbre</h2>
-      <p>Maximin · Maximax · Hurwicz · Savage · Laplace</p>
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Prototipo · Especificación Técnica v2.0</p>
+      <h1>Motor de Decisión Deportiva</h1>
+      <p>Implementación ejecutable de los capítulos 6 y 7: genera el plan, calcula readiness y carga, ajusta la sesión del día y deja registrada cada decisión con su motivo.</p>
     </div>
-    <div id="questions-1"></div>
-  </div>
+    <div class="daychip"><span>Día <b id="dayNum">1</b></span><span id="dateLbl"></span></div>
+  </header>
 
-  <!-- ============ TP2 ============ -->
-  <div class="guide-panel" data-guide="2">
-    <div class="guide-header">
-      <h2>TP2 · Decisiones bajo riesgo (VME)</h2>
-      <p>Matriz de pagos · VME · Costo medio esperado · Cruces de rectas</p>
-    </div>
-    <div id="questions-2"></div>
-  </div>
+  <div class="shell">
+    <!-- ============ columna de control ============ -->
+    <div class="stack">
+      <section class="card">
+        <h2>Atleta</h2>
+        <p class="hint">Define el plan: deporte, objetivo y disponibilidad.</p>
 
-  <!-- ============ TP3 ============ -->
-  <div class="guide-panel" data-guide="3">
-    <div class="guide-header">
-      <h2>TP3 · Utilidad esperada</h2>
-      <p>Curvas de utilidad · Von Neumann-Morgenstern · Aversión al riesgo</p>
-    </div>
-    <div id="questions-3"></div>
-  </div>
+        <div class="field">
+          <label for="sport">Deporte</label>
+          <select id="sport">
+            <option value="rugby">Rugby</option>
+            <option value="football">Fútbol</option>
+            <option value="hockey">Hockey</option>
+            <option value="running">Running</option>
+            <option value="strength">Entrenamiento de fuerza</option>
+          </select>
+        </div>
 
-  <!-- ============ TP4 ============ -->
-  <div class="guide-panel" data-guide="4">
-    <div class="guide-header">
-      <h2>TP4 · Valor de la información</h2>
-      <p>VEIP · GEIP · Costo del riesgo · Información perfecta</p>
-    </div>
-    <div id="questions-4"></div>
-  </div>
+        <div class="field">
+          <label for="goal">Objetivo principal</label>
+          <select id="goal">
+            <option value="sport_performance">Rendimiento deportivo</option>
+            <option value="strength">Fuerza máxima</option>
+            <option value="hypertrophy">Hipertrofia</option>
+            <option value="endurance">Resistencia</option>
+            <option value="return_to_play">Retorno al juego</option>
+          </select>
+        </div>
 
-  <!-- ============ TP5 ============ -->
-  <div class="guide-panel" data-guide="5">
-    <div class="guide-header">
-      <h2>TP5 · Árboles de decisión</h2>
-      <p>Nodos de decisión y azar · Rollback · Decisiones encadenadas</p>
-    </div>
-    <div id="questions-5"></div>
-  </div>
+        <div class="row2">
+          <div class="field">
+            <label for="level">Nivel</label>
+            <select id="level">
+              <option value="beginner">Principiante</option>
+              <option value="intermediate" selected>Intermedio</option>
+              <option value="advanced">Avanzado</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="days">Días/semana</label>
+            <select id="days">
+              <option>3</option><option selected>4</option><option>5</option><option>6</option>
+            </select>
+          </div>
+        </div>
 
-</div>
+        <div class="row2">
+          <div class="field">
+            <label for="age">Edad</label>
+            <input type="number" id="age" value="24" min="14" max="70">
+          </div>
+          <div class="field">
+            <label for="squat">1RM sentadilla (kg)</label>
+            <input type="number" id="squat" value="130" min="0" max="400" step="2.5">
+          </div>
+        </div>
+      </section>
 
-<!-- ================== MACHETE ================== -->
-<div id="machete" class="panel">
+      <section class="card">
+        <h2>Check-in de hoy</h2>
+        <p class="hint">Lo que el atleta responde en 20 segundos al despertarse. Todo se recalcula al instante.</p>
 
-  <!-- TP1 -->
-  <div class="cheat-section">
-    <span class="tag">TP1</span>
-    <h2>Decisiones bajo incertidumbre</h2>
-    <p>No conocés las probabilidades de los futuros. Aplicás criterios subjetivos según tu perfil de decisor.</p>
+        <div class="row2">
+          <div class="field">
+            <label for="sleepH">Sueño (h)</label>
+            <input type="number" id="sleepH" value="7.5" min="0" max="14" step="0.1">
+          </div>
+          <div class="field">
+            <label for="hrv">ln rMSSD</label>
+            <input type="number" id="hrv" value="4.20" min="2" max="6" step="0.01">
+          </div>
+        </div>
 
-    <h4>Maximin (pesimista)</h4>
-    <div class="formula">
-      A* = argmax<sub>i</sub> ( min<sub>j</sub> a<sub>ij</sub> )
-      <span class="note">De cada fila tomá el mínimo. Quedate con el máximo de los mínimos.</span>
-    </div>
+        <div class="slider">
+          <div class="top"><span>Calidad de sueño</span><span class="val" id="sleepQv">4 · buena</span></div>
+          <input type="range" id="sleepQ" min="1" max="5" value="4">
+        </div>
+        <div class="slider">
+          <div class="top"><span>Fatiga</span><span class="val" id="fatiguev">4 · fresco</span></div>
+          <input type="range" id="fatigue" min="1" max="5" value="4">
+        </div>
+        <div class="slider">
+          <div class="top"><span>Dolor muscular</span><span class="val" id="sorenessv">4 · leve</span></div>
+          <input type="range" id="soreness" min="1" max="5" value="4">
+        </div>
+        <div class="slider">
+          <div class="top"><span>Estrés</span><span class="val" id="stressv">4 · bajo</span></div>
+          <input type="range" id="stress" min="1" max="5" value="4">
+        </div>
+        <div class="slider">
+          <div class="top"><span>Ánimo</span><span class="val" id="moodv">4 · bien</span></div>
+          <input type="range" id="mood" min="1" max="5" value="4">
+        </div>
 
-    <h4>Maximax (optimista)</h4>
-    <div class="formula">
-      A* = argmax<sub>i</sub> ( max<sub>j</sub> a<sub>ij</sub> )
-      <span class="note">De cada fila tomá el máximo. Quedate con el máximo de los máximos.</span>
-    </div>
-
-    <h4>Hurwicz (α = coeficiente de optimismo)</h4>
-    <div class="formula">
-      H<sub>i</sub> = α · max<sub>j</sub> + (1−α) · min<sub>j</sub>
-      <span class="note">α=0 → Maximin · α=1 → Maximax · Elegí la fila con mayor H.</span>
-    </div>
-
-    <h4>Savage (arrepentimiento)</h4>
-    <ol class="steps">
-      <li>Construir matriz de arrepentimientos: r<sub>ij</sub> = max(columna j) − a<sub>ij</sub></li>
-      <li>De cada fila tomar el máximo arrepentimiento</li>
-      <li>Elegir la fila con el mínimo de esos máximos</li>
-    </ol>
-
-    <h4>Laplace (razón insuficiente)</h4>
-    <div class="formula">
-      L<sub>i</sub> = (1/n) · Σ a<sub>ij</sub>
-      <span class="note">Asume probabilidades iguales para todos los futuros (1/n cada uno).</span>
+        <div class="btnrow">
+          <button class="primary" id="btnTrain">Registrar entrenamiento</button>
+          <button id="btnRest">Día sin entrenar</button>
+        </div>
+        <div class="btnrow">
+          <button class="ghost" id="btnBad">Simular semana dura</button>
+          <button class="ghost" id="btnReset">Reiniciar</button>
+        </div>
+      </section>
     </div>
 
-    <h3>Gráfico de Hurwicz (rectas)</h3>
-    <p>Cada alternativa es una recta: en α=0 vale su mínimo, en α=1 vale su máximo. La alternativa óptima en cada α es la recta más arriba. Los cruces son los límites de intervalo donde gana cada alternativa.</p>
-  </div>
+    <!-- ============ columna de resultados ============ -->
+    <div class="stack">
+      <section class="card">
+        <h2>Readiness de hoy</h2>
+        <p class="hint">Índice compuesto 0–100 (§7.7). Los pesos de los componentes sin dato se redistribuyen; nunca se imputa un valor.</p>
+        <div class="ready">
+          <div class="score">
+            <div class="num" id="rScore">—</div>
+            <div class="of">sobre 100</div>
+            <div class="band" id="rBand"><span class="dot"></span><span id="rBandTxt">—</span></div>
+          </div>
+          <div class="comps" id="comps"></div>
+        </div>
+      </section>
 
-  <!-- TP2 -->
-  <div class="cheat-section">
-    <span class="tag">TP2</span>
-    <h2>Decisiones bajo riesgo (VME)</h2>
-    <p>Conocés probabilidades. Calculás promedios ponderados.</p>
+      <section class="card">
+        <h2>Estado de carga</h2>
+        <p class="hint">Carga interna en unidades arbitrarias: duración × sRPE (§7.1).</p>
+        <div class="metrics" id="metrics"></div>
 
-    <h4>VME (Valor Medio Esperado)</h4>
-    <div class="formula">
-      VME(A<sub>i</sub>) = Σ<sub>j</sub> P(F<sub>j</sub>) · a<sub>ij</sub>
-      <span class="note">Elegí la alternativa con MAYOR VME (si son ganancias) o MENOR CME (si son costos).</span>
-    </div>
+        <div class="chartwrap">
+          <canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días, con carga aguda y crónica"></canvas>
+          <div class="tip" id="tip"></div>
+        </div>
+        <div class="legend">
+          <span><i class="swatch"></i>Carga diaria (UA)</span>
+          <span><i class="swatch line"></i>Aguda 7 d</span>
+          <span><i class="swatch line dash"></i>Crónica 28 d</span>
+        </div>
+      </section>
 
-    <h4>Matriz de pagos típica (oferta/demanda)</h4>
-    <div class="formula">
-      Pago = Precio · min(A, F) − Costo · A + Recupero · max(0, A − F)
-      <span class="note">A = lo que pediste, F = demanda real. Vendés el mínimo, pagás todo lo pedido.</span>
-    </div>
+      <section class="card">
+        <h2>Microciclo</h2>
+        <p class="hint" id="mesoHint">—</p>
+        <div class="week" id="week"></div>
+      </section>
 
-    <h4>Matriz de costos (stock + faltante)</h4>
-    <div class="formula">
-      Costo = c_compra · A + c_penalización · max(0, F − A)
-      <span class="note">Pagás por todo lo pedido + penalización por faltante.</span>
-    </div>
+      <section class="card">
+        <h2>Guardarraíles</h2>
+        <p class="hint">Reglas duras de §6.6. Si una falla, el plan no se publica sin revisión humana.</p>
+        <div class="guards" id="guards"></div>
+      </section>
 
-    <h3>Cruce de rectas (varianza de p)</h3>
-    <p>Cuando p es variable y querés intervalos donde cada alternativa gana:</p>
-    <ol class="steps">
-      <li>Escribir VME de cada alternativa como recta: VME = pago(p=0) + p · [pago(p=1) − pago(p=0)]</li>
-      <li>Identificar ganadores en p=0 y p=1</li>
-      <li>Igualar VMEs de dos alternativas para hallar el cruce</li>
-      <li>Verificar que ninguna otra alternativa esté más arriba en ese cruce</li>
-    </ol>
-
-    <div class="callout">
-      <strong>Alternativa dominada:</strong> aquella que nunca es la mejor en ningún rango de p. Aparecen "tapadas" por otra recta en todo el rango [0, 1].
-    </div>
-  </div>
-
-  <!-- TP3 -->
-  <div class="cheat-section">
-    <span class="tag">TP3</span>
-    <h2>Utilidad esperada</h2>
-    <p>El decisor no maximiza dinero, maximiza una valoración subjetiva (utilidad). Útil cuando hay aversión o propensión al riesgo.</p>
-
-    <h4>UE (Utilidad Esperada)</h4>
-    <div class="formula">
-      UE(A<sub>i</sub>) = Σ<sub>j</sub> P(F<sub>j</sub>) · U(a<sub>ij</sub>)
-      <span class="note">Misma estructura que VME, pero aplicás la función U(x) antes de promediar.</span>
-    </div>
-
-    <h4>Indiferencia → ecuación</h4>
-    <div class="formula">
-      "Me da igual A o B" ⟹ U(A) = UE(B)
-      <span class="note">Cada frase de indiferencia te permite despejar una utilidad desconocida.</span>
-    </div>
-
-    <h3>Tipos de decisor (forma de U(x))</h3>
-    <table class="cheat">
-      <tr><th>Perfil</th><th>Curva</th><th>U(intermedio)</th></tr>
-      <tr><td>Averso al riesgo</td><td>Cóncava (↗ se aplana)</td><td>Mayor que neutral</td></tr>
-      <tr><td>Neutral</td><td>Recta</td><td>Proporcional</td></tr>
-      <tr><td>Propenso al riesgo</td><td>Convexa (↗ se acelera)</td><td>Menor que neutral</td></tr>
-    </table>
-
-    <h4>Utilidad neutral (interpolación lineal)</h4>
-    <div class="formula">
-      U_neutral(x) = (x − mín) / (máx − mín)
-      <span class="note">Compará la U real del decisor con esta para clasificarlo.</span>
-    </div>
-
-    <h4>Equivalente cierto</h4>
-    <p>Monto seguro que da la misma utilidad que una lotería. Si U(x) = √x y UE(lotería) = 110, entonces el equivalente cierto x cumple √x = 110 → x = 12.100.</p>
-
-    <div class="callout">
-      <strong>Supuesto monotónico:</strong> Von Neumann-Morgenstern asume que la utilidad siempre crece con el dinero. Lo que varía es el ritmo, no la dirección.
+      <section class="card">
+        <h2>Log de decisiones</h2>
+        <p class="hint">Cada cambio guarda sus entradas, la regla disparada y la explicación para el atleta (§4.11).</p>
+        <div class="log" id="log"></div>
+      </section>
     </div>
   </div>
 
-  <!-- TP4 -->
-  <div class="cheat-section">
-    <span class="tag">TP4</span>
-    <h2>Valor de la información</h2>
-    <p>Cuánto pagarías por reducir o eliminar la incertidumbre.</p>
-
-    <h4>GEIP (Ganancia con Información Perfecta)</h4>
-    <div class="formula">
-      GEIP = Σ<sub>j</sub> P(F<sub>j</sub>) · max(columna j)
-      <span class="note">En cada columna agarrás el mejor pago (lo que harías si supieras el futuro).</span>
-    </div>
-
-    <h4>VEIP / Costo del riesgo</h4>
-    <div class="formula">
-      VEIP = GEIP − VME*
-      <span class="note">VME* es el mejor VME (sin info). Es lo máximo que pagarías por un oráculo perfecto.</span>
-    </div>
-
-    <h3>Con costos (en vez de ganancias)</h3>
-    <table class="cheat">
-      <tr><th>Concepto</th><th>Ganancias</th><th>Costos</th></tr>
-      <tr><td>Decisión óptima</td><td>Máx VME</td><td>Mín CME</td></tr>
-      <tr><td>Info perfecta</td><td>Máx por columna</td><td>Mín por columna</td></tr>
-      <tr><td>VEIP / Costo del riesgo</td><td>GEIP − VME*</td><td>CME* − CEIP</td></tr>
-    </table>
-
-    <div class="callout">
-      <strong>VEIP = Costo del riesgo:</strong> son dos nombres para lo mismo. Lo que ganarías con información = lo que perdés por no tenerla.
-    </div>
-  </div>
-
-  <!-- TP5 -->
-  <div class="cheat-section">
-    <span class="tag">TP5</span>
-    <h2>Árboles de decisión</h2>
-    <p>Representan secuencias temporales de decisiones y eventos de azar. Útiles cuando hay decisiones encadenadas o información intermedia.</p>
-
-    <h4>Convenciones</h4>
-    <table class="cheat">
-      <tr><th>Símbolo</th><th>Tipo</th><th>Quién decide</th></tr>
-      <tr><td>□ Cuadrado</td><td>Nodo de decisión</td><td>Vos</td></tr>
-      <tr><td>○ Círculo</td><td>Nodo de azar</td><td>La naturaleza</td></tr>
-      <tr><td>△ Triángulo</td><td>Nodo terminal</td><td>Resultado final</td></tr>
-    </table>
-
-    <h4>Rollback (inducción hacia atrás)</h4>
-    <ol class="steps">
-      <li>Empezar desde los nodos terminales (extremo derecho)</li>
-      <li>En cada nodo de azar: calcular VME = Σ prob × valor</li>
-      <li>En cada nodo de decisión: quedarse con la rama de mayor VME (o menor CME si son costos)</li>
-      <li>Subir hasta la decisión inicial</li>
-    </ol>
-
-    <h3>Pasos para resolver un problema con árbol</h3>
-    <ol class="steps">
-      <li>Identificar la secuencia temporal de decisiones y nodos de azar</li>
-      <li>Listar los pagos terminales (ganancia o costo de cada combinación final)</li>
-      <li>Dibujar el árbol de izquierda (decisión inicial) a derecha (terminales)</li>
-      <li>Aplicar rollback de derecha a izquierda</li>
-      <li>Identificar la estrategia óptima leyendo el árbol de izquierda a derecha</li>
-    </ol>
-
-    <div class="callout">
-      <strong>¿Cuándo árbol y no matriz?</strong> Cuando hay más de una decisión, o cuando hay información intermedia que llega entre decisiones. Si la decisión es única, una matriz alcanza.
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  Material de estudio · Análisis de Decisión · Mayo 2026
-</footer>
-
-<!-- Modal de reset -->
-<div id="reset-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:var(--bg-card); border:1px solid var(--rule); border-radius:8px; padding:24px 28px; max-width:380px; width:100%;">
-    <h3 style="font-family:'Inter',sans-serif; font-size:20px; font-weight:500; margin-bottom:8px;">¿Reiniciar el quiz?</h3>
-    <p style="color:var(--ink-soft); font-size:14px; margin-bottom:20px;">Se borrarán todas tus respuestas. Esta acción no se puede deshacer.</p>
-    <div style="display:flex; gap:8px; justify-content:flex-end;">
-      <button onclick="cancelReset()" style="background:transparent; border:1px solid var(--rule); color:var(--ink-soft); padding:8px 16px; border-radius:4px; font-family:inherit; font-size:13px; cursor:pointer;">Cancelar</button>
-      <button onclick="confirmReset()" style="background:var(--err); border:1px solid var(--err); color:white; padding:8px 16px; border-radius:4px; font-family:inherit; font-size:13px; cursor:pointer;">Sí, reiniciar</button>
-    </div>
-  </div>
-</div>
-
+  <footer>
+    <p><b>Qué es esto.</b> Un prototipo del motor descrito en la especificación técnica v2.0. Las fórmulas son las del documento: sRPE, ACWR por media móvil y EWMA, monotonía y strain de Foster, modelo fitness–fatiga de Banister e índice de readiness ponderado. El historial inicial son 42 días sintéticos, generados para que las métricas tengan sentido desde el primer momento.</p>
+    <p><b>Qué no es.</b> No es un dispositivo médico y no predice lesiones: las banderas son señales de gestión de carga, no probabilidades. No hay backend, cuentas ni datos reales — todo corre en esta página.</p>
+  </footer>
 </div>
 
 <script>
-// ====== DATA: 50 PREGUNTAS ======
-const questions = {
-  1: [ // TP1 - Incertidumbre
-    {
-      type: "teórica",
-      q: "¿Cuál es la diferencia fundamental entre decisión bajo <b>incertidumbre</b> y bajo <b>riesgo</b>?",
-      opts: [
-        "En incertidumbre los pagos son negativos; en riesgo son positivos",
-        "En incertidumbre no se conocen las probabilidades de los futuros; en riesgo sí",
-        "En incertidumbre hay una sola alternativa; en riesgo varias",
-        "En incertidumbre se usa Savage; en riesgo VME"
-      ],
-      correct: 1,
-      explain: "La distinción es la <b>información sobre probabilidades</b>. En incertidumbre no las conocés, en riesgo sí. Por eso en incertidumbre aplicás criterios subjetivos (Maximin, Maximax, etc.) y en riesgo calculás VME."
-    },
-    {
-      type: "práctica",
-      q: "Matriz de ganancias: A₁(20, 50, 10), A₂(30, 25, 35), A₃(15, 60, 20). Aplicando <b>Maximin</b>, ¿qué alternativa elegir?",
-      opts: [
-        "A₁ (mínimo = 10)",
-        "A₂ (mínimo = 25)",
-        "A₃ (mínimo = 15)",
-        "Empate entre A₂ y A₃"
-      ],
-      correct: 1,
-      explain: "Mínimos: A₁=10, A₂=25, A₃=15. Maximin = max(10, 25, 15) = <b>25 → A₂</b>. Es la alternativa que más te garantiza en el peor escenario."
-    },
-    {
-      type: "práctica",
-      q: "Misma matriz que la anterior. Aplicando <b>Maximax</b>, ¿qué alternativa elegir?",
-      opts: [
-        "A₁ (máximo = 50)",
-        "A₂ (máximo = 35)",
-        "A₃ (máximo = 60)",
-        "Cualquiera, todas son válidas"
-      ],
-      correct: 2,
-      explain: "Máximos: A₁=50, A₂=35, A₃=60. Maximax = max(50, 35, 60) = <b>60 → A₃</b>. Elegís la fila con el mejor mejor caso."
-    },
-    {
-      type: "práctica",
-      q: "Para una alternativa con max=80 y min=20, ¿cuánto vale H (Hurwicz) con α = 0.6?",
-      opts: [
-        "50",
-        "56",
-        "60",
-        "44"
-      ],
-      correct: 1,
-      explain: "H = α·max + (1−α)·min = 0.6·80 + 0.4·20 = 48 + 8 = <b>56</b>."
-    },
-    {
-      type: "teórica",
-      q: "Para construir la matriz de arrepentimientos en <b>Savage</b>, ¿qué se hace en cada celda?",
-      opts: [
-        "Se resta el mínimo de cada fila al valor de la celda",
-        "Se resta el máximo de la columna correspondiente al valor de la celda",
-        "Se suma el máximo de cada fila al valor de la celda",
-        "Se divide el valor de la celda por el promedio de la columna"
-      ],
-      correct: 1,
-      explain: "r<sub>ij</sub> = <b>max(columna j) − a<sub>ij</sub></b>. La idea es medir cuánto te arrepentís de no haber elegido la mejor alternativa de esa columna."
-    },
-    {
-      type: "teórica",
-      q: "Una vez construida la matriz de arrepentimientos, ¿cómo se elige la alternativa óptima por Savage?",
-      opts: [
-        "Maximizando el máximo de cada fila",
-        "Minimizando el mínimo de cada fila",
-        "Minimizando el máximo de cada fila (minimax regret)",
-        "Promediando cada fila"
-      ],
-      correct: 2,
-      explain: "Savage busca <b>minimizar el máximo arrepentimiento posible</b>: de cada fila tomás el máximo, y elegís la fila con el menor de esos máximos."
-    },
-    {
-      type: "teórica",
-      q: "El criterio de <b>Laplace</b> se aplica cuando:",
-      opts: [
-        "Se conocen las probabilidades exactas",
-        "Se asume que todos los futuros son igualmente probables",
-        "Solo importa el peor caso",
-        "El decisor es averso al riesgo"
-      ],
-      correct: 1,
-      explain: "Laplace = principio de razón insuficiente. Si no sabés las probabilidades, asumís que todas son iguales: P = <b>1/n</b>. Después calculás un promedio simple por fila."
-    },
-    {
-      type: "teórica",
-      q: "En un <b>gráfico de Hurwicz</b>, cada alternativa se representa como:",
-      opts: [
-        "Un punto fijo",
-        "Una parábola",
-        "Una recta entre su mínimo (α=0) y su máximo (α=1)",
-        "Un círculo de radio proporcional al promedio"
-      ],
-      correct: 2,
-      explain: "H<sub>i</sub>(α) = α·max + (1−α)·min es una <b>recta lineal en α</b>. Empieza en el mínimo cuando α=0 y termina en el máximo cuando α=1."
-    },
-    {
-      type: "práctica",
-      q: "Matriz de costos (no de ganancias). Para aplicar <b>Maximin</b> correctamente en costos, ¿qué se hace?",
-      opts: [
-        "Maximin se aplica igual: max de los min",
-        "Se convierte en Minimax: min de los max (peor caso de costo más bajo)",
-        "Se divide por el promedio antes de aplicar",
-        "Maximin no se puede aplicar con costos"
-      ],
-      correct: 1,
-      explain: "Con costos invertís todo: querés MINIMIZAR. Maximin (pesimista en ganancias) se vuelve <b>Minimax</b> en costos (de cada fila tomás el máximo costo posible, y elegís la fila con el menor de esos máximos)."
-    },
-    {
-      type: "teórica",
-      q: "¿Por qué los distintos criterios de incertidumbre suelen dar alternativas distintas?",
-      opts: [
-        "Por errores de cálculo",
-        "Porque cada uno refleja una personalidad de decisión diferente (pesimista, optimista, etc.)",
-        "Porque las probabilidades cambian",
-        "Porque la matriz cambia según el criterio"
-      ],
-      correct: 1,
-      explain: "No hay un criterio &quot;objetivamente mejor&quot;. Cada uno refleja un <b>perfil de decisor</b>. Por eso el criterio elegido determina la decisión. La elección del criterio es subjetiva y depende del contexto."
-    }
-  ],
-  2: [ // TP2 - VME
-    {
-      type: "teórica",
-      q: "¿Qué representa el <b>VME</b> de una alternativa?",
-      opts: [
-        "El máximo pago posible de esa alternativa",
-        "El pago mínimo garantizado",
-        "El promedio ponderado de los pagos por sus probabilidades",
-        "La probabilidad de que la alternativa sea exitosa"
-      ],
-      correct: 2,
-      explain: "VME = Σ P(F<sub>j</sub>) · a<sub>ij</sub>. Es un <b>promedio ponderado</b>: cada pago se pondera por la probabilidad de que ocurra ese futuro."
-    },
-    {
-      type: "práctica",
-      q: "Alternativa con pagos (100, 50, −30) y probabilidades (0.3, 0.5, 0.2). ¿Cuánto es su VME?",
-      opts: [
-        "40",
-        "49",
-        "55",
-        "60"
-      ],
-      correct: 1,
-      explain: "VME = 0.3(100) + 0.5(50) + 0.2(−30) = 30 + 25 − 6 = <b>49</b>."
-    },
-    {
-      type: "práctica",
-      q: "Pedís 80 unidades, demanda real 60. Precio venta $100, costo unitario $40, sin recupero. ¿Cuál es el beneficio?",
-      opts: [
-        "$2.000",
-        "$2.800",
-        "$3.200",
-        "$4.000"
-      ],
-      correct: 1,
-      explain: "Beneficio = Precio · min(A, F) − Costo · A = 100·min(80,60) − 40·80 = 100·60 − 3200 = 6000 − 3200 = <b>$2.800</b>. Vendiste 60 (lo que te pidieron), pero pagaste por las 80."
-    },
-    {
-      type: "teórica",
-      q: "Si los datos del problema están en <b>costos</b> en vez de ganancias, ¿qué cambia respecto al VME?",
-      opts: [
-        "La fórmula del VME cambia",
-        "Se minimiza en lugar de maximizar (se busca el menor CME)",
-        "Hay que agregar la varianza",
-        "No se puede usar VME con costos"
-      ],
-      correct: 1,
-      explain: "La fórmula es la misma (Σ P·costo), pero ahora querés <b>minimizar el CME</b> (Costo Medio Esperado) en vez de maximizar. La óptima es la del MENOR CME."
-    },
-    {
-      type: "teórica",
-      q: "¿Cuándo el VME &quot;falla&quot; como criterio de decisión?",
-      opts: [
-        "Cuando hay muchas alternativas",
-        "Cuando las probabilidades suman 1",
-        "Cuando la decisión es única y un mal resultado puede ser catastrófico",
-        "Cuando todas las alternativas tienen el mismo VME"
-      ],
-      correct: 2,
-      explain: "VME asume que la decisión se toma muchas veces y los resultados promedian. Si la decisión es <b>única e irreversible</b> con riesgo de quiebra, el promedio no compensa: te puede dejar fuera del juego antes de promediar."
-    },
-    {
-      type: "práctica",
-      q: "Dos alternativas: A=&quot;recibir $5.000 seguros&quot; vs B=&quot;50% de ganar $12.000 y 50% nada&quot;. Por VME, ¿qué elegir?",
-      opts: [
-        "A (es lo seguro)",
-        "B (VME = 6.000 > 5.000)",
-        "Son indiferentes",
-        "Falta información sobre el decisor"
-      ],
-      correct: 1,
-      explain: "VME(A) = 5.000. VME(B) = 0.5·12.000 + 0.5·0 = <b>6.000</b>. Por VME conviene B. (Por utilidad podría ser distinto si hay aversión al riesgo, pero por VME puro gana B.)"
-    },
-    {
-      type: "teórica",
-      q: "Una empresa tiene una alternativa con VME = $100.000 pero que en el peor caso pierde $500.000 (con probabilidad baja). ¿Qué criterio adicional podría considerar?",
-      opts: [
-        "Aplicar Maximax para maximizar el peor caso",
-        "Considerar utilidad esperada con aversión al riesgo",
-        "Multiplicar el VME por la probabilidad",
-        "Dividir el VME entre las alternativas"
-      ],
-      correct: 1,
-      explain: "Cuando una pérdida grande puede ser catastrófica, el <b>VME no alcanza</b>. La utilidad esperada permite incorporar la aversión al riesgo del decisor y descontar más esos malos escenarios."
-    },
-    {
-      type: "práctica",
-      q: "VME de A en función de p: VME(A) = 100 + 200p. VME de B: VME(B) = 250 + 50p. ¿En qué valor de p se cruzan?",
-      opts: [
-        "p = 0.5",
-        "p = 0.75",
-        "p = 1",
-        "p = 0.6"
-      ],
-      correct: 2,
-      explain: "100 + 200p = 250 + 50p → 150p = 150 → <b>p = 1</b>. Esto significa que las rectas no se cruzan dentro del intervalo (0,1), salvo en el extremo."
-    },
-    {
-      type: "teórica",
-      q: "Una alternativa está <b>dominada</b> cuando:",
-      opts: [
-        "Tiene el mayor VME",
-        "Nunca es la mejor en ningún rango de probabilidad",
-        "Aparece más de una vez en el problema",
-        "Tiene probabilidad menor a 0.5"
-      ],
-      correct: 1,
-      explain: "Una alternativa dominada es aquella que <b>siempre tiene otra mejor</b>, sin importar el valor de la probabilidad. Sus rectas quedan &quot;tapadas&quot; por otras en todo el rango."
-    },
-    {
-      type: "práctica",
-      q: "Una compañía dona $100 si no produce nada (caso A). Si produce, gana 0.6·600 + 0.4·(−400). ¿Qué elige?",
-      opts: [
-        "A (donar): VME = 100 > VME(producir)",
-        "Producir: VME = 200 > 100",
-        "Producir: VME = 360 − 160 = 200 > 100",
-        "Son indiferentes"
-      ],
-      correct: 2,
-      explain: "VME(producir) = 0.6·600 + 0.4·(−400) = 360 − 160 = <b>200</b>. VME(A) = 100. Conviene producir."
-    }
-  ],
-  3: [ // TP3 - Utilidad
-    {
-      type: "teórica",
-      q: "La <b>utilidad</b> de un monto monetario es:",
-      opts: [
-        "El monto neto después de impuestos",
-        "Una valoración subjetiva del decisor sobre ese monto, en escala 0 a 1",
-        "El logaritmo del monto",
-        "La probabilidad de obtener ese monto"
-      ],
-      correct: 1,
-      explain: "La utilidad es <b>subjetiva</b>: refleja cuánto vale ese dinero para el decisor concreto, en una escala normalizada de 0 (lo peor) a 1 (lo mejor)."
-    },
-    {
-      type: "teórica",
-      q: "Si U(x) es <b>cóncava</b>, el decisor es:",
-      opts: [
-        "Propenso al riesgo",
-        "Neutral al riesgo",
-        "Averso al riesgo",
-        "No se puede determinar"
-      ],
-      correct: 2,
-      explain: "Cóncava = crece rápido al principio y se aplana. El decisor le da mucha utilidad a montos bajos/medios, &quot;se conforma fácil&quot; → <b>averso al riesgo</b>."
-    },
-    {
-      type: "práctica",
-      q: "Con U(x) = √x, ¿cuál es la utilidad esperada de una lotería que da $0 con prob 0.5 y $40.000 con prob 0.5?",
-      opts: [
-        "100",
-        "150",
-        "200",
-        "20.000"
-      ],
-      correct: 0,
-      explain: "UE = 0.5·√0 + 0.5·√40.000 = 0.5·0 + 0.5·200 = <b>100</b>."
-    },
-    {
-      type: "práctica",
-      q: "Con U(x) = √x, ¿cuál es el equivalente cierto de la lotería anterior (UE = 100)?",
-      opts: [
-        "$10.000",
-        "$20.000",
-        "$15.000",
-        "$5.000"
-      ],
-      correct: 0,
-      explain: "Equivalente cierto: √x = 100 → x = <b>$10.000</b>. Significa que el decisor sería indiferente entre la lotería y recibir $10.000 seguros."
-    },
-    {
-      type: "teórica",
-      q: "El método de <b>Von Neumann-Morgenstern</b> para construir curvas de utilidad usa:",
-      opts: [
-        "Datos históricos del mercado",
-        "Preguntas de indiferencia al decisor",
-        "Funciones logarítmicas estándar",
-        "Promedios ponderados"
-      ],
-      correct: 1,
-      explain: "VNM construye la curva preguntando &quot;¿qué te resulta indiferente?&quot;. Cada respuesta de indiferencia genera una ecuación U(A) = UE(B) que permite despejar puntos de la curva."
-    },
-    {
-      type: "práctica",
-      q: "Un decisor dice: &quot;me da igual recibir $50 seguros que jugar a 30% de perder $200 y 70% de ganar $300&quot;. Si U(−200)=0.1 y U(300)=0.8, ¿cuánto vale U(50)?",
-      opts: [
-        "0.45",
-        "0.59",
-        "0.65",
-        "0.71"
-      ],
-      correct: 1,
-      explain: "U(50) = UE(apuesta) = 0.3·U(−200) + 0.7·U(300) = 0.3·0.1 + 0.7·0.8 = 0.03 + 0.56 = <b>0.59</b>."
-    },
-    {
-      type: "teórica",
-      q: "Un decisor <b>neutral al riesgo</b> elige idénticamente entre maximizar VME y UE porque:",
-      opts: [
-        "Su curva de utilidad es plana",
-        "Su curva de utilidad es una recta proporcional al dinero",
-        "Tiene aversión al riesgo equivalente a la mitad del VME",
-        "Multiplica todos los pagos por la misma constante"
-      ],
-      correct: 1,
-      explain: "Con curva lineal U(x) = ax + b, la utilidad esperada es proporcional al VME. Por eso un decisor neutral toma las mismas decisiones con cualquiera de los dos criterios."
-    },
-    {
-      type: "práctica",
-      q: "Una alternativa con pagos $400 y $1500 tendría utilidad neutral en $1000 de:",
-      opts: [
-        "0.50",
-        "0.44",
-        "0.55",
-        "0.60"
-      ],
-      correct: 2,
-      explain: "U_neutral(1000) = (1000 − 400) / (1500 − 400) = 600/1100 ≈ <b>0.55</b>."
-    },
-    {
-      type: "teórica",
-      q: "Si el decisor asigna a un monto intermedio una utilidad <b>mayor</b> que la utilidad neutral interpolada, es:",
-      opts: [
-        "Propenso al riesgo",
-        "Neutral",
-        "Averso al riesgo",
-        "Confundido"
-      ],
-      correct: 2,
-      explain: "Asignarle más utilidad de la que correspondería linealmente significa que el decisor <b>se conforma fácil</b> con montos intermedios → curva cóncava → averso al riesgo."
-    },
-    {
-      type: "teórica",
-      q: "El supuesto monotónico de la teoría de la utilidad establece que:",
-      opts: [
-        "Las probabilidades suman 1",
-        "Más dinero implica más utilidad (la curva siempre crece)",
-        "La utilidad es siempre positiva",
-        "La utilidad es siempre menor a 1"
-      ],
-      correct: 1,
-      explain: "<b>Monotonía:</b> si x₁ &lt; x₂, entonces U(x₁) &lt; U(x₂). Lo que varía entre decisores es el RITMO de crecimiento (cóncavo, recto, convexo), pero la utilidad siempre crece con el dinero."
-    }
-  ],
-  4: [ // TP4 - Valor de la Información
-    {
-      type: "teórica",
-      q: "El <b>VEIP</b> (Valor Esperado de la Información Perfecta) es:",
-      opts: [
-        "El máximo VME de las alternativas",
-        "Lo máximo que pagarías por un oráculo que te diga el futuro antes de decidir",
-        "El promedio de probabilidades",
-        "El VME multiplicado por las probabilidades"
-      ],
-      correct: 1,
-      explain: "VEIP = lo que ganarías de más si supieras qué futuro va a ocurrir, antes de decidir. Es el <b>tope máximo</b> que estarías dispuesto a pagar por información."
-    },
-    {
-      type: "teórica",
-      q: "El <b>GEIP</b> (Ganancia con Información Perfecta) se calcula:",
-      opts: [
-        "Sumando todos los pagos",
-        "Promediando todos los VME",
-        "Ponderando los máximos de cada columna por sus probabilidades",
-        "Multiplicando el mejor VME por su probabilidad"
-      ],
-      correct: 2,
-      explain: "GEIP = Σ P(F<sub>j</sub>) · max(columna j). Para cada futuro tomás el mejor pago posible (asumiendo que el oráculo te lo dice) y ponderás por la probabilidad."
-    },
-    {
-      type: "práctica",
-      q: "Matriz con futuros F₁(p=0.4) y F₂(p=0.6). Pagos: A₁(80, 30), A₂(50, 70). Calculá VEIP.",
-      opts: [
-        "10",
-        "8",
-        "12",
-        "20"
-      ],
-      correct: 0,
-      explain: "VME(A₁)=0.4·80+0.6·30=50. VME(A₂)=0.4·50+0.6·70=62. VME*=62. Máximos por columna: 80 y 70. GEIP=0.4·80+0.6·70=72. <b>VEIP = 72−62 = 10</b>."
-    },
-    {
-      type: "teórica",
-      q: "El <b>costo del riesgo</b> y el VEIP son:",
-      opts: [
-        "Conceptos opuestos",
-        "Numéricamente iguales pero conceptualmente distintos",
-        "Independientes entre sí",
-        "Lo mismo solo cuando hay 2 futuros"
-      ],
-      correct: 1,
-      explain: "Son <b>el mismo número</b> pero con dos lecturas: VEIP = cuánto pagarías por saber el futuro. Costo del riesgo = cuánto perdés por no saberlo. Lo que ganarías con info = lo que perdés por su ausencia."
-    },
-    {
-      type: "teórica",
-      q: "Si trabajamos con <b>costos</b>, la fórmula del costo del riesgo es:",
-      opts: [
-        "GEIP − VME*",
-        "VME* − GEIP",
-        "CME* − CEIP",
-        "CEIP − CME*"
-      ],
-      correct: 2,
-      explain: "Con costos, queremos minimizar. CME* es el mejor (más bajo) costo medio esperado, y CEIP es el costo esperado con info perfecta (más bajo aún). <b>Costo del riesgo = CME* − CEIP</b> (siempre positivo)."
-    },
-    {
-      type: "práctica",
-      q: "Empresa tiene VME* = $500.000. Le ofrecen un estudio de mercado por $80.000. Si el VEIP es $100.000, ¿conviene contratarlo?",
-      opts: [
-        "No: el estudio cuesta más que el VEIP",
-        "Sí: el estudio cuesta menos que el VEIP",
-        "Conviene solo si el estudio es perfecto",
-        "Falta información para decidir"
-      ],
-      correct: 1,
-      explain: "El VEIP ($100.000) es el TOPE máximo que pagarías por información perfecta. Como el estudio cuesta $80.000 (menos que el tope), <b>conviene contratarlo</b>, asumiendo que da info perfecta."
-    },
-    {
-      type: "teórica",
-      q: "Si VEIP = 0, significa que:",
-      opts: [
-        "No hay incertidumbre",
-        "La mejor alternativa es la misma para todos los futuros (es óptima sin importar qué pase)",
-        "Las probabilidades están mal calculadas",
-        "Hay que volver a calcular el VME"
-      ],
-      correct: 1,
-      explain: "VEIP = 0 significa que la información NO te haría cambiar de decisión. La alternativa óptima sin info es <b>óptima en todos los futuros</b>. No tiene sentido pagar por un oráculo."
-    },
-    {
-      type: "práctica",
-      q: "Matriz de costos. CME(M1)=300, CME(M2)=280, CME(M3)=320. CEIP = 260. ¿Cuál es el costo del riesgo?",
-      opts: [
-        "20",
-        "60",
-        "40",
-        "80"
-      ],
-      correct: 0,
-      explain: "CME* = 280 (M2, el menor). Costo del riesgo = CME* − CEIP = 280 − 260 = <b>20</b>."
-    },
-    {
-      type: "teórica",
-      q: "El VEIP siempre cumple que:",
-      opts: [
-        "Es negativo si hay aversión al riesgo",
-        "Es mayor o igual a cero",
-        "Es siempre menor que VME*",
-        "Es igual al máximo pago"
-      ],
-      correct: 1,
-      explain: "<b>VEIP ≥ 0 siempre</b>. La información perfecta NUNCA puede empeorar tu decisión, porque siempre podés elegir actuar como si no la tuvieras."
-    },
-    {
-      type: "teórica",
-      q: "Si el VEIP es muy alto comparado con el VME*, ¿qué te dice eso del problema?",
-      opts: [
-        "Que las probabilidades están mal calculadas",
-        "Que hay mucha incertidumbre y la decisión es sensible al futuro que ocurra",
-        "Que la alternativa óptima es muy buena",
-        "Que conviene rechazar todas las alternativas"
-      ],
-      correct: 1,
-      explain: "Un VEIP alto indica que las decisiones óptimas <b>cambian mucho entre futuros</b>. Hay alta sensibilidad al estado de la naturaleza y por eso saber el futuro sería muy valioso."
-    }
-  ],
-  5: [ // TP5 - Árboles
-    {
-      type: "teórica",
-      q: "En un árbol de decisión, ¿qué representa un <b>nodo cuadrado</b>?",
-      opts: [
-        "Un nodo de azar (la naturaleza decide)",
-        "Un nodo de decisión (vos decidís)",
-        "Un nodo terminal (resultado final)",
-        "Un nodo de probabilidad"
-      ],
-      correct: 1,
-      explain: "Convención: <b>cuadrado = decisión</b>. Es donde vos tenés que elegir una rama. Círculo = azar (la naturaleza). Triángulo = terminal."
-    },
-    {
-      type: "teórica",
-      q: "El método de <b>rollback</b> resuelve el árbol:",
-      opts: [
-        "De izquierda a derecha (de la decisión inicial a las hojas)",
-        "De derecha a izquierda (de las hojas a la decisión inicial)",
-        "Empezando por la rama con mayor probabilidad",
-        "Empezando por la decisión más importante"
-      ],
-      correct: 1,
-      explain: "Rollback (inducción hacia atrás) va <b>de derecha a izquierda</b>. Empezás por los nodos terminales, calculás VME en cada nodo de azar, decidís en cada nodo de decisión, y subís hasta la raíz."
-    },
-    {
-      type: "teórica",
-      q: "¿Cuándo conviene usar un árbol de decisión en lugar de una matriz?",
-      opts: [
-        "Cuando hay más de 5 alternativas",
-        "Cuando hay decisiones encadenadas o información intermedia entre decisiones",
-        "Cuando los pagos son negativos",
-        "Cuando se usa Savage en vez de VME"
-      ],
-      correct: 1,
-      explain: "Una matriz alcanza para decisiones únicas. El árbol es <b>indispensable cuando hay secuencia temporal</b>: decisión → revelación de información → decisión → revelación → etc."
-    },
-    {
-      type: "práctica",
-      q: "Un nodo de azar tiene 3 ramas: 100 con prob 0.4, 60 con prob 0.4, −50 con prob 0.2. ¿Cuál es su valor (VME)?",
-      opts: [
-        "70",
-        "54",
-        "60",
-        "44"
-      ],
-      correct: 1,
-      explain: "VME = 0.4·100 + 0.4·60 + 0.2·(−50) = 40 + 24 − 10 = <b>54</b>."
-    },
-    {
-      type: "teórica",
-      q: "En un nodo de decisión, durante el rollback, ¿qué valor le asignás?",
-      opts: [
-        "El promedio de las ramas que salen",
-        "La suma de las ramas",
-        "El valor de la rama de mayor VME (o menor CME si son costos)",
-        "El valor de la rama más probable"
-      ],
-      correct: 2,
-      explain: "En un nodo de decisión vos elegís la mejor rama, así que el valor del nodo es el de la <b>rama elegida</b> (mayor VME si son ganancias)."
-    },
-    {
-      type: "práctica",
-      q: "Decisión 1: pagar $20 para participar. Si pagás, con 70% gana $100 (en azar). Si no pagás, gana $0. ¿Conviene pagar?",
-      opts: [
-        "No: VME(pagar) = 50, neto 30",
-        "Sí: VME(pagar) = 70, neto 50 > 0",
-        "Indiferente",
-        "Falta información"
-      ],
-      correct: 1,
-      explain: "VME(pagar) bruto = 0.7·100 + 0.3·0 = 70. Neto = 70 − 20 = <b>50</b>. Como 50 > 0 (no pagar), conviene pagar."
-    },
-    {
-      type: "teórica",
-      q: "¿Qué significa una rama con &quot;valor terminal&quot; negativo?",
-      opts: [
-        "Que la rama está mal calculada",
-        "Que en ese escenario el decisor pierde dinero",
-        "Que la probabilidad es negativa",
-        "Que hay que descartarla del árbol"
-      ],
-      correct: 1,
-      explain: "Un valor terminal negativo significa <b>pérdida</b> en ese escenario. No se descarta: hay que considerarla en el cálculo del VME porque puede ocurrir."
-    },
-    {
-      type: "práctica",
-      q: "Después del rollback, valor de la rama A = 33.500, valor de la rama B = 0 (no actuar). ¿Qué decisión inicial tomar?",
-      opts: [
-        "Rama A: VME 33.500 > 0",
-        "Rama B: es más segura",
-        "Falta más información",
-        "Las dos son indiferentes"
-      ],
-      correct: 0,
-      explain: "Aunque B sea &quot;más segura&quot;, el criterio del VME no considera el riesgo. Como VME(A) = 33.500 &gt; 0, <b>elegís A</b>."
-    },
-    {
-      type: "teórica",
-      q: "La principal ventaja del árbol respecto a la matriz es que:",
-      opts: [
-        "Es más rápido de dibujar",
-        "Permite modelar la secuencia temporal de decisiones y observaciones",
-        "Usa menos datos",
-        "Funciona con cualquier número de alternativas"
-      ],
-      correct: 1,
-      explain: "El árbol muestra <b>la dinámica temporal</b>: primero decidís, después observás algo, después volvés a decidir. Esa secuencia no cabe en una matriz."
-    },
-    {
-      type: "teórica",
-      q: "Si el árbol resuelto da una estrategia con VME total = $0, ¿qué significa?",
-      opts: [
-        "El problema está mal planteado",
-        "Da lo mismo actuar o no actuar (indiferencia)",
-        "Hay que cambiar las probabilidades",
-        "La estrategia óptima es siempre rechazar"
-      ],
-      correct: 1,
-      explain: "VME = 0 significa que <b>actuar tiene el mismo valor esperado que no hacer nada</b>. Indiferencia por VME. (Aunque por otros criterios como utilidad podría cambiar la decisión.)"
-    }
-  ]
+(function(){
+"use strict";
+
+/* ══════════════ utilidades ══════════════ */
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const clamp01 = v => clamp(v,0,1);
+const mean = a => a.length ? a.reduce((s,x)=>s+x,0)/a.length : 0;
+const sd = a => { if(a.length<2) return 0; const m=mean(a); return Math.sqrt(a.reduce((s,x)=>s+(x-m)*(x-m),0)/(a.length-1)); };
+const fmt = (v,d=0) => v==null || !isFinite(v) ? '—' : v.toLocaleString('es-AR',{minimumFractionDigits:d, maximumFractionDigits:d});
+const DOW = ['dom','lun','mar','mié','jue','vie','sáb'];
+
+/* generador pseudoaleatorio reproducible: el mismo perfil da el mismo historial */
+function rng(seed){ let s = seed >>> 0; return () => { s = (s*1664525 + 1013904223) >>> 0; return s/4294967296; }; }
+
+/* ══════════════ catálogo de ejercicios ══════════════ */
+const EX = {
+  sentadilla:      {n:'Sentadilla trasera', pat:'squat', pct:true},
+  peso_muerto:     {n:'Peso muerto',        pat:'hinge', pct:true},
+  rdl:             {n:'Peso muerto rumano', pat:'hinge', pct:true},
+  hip_thrust:      {n:'Hip thrust',         pat:'hinge', pct:true},
+  zancada:         {n:'Zancada búlgara',    pat:'squat'},
+  press_banca:     {n:'Press de banca',     pat:'push',  pct:true},
+  press_militar:   {n:'Press militar',      pat:'push',  pct:true},
+  remo:            {n:'Remo con barra',     pat:'pull',  pct:true},
+  dominadas:       {n:'Dominadas',          pat:'pull'},
+  nordic:          {n:'Nórdico de isquios', pat:'prehab'},
+  copenhagen:      {n:'Copenhagen plank',   pat:'prehab'},
+  core:            {n:'Anti-rotación Pallof',pat:'core'},
+  farmer:          {n:'Farmer walk',        pat:'carry'},
+  cmj:             {n:'Salto contramovimiento', pat:'plyo'},
+  vallas:          {n:'Saltos sobre vallas',pat:'plyo'},
+  sprint:          {n:'Sprint lanzado',     pat:'sprint'},
+  salidas:         {n:'Salidas 10 m',       pat:'sprint'},
+  cambios:         {n:'Cambios de dirección 5-0-5', pat:'agility'},
+  intervalos:      {n:'Intervalos 4×4 min', pat:'cond'},
+  repeticiones:    {n:'Repeticiones 6×200 m', pat:'cond'},
+  continuo:        {n:'Continuo aeróbico',  pat:'cond'},
+  fartlek:         {n:'Fartlek 25 min',     pat:'cond'},
+  rsa:             {n:'Repeticiones de sprint (RSA)', pat:'cond'},
+  movilidad:       {n:'Movilidad cadera y torácica', pat:'mob'},
+  bici:            {n:'Bici suave',         pat:'mob'},
+  activacion:      {n:'Activación neuromuscular', pat:'mob'}
 };
 
-// ====== STATE ======
-let state = JSON.parse(localStorage.getItem('ad_quiz_state') || '{}');
-if (!state.answers) state.answers = {};
+/* plantillas por cualidad: bloques con ejercicios y prescripción base (§6.4) */
+const QUALITIES = {
+  fuerza_inf: {
+    label:'Fuerza — tren inferior', type:'strength', hi:true, min:70, rpe:7.5,
+    items:[['sentadilla','main'],['rdl','main'],['zancada','acc'],['nordic','prehab'],['core','prehab']]
+  },
+  fuerza_sup: {
+    label:'Fuerza — tren superior', type:'strength', hi:true, min:60, rpe:7,
+    items:[['press_banca','main'],['remo','main'],['dominadas','acc'],['press_militar','acc'],['core','prehab']]
+  },
+  fuerza_total: {
+    label:'Fuerza — cuerpo completo', type:'strength', hi:true, min:70, rpe:7.5,
+    items:[['sentadilla','main'],['press_banca','main'],['peso_muerto','main'],['dominadas','acc'],['farmer','acc']]
+  },
+  potencia: {
+    label:'Potencia y salto', type:'power', hi:true, min:50, rpe:7,
+    items:[['cmj','main'],['vallas','main'],['hip_thrust','acc'],['core','prehab']]
+  },
+  velocidad: {
+    label:'Velocidad máxima', type:'speed', hi:true, min:55, rpe:7.5,
+    items:[['activacion','warm'],['salidas','main'],['sprint','main'],['cambios','acc'],['nordic','prehab']]
+  },
+  intervalos: {
+    label:'Intervalos de alta intensidad', type:'conditioning', hi:true, min:55, rpe:8,
+    items:[['activacion','warm'],['intervalos','main'],['core','prehab']]
+  },
+  rsa: {
+    label:'Resistencia a sprints repetidos', type:'conditioning', hi:true, min:50, rpe:8,
+    items:[['activacion','warm'],['rsa','main'],['movilidad','cool']]
+  },
+  umbral: {
+    label:'Umbral', type:'conditioning', hi:true, min:60, rpe:7.5,
+    items:[['activacion','warm'],['repeticiones','main'],['movilidad','cool']]
+  },
+  aerobico: {
+    label:'Base aeróbica', type:'conditioning', hi:false, min:65, rpe:5,
+    items:[['continuo','main'],['movilidad','cool']]
+  },
+  fartlek: {
+    label:'Fartlek', type:'conditioning', hi:false, min:45, rpe:6,
+    items:[['activacion','warm'],['fartlek','main'],['movilidad','cool']]
+  },
+  hipertrofia: {
+    label:'Hipertrofia', type:'strength', hi:false, min:70, rpe:7,
+    items:[['sentadilla','main'],['press_banca','main'],['remo','acc'],['zancada','acc'],['core','prehab']]
+  },
+  recuperacion: {
+    label:'Recuperación activa', type:'recovery', hi:false, min:30, rpe:3,
+    items:[['bici','main'],['movilidad','main']]
+  }
+};
 
-function saveState() {
-  localStorage.setItem('ad_quiz_state', JSON.stringify(state));
+/* secuencia de cualidades por objetivo, en orden de prioridad */
+const SEQ = {
+  sport_performance: ['fuerza_inf','velocidad','fuerza_sup','rsa','potencia','recuperacion'],
+  strength:          ['fuerza_inf','fuerza_sup','potencia','fuerza_total','aerobico','recuperacion'],
+  hypertrophy:       ['hipertrofia','fuerza_sup','fuerza_inf','hipertrofia','aerobico','recuperacion'],
+  endurance:         ['intervalos','aerobico','umbral','fuerza_total','fartlek','recuperacion'],
+  return_to_play:    ['fuerza_inf','recuperacion','fuerza_sup','aerobico','potencia','recuperacion']
+};
+const SPORT_SWAP = {
+  running:  {velocidad:'umbral', rsa:'intervalos', potencia:'fartlek', fuerza_sup:'fuerza_total'},
+  strength: {velocidad:'potencia', rsa:'aerobico'},
+  hockey:   {},
+  football: {},
+  rugby:    {}
+};
+
+/* progresión dentro del mesociclo de 4 semanas: 3 de carga + 1 de descarga (§6.2 E3) */
+const WEEKS = [
+  {name:'Carga 1',   vol:1.00, pct:0.70, rir:3, sets:4},
+  {name:'Carga 2',   vol:1.10, pct:0.75, rir:2, sets:4},
+  {name:'Carga 3',   vol:1.18, pct:0.80, rir:1, sets:5},
+  {name:'Descarga',  vol:0.60, pct:0.70, rir:3, sets:3}
+];
+
+/* ══════════════ estado ══════════════ */
+let S = null;
+
+function readProfile(){
+  return {
+    sport: $('sport').value,
+    goal: $('goal').value,
+    level: $('level').value,
+    days: parseInt($('days').value,10),
+    age: parseInt($('age').value,10) || 24,
+    squat: parseFloat($('squat').value) || 0
+  };
 }
 
-function resetAll() {
-  const modal = document.getElementById('reset-modal');
-  modal.style.display = 'flex';
-}
+function seed(profile){
+  const p = profile || readProfile();
+  const r = rng(p.days*7919 + p.age*31 + p.goal.length*101 + p.sport.length*17);
+  const base = {beginner:52, intermediate:68, advanced:82}[p.level];
+  const hist = [];              /* 42 días de historial sintético */
+  const today = new Date(); today.setHours(0,0,0,0);
 
-function confirmReset() {
-  state = { answers: {} };
-  saveState();
-  // Re-render sin recargar
-  [1, 2, 3, 4, 5].forEach(g => renderQuestions(g));
-  updateProgress();
-  document.getElementById('reset-modal').style.display = 'none';
-}
-
-function cancelReset() {
-  document.getElementById('reset-modal').style.display = 'none';
-}
-
-// ====== RENDER ======
-function renderQuestions(guide) {
-  const container = document.getElementById(`questions-${guide}`);
-  const qs = questions[guide];
-  container.innerHTML = '';
-  qs.forEach((q, idx) => {
-    const qid = `g${guide}-q${idx}`;
-    const userAnswer = state.answers[qid];
-    
-    const optsHTML = q.opts.map((opt, i) => {
-      const letter = String.fromCharCode(65 + i);
-      let cls = 'option';
-      if (userAnswer !== undefined) {
-        if (i === q.correct) cls += ' correct';
-        else if (i === userAnswer) cls += ' wrong';
-      }
-      return `<button class="${cls}" data-qid="${qid}" data-idx="${i}" ${userAnswer !== undefined ? 'disabled' : ''}>
-        <span class="letter">${letter}</span><span>${opt}</span>
-      </button>`;
-    }).join('');
-    
-    const showExplain = userAnswer !== undefined ? 'show' : '';
-    
-    container.innerHTML += `
-      <div class="question">
-        <div class="question-header">
-          <span class="q-number">Pregunta ${idx + 1}</span>
-          <span class="q-type">${q.type}</span>
-        </div>
-        <div class="q-text">${q.q}</div>
-        <div class="options">${optsHTML}</div>
-        <div class="explanation ${showExplain}" id="exp-${qid}">${q.explain}</div>
-      </div>
-    `;
-  });
-  
-  // Bind clicks
-  container.querySelectorAll('.option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const qid = btn.dataset.qid;
-      const idx = parseInt(btn.dataset.idx);
-      const [g, q] = qid.match(/g(\d+)-q(\d+)/).slice(1).map(Number);
-      const correct = questions[g][q].correct;
-      
-      state.answers[qid] = idx;
-      saveState();
-      
-      // Mark all options
-      const allBtns = container.querySelectorAll(`[data-qid="${qid}"]`);
-      allBtns.forEach((b, i) => {
-        b.disabled = true;
-        if (i === correct) b.classList.add('correct');
-        else if (i === idx) b.classList.add('wrong');
-      });
-      
-      // Show explanation
-      document.getElementById(`exp-${qid}`).classList.add('show');
-      
-      updateProgress();
-    });
-  });
-}
-
-function updateProgress() {
-  const total = 50;
-  const answered = Object.keys(state.answers).length;
-  document.getElementById('progress-text').textContent = `${answered} / ${total} respondidas`;
-  document.getElementById('progress-fill').style.width = `${(answered / total) * 100}%`;
-  
-  // Update guide scores
-  for (let g = 1; g <= 5; g++) {
-    let correct = 0, total_g = 10, answered_g = 0;
-    for (let q = 0; q < 10; q++) {
-      const qid = `g${g}-q${q}`;
-      if (state.answers[qid] !== undefined) {
-        answered_g++;
-        if (state.answers[qid] === questions[g][q].correct) correct++;
-      }
+  for(let i=41;i>=0;i--){
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const off = ((Math.round((d-today)/MS_DAY) % 7) + 7) % 7;
+    const trains = trainOffsets(p.days).includes(off);
+    let load = 0, rpe = 0, min = 0;
+    if(trains){
+      min = Math.round(base * (0.85 + r()*0.35));
+      rpe = Math.round((6 + r()*2.2)*2)/2;
+      load = Math.round(min*rpe);
     }
-    const scoreEl = document.getElementById(`score-${g}`);
-    if (answered_g > 0) {
-      scoreEl.textContent = `(${correct}/${answered_g})`;
-    } else {
-      scoreEl.textContent = '';
+    hist.push({
+      date:new Date(d), load, rpe, min,
+      hrv: 4.20 + (r()-0.5)*0.30,
+      sleep: 7.2 + (r()-0.5)*1.6
+    });
+  }
+  return {p, hist, today, decisions:[], adjusted:null};
+}
+
+/* desplazamientos de entrenamiento dentro del microciclo, contados desde hoy:
+   así el día 0 siempre entrena y el ajuste diario se ve en pantalla */
+const OFFSETS = {3:[0,2,4], 4:[0,1,3,5], 5:[0,1,2,4,5], 6:[0,1,2,3,4,5]};
+function trainOffsets(n){ return OFFSETS[n] || OFFSETS[3]; }
+const MS_DAY = 86400000;
+
+/* ══════════════ motor de métricas (§7) ══════════════ */
+function metrics(){
+  const loads = S.hist.map(h=>h.load);
+  const last7  = loads.slice(-7);
+  const last28 = loads.slice(-28);
+
+  const acute   = last7.reduce((s,x)=>s+x,0);
+  const chronic = last28.reduce((s,x)=>s+x,0)/4;
+  const acwrRA  = chronic > 0 ? acute/chronic : null;
+
+  /* EWMA: λ = 2/(N+1) */
+  const la = 2/8, lc = 2/29;
+  let ea = loads[0]||0, ec = loads[0]||0;
+  for(let i=1;i<loads.length;i++){ ea = loads[i]*la + ea*(1-la); ec = loads[i]*lc + ec*(1-lc); }
+  const acwrEW = ec > 0 ? ea/ec : null;
+
+  /* monotonía y strain de Foster */
+  const sdw = sd(last7), mw = mean(last7);
+  const monotony = sdw > 0 ? mw/sdw : null;
+  const weekly = acute;
+  const strain = monotony ? weekly*monotony : null;
+
+  /* fitness-fatiga (Banister). Se muestran en unidades de carga diaria
+     equivalente: X·(1−e^(−1/τ)), para que forma = fitness − fatiga se lea. */
+  const t1 = 42, t2 = 7;
+  /* arranque en el estado estacionario que implica la primera semana: sin esto,
+     fitness necesita ~42 días para cargarse y la forma sale falsamente negativa */
+  const l0 = mean(loads.slice(0,7));
+  let fit = l0/(1-Math.exp(-1/t1)), fat = l0/(1-Math.exp(-1/t2));
+  for(const l of loads){ fit = fit*Math.exp(-1/t1) + l; fat = fat*Math.exp(-1/t2) + l; }
+  const fitIdx = fit*(1-Math.exp(-1/t1));
+  const fatIdx = fat*(1-Math.exp(-1/t2));
+
+  /* progresión semanal vs. media de las 3 semanas previas */
+  const w0 = acute;
+  const prev3 = [loads.slice(-14,-7), loads.slice(-21,-14), loads.slice(-28,-21)]
+                  .map(a=>a.reduce((s,x)=>s+x,0));
+  const prevMean = mean(prev3);
+  const wow = prevMean > 0 ? (w0-prevMean)/prevMean : null;
+
+  /* VHR: línea base 7 d y SWC = base ± 0,5 · DE(30 d) sobre ln rMSSD */
+  const hrvAll = S.hist.map(h=>h.hrv).filter(v=>v!=null);
+  const hrvBase = mean(hrvAll.slice(-8,-1));
+  const hrvSD = sd(hrvAll.slice(-31,-1));
+  const swcLo = hrvBase - 0.5*hrvSD, swcHi = hrvBase + 0.5*hrvSD;
+
+  const sleepBase = mean(S.hist.map(h=>h.sleep).slice(-31,-1));
+  const sleep5 = S.hist.slice(-5).map(h=>h.sleep);
+
+  return {acute, chronic, acwrRA, acwrEW, monotony, strain, weekly, wow,
+          fitIdx, fatIdx, form:fitIdx-fatIdx, hrvBase, hrvSD, swcLo, swcHi,
+          sleepBase, sleep5, loads};
+}
+
+/* lectura del check-in */
+function checkin(){
+  return {
+    sleepH: parseFloat($('sleepH').value),
+    hrv: parseFloat($('hrv').value),
+    sleepQ: +$('sleepQ').value,
+    fatigue: +$('fatigue').value,
+    soreness: +$('soreness').value,
+    stress: +$('stress').value,
+    mood: +$('mood').value
+  };
+}
+
+/* índice de readiness (§7.7): pesos fijos, redistribuidos si falta un dato */
+function readiness(m, c){
+  const comps = [];
+  const s15 = v => (v-1)/4;
+
+  if(isFinite(c.hrv) && m.hrvSD > 0){
+    const z = (c.hrv - m.hrvBase)/m.hrvSD;
+    comps.push({k:'hrv', name:'VHR', unit:'ln rMSSD', w:0.25, s:clamp01(0.5+z/3), z,
+                note: c.hrv < m.swcLo ? 'bajo SWC' : c.hrv > m.swcHi ? 'sobre SWC' : 'en rango'});
+  } else comps.push({k:'hrv', name:'VHR', w:0.25, s:null});
+
+  if(isFinite(c.sleepH)){
+    const dur = clamp01((c.sleepH-4)/(8.5-4));
+    comps.push({k:'sleep', name:'Sueño', unit:'h + calidad', w:0.20,
+                s:0.6*dur + 0.4*s15(c.sleepQ), note: c.sleepH.toFixed(1)+' h'});
+  } else comps.push({k:'sleep', name:'Sueño', w:0.20, s:null});
+
+  comps.push({k:'fatigue', name:'Fatiga', unit:'percibida', w:0.15, s:s15(c.fatigue)});
+  comps.push({k:'soreness', name:'Dolor muscular', unit:'mapa corporal', w:0.15, s:s15(c.soreness)});
+  comps.push({k:'mood', name:'Estrés y ánimo', unit:'Hooper', w:0.10, s:(s15(c.stress)+s15(c.mood))/2});
+
+  /* estado de carga: penaliza ACWR fuera de 0,8–1,3 y monotonía alta */
+  let ls = 1;
+  if(m.acwrEW != null){
+    if(m.acwrEW > 1.3) ls -= clamp01((m.acwrEW-1.3)/0.5)*0.7;
+    else if(m.acwrEW < 0.8) ls -= clamp01((0.8-m.acwrEW)/0.4)*0.3;
+  }
+  if(m.monotony != null && m.monotony > 1.8) ls -= clamp01((m.monotony-1.8)/1.2)*0.3;
+  comps.push({k:'load', name:'Estado de carga', unit:'ACWR + strain', w:0.10, s:clamp01(ls),
+              note: m.acwrEW != null ? 'ACWR '+m.acwrEW.toFixed(2) : 'sin datos'});
+
+  const avail = comps.filter(c2=>c2.s != null);
+  const wsum = avail.reduce((s,c2)=>s+c2.w,0);
+  const score = wsum > 0 ? 100*avail.reduce((s,c2)=>s+c2.w*c2.s,0)/wsum : null;
+  const completeness = 100*wsum/comps.reduce((s,c2)=>s+c2.w,0);
+  return {score, comps, completeness};
+}
+
+/* banda y acción sobre la sesión (§6.5) */
+function bandOf(score){
+  if(score == null) return {key:'none', cls:'amber', txt:'Datos insuficientes', vol:1, keepInt:true,
+    say:'No hay datos suficientes para ajustar. La sesión queda como está planificada.'};
+  if(score >= 75) return {key:'green', cls:'green', txt:'Verde — sin cambios', vol:1, keepInt:true,
+    say:'Estás en tu rango normal. La sesión va como está planificada.'};
+  if(score >= 65) return {key:'green_soft', cls:'green', txt:'Verde atenuado', vol:0.9, keepInt:true,
+    say:'Estás bien, apenas por debajo de tu mejor rango. Recortamos un 10 % del volumen accesorio y mantenemos la intensidad.'};
+  if(score >= 50) return {key:'amber', cls:'amber', txt:'Ámbar — recortar volumen', vol:0.75, keepInt:true,
+    say:'Bajamos el volumen un 25 % y mantenemos la intensidad: preservamos el estímulo neural y recortamos el metabólico.'};
+  if(score >= 40) return {key:'amber_low', cls:'amber', txt:'Ámbar bajo — sesión alternativa', vol:0.55, keepInt:false,
+    say:'Cambiamos a una versión ligera de la misma cualidad: se conserva la técnica y se saca todo el trabajo cerca del fallo.'};
+  return {key:'red', cls:'red', txt:'Rojo — recuperación', vol:0, keepInt:false,
+    say:'Hoy toca recuperación activa. Entrenar fuerte con estos valores suma fatiga sin sumar adaptación.'};
+}
+
+/* banderas de gestión de carga (§7.8) */
+function flags(m, c){
+  const f = [];
+  if(m.acwrEW != null && m.acwrEW > 1.5) f.push({k:'ACWR_HIGH', sev:'crit', d:'ACWR EWMA '+m.acwrEW.toFixed(2)+' (> 1,50)'});
+  else if(m.acwrEW != null && m.acwrEW > 1.3) f.push({k:'ACWR_ELEVATED', sev:'warn', d:'ACWR EWMA '+m.acwrEW.toFixed(2)+' (> 1,30)'});
+  if(m.acwrEW != null && m.acwrEW < 0.8) f.push({k:'ACWR_LOW', sev:'warn', d:'ACWR EWMA '+m.acwrEW.toFixed(2)+' (< 0,80)'});
+  if(m.wow != null && m.wow > 0.30) f.push({k:'SPIKE', sev:'crit', d:'Carga semanal +'+Math.round(m.wow*100)+' % vs. 3 semanas previas'});
+  if(m.monotony != null && m.monotony > 2.0) f.push({k:'MONOTONY', sev:'warn', d:'Monotonía '+m.monotony.toFixed(2)+' (> 2,00)'});
+  if(isFinite(c.hrv) && c.hrv < m.swcLo) f.push({k:'HRV_SUPPRESSED', sev:'warn', d:'ln rMSSD '+c.hrv.toFixed(2)+' bajo el SWC ('+m.swcLo.toFixed(2)+')'});
+  if(mean(m.sleep5.slice(0,-1).concat([c.sleepH])) < 6) f.push({k:'SLEEP_DEBT', sev:'warn', d:'Media de sueño de 5 días < 6 h'});
+  if(c.soreness <= 2) f.push({k:'PAIN', sev:'crit', d:'Dolor muscular alto reportado en el check-in'});
+  return f;
+}
+
+/* ══════════════ generador de plan (§6.2) ══════════════ */
+function buildWeek(m){
+  const p = S.p;
+  const wIdx = Math.floor(S.hist.length/7) % 4;
+  const W = WEEKS[wIdx];
+  const days = trainOffsets(p.days);
+
+  let seq = SEQ[p.goal].slice(0, p.days);
+  const swap = SPORT_SWAP[p.sport] || {};
+  seq = seq.map(q => swap[q] || q);
+
+  /* regla de espaciado: no dos sesiones de alta intensidad consecutivas (§6.2 E4) */
+  for(let i=1;i<seq.length;i++){
+    if(QUALITIES[seq[i]].hi && QUALITIES[seq[i-1]].hi && days[i]-days[i-1] === 1){
+      const j = seq.findIndex((q,k)=>k>i && !QUALITIES[q].hi);
+      if(j > -1){ const t = seq[i]; seq[i] = seq[j]; seq[j] = t; }
     }
   }
+
+  const base = {beginner:0.85, intermediate:1, advanced:1.15}[p.level];
+  const today = S.hist[S.hist.length-1].date;
+  const week = [];
+  for(let off=0; off<7; off++){
+    const date = new Date(today); date.setDate(date.getDate()+off);
+    const k = days.indexOf(off);
+    if(k === -1){ week.push({off, date, rest:true}); continue; }
+    const q = QUALITIES[seq[k]];
+    const min = Math.round(q.min * W.vol * base);
+    week.push({
+      off, date, rest:false, quality:seq[k], label:q.label, type:q.type,
+      min, rpe:q.rpe, load:Math.round(min*q.rpe),
+      items:q.items.map(([key,role]) => prescribe(key, role, W))
+    });
+  }
+  return {week, W, wIdx};
 }
 
-// ====== TABS ======
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.getElementById(tab.dataset.tab).classList.add('active');
+function prescribe(key, role, W){
+  const e = EX[key];
+  let p;
+  if(e.pat === 'sprint')      p = role==='main' ? '6 × 30 m · recuperación completa' : '4 × 20 m';
+  else if(e.pat === 'plyo')   p = W.sets + ' × 3 · máxima intención';
+  else if(e.pat === 'cond')   p = e.n.includes('4×4') ? '4 × 4 min @ 90–95 % FCmáx' : '25–40 min';
+  else if(e.pat === 'agility')p = '6 × 505 por lado';
+  else if(e.pat === 'prehab') p = '3 × 6 por lado';
+  else if(e.pat === 'core')   p = '3 × 30 s por lado';
+  else if(e.pat === 'mob')    p = '8–12 min';
+  else if(e.pat === 'carry')  p = '3 × 40 m';
+  else if(role === 'main'){
+    const reps = W.pct >= 0.80 ? 4 : W.pct >= 0.75 ? 6 : 8;
+    const kg = (e.pct && S.p.squat > 0) ? ' · ' + Math.round(S.p.squat*W.pct*ratio(key)/2.5)*2.5 + ' kg' : '';
+    p = W.sets + ' × ' + reps + ' @ ' + Math.round(W.pct*100) + ' % 1RM' + kg;
+  } else {
+    p = '3 × 10 · RIR ' + W.rir;
+  }
+  return {name:e.n, p, role};
+}
+/* razón aproximada de cada levantamiento respecto al 1RM de sentadilla */
+function ratio(key){
+  return ({sentadilla:1, peso_muerto:1.2, rdl:0.85, hip_thrust:1.1,
+           press_banca:0.72, press_militar:0.45, remo:0.6})[key] || 1;
+}
+
+/* ══════════════ guardarraíles (§6.6) ══════════════ */
+function guardrails(m, plan){
+  const planned = plan.week.filter(d=>!d.rest).reduce((s,d)=>s+d.load,0);
+  const prev3 = [m.loads.slice(-7), m.loads.slice(-14,-7), m.loads.slice(-21,-14)]
+                  .map(a=>a.reduce((s,x)=>s+x,0));
+  const pm = mean(prev3);
+  const inc = pm > 0 ? (planned-pm)/pm : 0;
+  const projAcwr = m.chronic > 0 ? planned/m.chronic : null;
+  const dailies = plan.week.map(d=>d.rest?0:d.load);
+  const mono = sd(dailies) > 0 ? mean(dailies)/sd(dailies) : null;
+
+  let streak = 0, maxStreak = 0;
+  for(const d of dailies){ if(d>0){ streak++; maxStreak = Math.max(maxStreak, streak);} else streak = 0; }
+
+  return [
+    {t:'Incremento de carga semanal', v:(inc>=0?'+':'')+Math.round(inc*100)+' %', lim:'≤ +15 %', ok:inc <= 0.15},
+    {t:'ACWR proyectado del microciclo', v:projAcwr?projAcwr.toFixed(2):'—', lim:'0,80 – 1,30', ok:projAcwr==null || (projAcwr>=0.8 && projAcwr<=1.3)},
+    {t:'Monotonía proyectada', v:mono?mono.toFixed(2):'—', lim:'< 2,00', ok:mono==null || mono<2},
+    {t:'Días consecutivos de entrenamiento', v:String(maxStreak), lim:'≤ 6', ok:maxStreak<=6},
+    {t:'Carga planificada de la semana', v:fmt(planned)+' UA', lim:'referencia', ok:true}
+  ];
+}
+
+/* ══════════════ render ══════════════ */
+function render(){
+  const m = metrics();
+  const c = checkin();
+  const R = readiness(m, c);
+  const band = bandOf(R.score);
+  const F = flags(m, c);
+  const plan = buildWeek(m);
+  S.adjusted = {band, plan, m, R, F};
+
+  /* cabecera */
+  const d = S.hist[S.hist.length-1].date;
+  $('dayNum').textContent = String(S.hist.length - 41);
+  $('dateLbl').textContent = DOW[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth()+1);
+
+  /* readiness */
+  $('rScore').textContent = R.score==null ? '—' : R.score.toFixed(0);
+  const bandEl = $('rBand');
+  bandEl.className = 'band ' + band.cls;
+  $('rBandTxt').textContent = band.txt;
+
+  $('comps').innerHTML = R.comps.map(x => {
+    const pct = x.s==null ? 0 : Math.round(x.s*100);
+    return '<div class="comp' + (x.s==null?' missing':'') + '">'
+      + '<div class="name">' + x.name + ' <em>' + Math.round(x.w*100) + ' %</em></div>'
+      + '<div class="track"><i style="width:' + pct + '%"></i></div>'
+      + '<div class="v">' + (x.s==null ? 's/d' : pct) + '</div></div>';
+  }).join('');
+
+  /* métricas */
+  const warnCls = (bad,worse) => worse ? ' flag-crit' : bad ? ' flag-warn' : '';
+  $('metrics').innerHTML = [
+    ['Carga aguda 7 d', fmt(m.acute)+' UA', 'suma de duración × sRPE', ''],
+    ['Carga crónica 28 d', fmt(m.chronic)+' UA', 'media semanal de 28 días', ''],
+    ['ACWR EWMA', m.acwrEW?m.acwrEW.toFixed(2):'—', 'media móvil: ' + (m.acwrRA?m.acwrRA.toFixed(2):'—'),
+      warnCls(m.acwrEW>1.3, m.acwrEW>1.5)],
+    ['Monotonía', m.monotony?m.monotony.toFixed(2):'—', 'strain ' + fmt(m.strain), warnCls(m.monotony>1.8, m.monotony>2)],
+    ['Fitness', fmt(m.fitIdx), 'τ = 42 días', ''],
+    ['Fatiga', fmt(m.fatIdx), 'τ = 7 días', ''],
+    ['Forma', (m.form>=0?'+':'')+fmt(m.form), 'fitness − fatiga', m.form<-15?' flag-warn':''],
+    ['Semana vs. 3 previas', m.wow==null?'—':((m.wow>=0?'+':'')+Math.round(m.wow*100)+' %'), 'progresión de carga',
+      warnCls(m.wow>0.15, m.wow>0.30)]
+  ].map(([k,v,n,cl]) =>
+    '<div class="metric"><div class="k">'+k+'</div><div class="v'+cl+'">'+v+'</div><div class="n">'+n+'</div></div>'
+  ).join('');
+
+  /* microciclo */
+  $('mesoHint').textContent = 'Mesociclo de acumulación · semana ' + (plan.wIdx+1) + ' de 4 — ' + plan.W.name
+    + ' (volumen ×' + plan.W.vol.toFixed(2) + ', intensidad ' + Math.round(plan.W.pct*100) + ' % 1RM). '
+    + 'Los siete días arrancan en hoy; la primera sesión lleva aplicado el ajuste por readiness.';
+
+  $('week').innerHTML = plan.week.map(day => {
+    const isToday = day.off === 0;
+    const dowLbl = DOW[day.date.getDay()] + ' ' + day.date.getDate();
+    if(day.rest){
+      return '<div class="day' + (isToday?' today':'') + '"><div class="dow">' + dowLbl + '</div>'
+        + '<div><div class="rest">Descanso' + (isToday?' — hoy':'') + '</div></div></div>';
+    }
+    let min = day.min, load = day.load, chip = '', items = day.items, title = day.label, rpe = day.rpe;
+    if(isToday && band.vol !== 1){
+      min = Math.round(day.min*band.vol); load = Math.round(min*day.rpe);
+      if(band.vol === 0){
+        title = 'Recuperación activa'; items = QUALITIES.recuperacion.items.map(([k,r])=>prescribe(k,r,plan.W));
+        min = 30; rpe = QUALITIES.recuperacion.rpe; load = min*rpe;
+        chip = '<span class="chip crit">sesión sustituida</span>';
+      } else {
+        chip = '<span class="chip ' + (band.vol<0.8?'warn':'') + '">volumen −' + Math.round((1-band.vol)*100) + ' %'
+             + (band.keepInt?' · intensidad mantenida':'') + '</span>';
+      }
+    } else if(isToday){
+      chip = '<span class="chip ok">sin cambios</span>';
+    }
+    return '<div class="day' + (isToday?' today':'') + '">'
+      + '<div class="dow">' + dowLbl + (isToday?'<br>hoy':'') + '</div>'
+      + '<div><div class="title">' + title + ' ' + chip + '</div>'
+      + '<div class="meta"><span>' + min + ' min</span><span>RPE objetivo ' + rpe + '</span>'
+      + '<span>' + (isToday && load!==day.load ? '<s>' + fmt(day.load) + '</s> ' : '') + fmt(load) + ' UA</span></div>'
+      + '<ul class="items">' + items.map(i =>
+          '<li><span>' + i.name + '</span><span class="p">' + i.p + '</span></li>').join('')
+      + '</ul></div></div>';
+  }).join('');
+
+  /* guardarraíles */
+  $('guards').innerHTML = guardrails(m, plan).map(g =>
+    '<div class="guard ' + (g.ok?'pass':'fail') + '"><span class="mark">' + (g.ok?'✓':'✕') + '</span>'
+    + '<span>' + g.t + ' <b style="font-family:var(--mono);font-weight:500">' + g.v + '</b></span>'
+    + '<span class="lim">' + g.lim + '</span></div>').join('');
+
+  /* decisión del día, siempre visible arriba del log */
+  const todayDecision = {
+    kind:'daily_adjustment', when:d, act: band.vol !== 1,
+    rules: F.map(f=>f.k).concat(R.score!=null ? ['READINESS_'+band.key.toUpperCase()] : []),
+    why: band.say + (F.length ? ' Señales: ' + F.map(f=>f.d).join('; ') + '.' : ''),
+    completeness: R.completeness
+  };
+  const entries = [todayDecision].concat(S.decisions.slice(0,7));
+  $('log').innerHTML = entries.length ? entries.map(e =>
+    '<div class="entry' + (e.act?' act':'') + '">'
+    + '<div class="head"><span>' + DOW[e.when.getDay()] + ' ' + e.when.getDate() + '/' + (e.when.getMonth()+1) + '</span>'
+    + '<span>' + e.kind + '</span>'
+    + '<span>datos ' + Math.round(e.completeness) + ' %</span></div>'
+    + '<p class="why">' + e.why + '</p>'
+    + '<div class="rules">' + e.rules.map(r=>'<code>'+r+'</code>').join('') + '</div></div>'
+  ).join('') : '<p class="empty">Sin decisiones registradas todavía.</p>';
+
+  drawChart(m);
+}
+
+/* ══════════════ gráfico de carga ══════════════ */
+let chartData = null;
+function drawChart(m){
+  const cv = $('chart'), ctx = cv.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w*dpr; cv.height = h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+
+  const css = getComputedStyle(document.documentElement);
+  const cBar = css.getPropertyValue('--bar').trim();
+  const cRest = css.getPropertyValue('--bar-rest').trim();
+  const cAcc = css.getPropertyValue('--accent').trim();
+  const cInk3 = css.getPropertyValue('--ink-3').trim();
+  const cLine = css.getPropertyValue('--line-soft').trim();
+
+  const hist = S.hist.slice(-28);
+  const loads = hist.map(x=>x.load);
+  const padL = 4, padR = 4, padT = 10, padB = 16;
+  const plotW = w-padL-padR, plotH = h-padT-padB;
+
+  /* series de aguda y crónica día a día, en la misma unidad (UA/día) */
+  const acuteS = [], chronS = [];
+  const all = S.hist.map(x=>x.load);
+  for(let i=all.length-28;i<all.length;i++){
+    acuteS.push(mean(all.slice(Math.max(0,i-6), i+1)));
+    chronS.push(mean(all.slice(Math.max(0,i-27), i+1)));
+  }
+  const maxV = Math.max(...loads, ...acuteS, ...chronS, 1)*1.12;
+  const x = i => padL + (i+0.5)*(plotW/28);
+  const y = v => padT + plotH - (v/maxV)*plotH;
+
+  /* base */
+  ctx.strokeStyle = cLine; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(padL, padT+plotH+0.5); ctx.lineTo(w-padR, padT+plotH+0.5); ctx.stroke();
+
+  /* barras: 2 px de separación, extremo redondeado */
+  const bw = Math.max(3, plotW/28 - 3);
+  loads.forEach((v,i) => {
+    if(v <= 0){
+      ctx.fillStyle = cRest;
+      ctx.fillRect(x(i)-bw/2, padT+plotH-2, bw, 2);
+      return;
+    }
+    const top = y(v), hgt = padT+plotH-top;
+    ctx.fillStyle = cBar;
+    const r = Math.min(3, bw/2, hgt);
+    ctx.beginPath();
+    ctx.moveTo(x(i)-bw/2, padT+plotH);
+    ctx.lineTo(x(i)-bw/2, top+r);
+    ctx.quadraticCurveTo(x(i)-bw/2, top, x(i)-bw/2+r, top);
+    ctx.lineTo(x(i)+bw/2-r, top);
+    ctx.quadraticCurveTo(x(i)+bw/2, top, x(i)+bw/2, top+r);
+    ctx.lineTo(x(i)+bw/2, padT+plotH);
+    ctx.closePath(); ctx.fill();
   });
+
+  const line = (series, color, dash) => {
+    ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.setLineDash(dash||[]); ctx.lineJoin = 'round';
+    ctx.beginPath(); series.forEach((v,i)=> i? ctx.lineTo(x(i),y(v)) : ctx.moveTo(x(i),y(v)));
+    ctx.stroke(); ctx.restore();
+  };
+  line(chronS, cInk3, [4,3]);
+  line(acuteS, cAcc);
+
+  /* punto final destacado */
+  ctx.fillStyle = cAcc;
+  ctx.beginPath(); ctx.arc(x(27), y(acuteS[27]), 3.5, 0, Math.PI*2); ctx.fill();
+
+  ctx.fillStyle = cInk3; ctx.font = '10px ' + css.getPropertyValue('--mono');
+  ctx.textAlign = 'left';  ctx.fillText('hace 28 días', padL, h-4);
+  ctx.textAlign = 'right'; ctx.fillText('hoy', w-padR, h-4);
+
+  chartData = {hist, acuteS, chronS, x, padL, plotW};
+}
+
+/* tooltip del gráfico */
+function hookChart(){
+  const cv = $('chart'), tip = $('tip');
+  const move = ev => {
+    if(!chartData) return;
+    const r = cv.getBoundingClientRect();
+    const px = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
+    const i = clamp(Math.floor((px - chartData.padL)/(chartData.plotW/28)), 0, 27);
+    const d = chartData.hist[i];
+    tip.style.opacity = '1';
+    tip.style.left = chartData.x(i) + 'px';
+    tip.style.top = '-2px';
+    tip.textContent = DOW[d.date.getDay()] + ' ' + d.date.getDate() + '/' + (d.date.getMonth()+1)
+      + ' · ' + (d.load ? fmt(d.load) + ' UA (' + d.min + ' min × RPE ' + d.rpe + ')' : 'descanso');
+  };
+  cv.addEventListener('pointermove', move);
+  cv.addEventListener('pointerdown', move);
+  cv.addEventListener('pointerleave', () => tip.style.opacity = '0');
+}
+
+/* ══════════════ acciones ══════════════ */
+function advance(load, min, rpe){
+  const c = checkin();
+  const A = S.adjusted;
+  S.decisions.unshift({
+    kind: load>0 ? 'session_executed' : 'rest_day',
+    when: new Date(S.hist[S.hist.length-1].date),
+    act: A.band.vol !== 1,
+    rules: A.F.map(f=>f.k).concat(['READINESS_'+A.band.key.toUpperCase()]),
+    why: load>0
+      ? 'Sesión registrada: ' + min + ' min × sRPE ' + rpe + ' = ' + fmt(load) + ' UA. ' + A.band.say
+      : 'Día sin entrenar registrado. ' + A.band.say,
+    completeness: A.R.completeness
+  });
+
+  const prev = S.hist[S.hist.length-1];
+  prev.hrv = c.hrv; prev.sleep = c.sleepH;
+  const next = new Date(prev.date); next.setDate(next.getDate()+1);
+  S.hist.push({date:next, load, min, rpe, hrv:c.hrv, sleep:c.sleepH});
+  if(S.hist.length > 90) S.hist.shift();
+  render();
+}
+
+function todaySession(){
+  const A = S.adjusted;
+  const day = A.plan.week[0];
+  if(!day || day.rest) return null;
+  const vol = A.band.vol;
+  if(vol === 0) return {min:30, rpe:3};
+  return {min:Math.round(day.min*vol), rpe:day.rpe};
+}
+
+function init(){
+  S = seed();
+  render();
+}
+
+/* ══════════════ eventos ══════════════ */
+const LBL = {
+  sleepQ:['muy mala','mala','regular','buena','excelente'],
+  fatigue:['agotado','muy cansado','normal','fresco','muy fresco'],
+  soreness:['muy dolorido','dolorido','moderado','leve','sin dolor'],
+  stress:['muy alto','alto','moderado','bajo','muy bajo'],
+  mood:['muy mal','mal','normal','bien','muy bien']
+};
+['sleepQ','fatigue','soreness','stress','mood'].forEach(id => {
+  const el = $(id);
+  const upd = draw => { $(id+'v').textContent = el.value + ' · ' + LBL[id][el.value-1]; if(draw && S) render(); };
+  el.addEventListener('input', () => upd(true));
+  upd(false);
+});
+['sleepH','hrv'].forEach(id => $(id).addEventListener('input', render));
+['sport','goal','level','days','age','squat'].forEach(id =>
+  $(id).addEventListener('change', () => { S = seed(); render(); }));
+
+$('btnTrain').addEventListener('click', () => {
+  const s = todaySession();
+  if(!s){ advance(0,0,0); return; }
+  advance(Math.round(s.min*s.rpe), s.min, s.rpe);
+});
+$('btnRest').addEventListener('click', () => advance(0,0,0));
+
+/* semana dura: 6 días seguidos de carga alta — dispara SPIKE y ACWR alto */
+$('btnBad').addEventListener('click', () => {
+  for(let i=0;i<6;i++){
+    const prev = S.hist[S.hist.length-1];
+    const next = new Date(prev.date); next.setDate(next.getDate()+1);
+    S.hist.push({date:next, load:Math.round(85*8.5), min:85, rpe:8.5,
+                 hrv:4.20 - 0.06*(i+1), sleep:6.2});
+  }
+  S.decisions.unshift({
+    kind:'manual_override', when:new Date(S.hist[S.hist.length-1].date), act:true,
+    rules:['SIMULATED_BLOCK'],
+    why:'Se cargaron seis días seguidos de 85 min a sRPE 8,5 para ver cómo reaccionan las métricas y los guardarraíles.',
+    completeness:100
+  });
+  $('hrv').value = '3.98'; $('sleepH').value = '6.0';
+  $('fatigue').value = 2; $('soreness').value = 2; $('sleepQ').value = 2;
+  ['sleepQ','fatigue','soreness'].forEach(id => $(id+'v').textContent = $(id).value + ' · ' + LBL[id][$(id).value-1]);
+  render();
+});
+$('btnReset').addEventListener('click', () => {
+  $('hrv').value = '4.20'; $('sleepH').value = '7.5';
+  ['sleepQ','fatigue','soreness','stress','mood'].forEach(id => {
+    $(id).value = 4; $(id+'v').textContent = '4 · ' + LBL[id][3];
+  });
+  init();
 });
 
-document.querySelectorAll('.guide-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.guide-panel').forEach(p => p.classList.remove('active'));
-    document.querySelector(`.guide-panel[data-guide="${tab.dataset.guide}"]`).classList.add('active');
-  });
-});
+let rt;
+window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(()=>drawChart(metrics()), 120); });
+if(window.matchMedia){
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  (mq.addEventListener ? mq.addEventListener.bind(mq,'change') : mq.addListener.bind(mq))(() => drawChart(metrics()));
+}
 
-// ====== INIT ======
-[1, 2, 3, 4, 5].forEach(g => renderQuestions(g));
-updateProgress();
+hookChart();
+init();
+})();
 </script>
-
 </body>
 </html>
