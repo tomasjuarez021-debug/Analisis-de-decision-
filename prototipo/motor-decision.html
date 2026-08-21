@@ -264,6 +264,121 @@ footer{margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
 footer p{margin:0 0 7px;}
 footer b{color:var(--ink-2); font-weight:500;}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+
+/* ---------- barra de ventanas (abajo) ---------- */
+body{padding-bottom:74px;}
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:50;
+  display:grid; grid-template-columns:repeat(5,1fr);
+  background:var(--surface); border-top:1px solid var(--line);
+  box-shadow:0 -6px 20px -12px rgba(0,0,0,.35);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar button{
+  display:grid; gap:3px; justify-items:center; padding:9px 4px 10px;
+  background:transparent; border:0; cursor:pointer; color:var(--ink-3);
+  font-family:var(--sans); font-size:10.5px; line-height:1.25; font-weight:500;
+}
+.tabbar button .ic{font-family:var(--mono); font-size:13px; font-weight:500;
+  width:26px; height:26px; border-radius:8px; display:grid; place-items:center;
+  background:var(--line-soft); color:var(--ink-3);}
+.tabbar button[aria-current="page"]{color:var(--accent);}
+.tabbar button[aria-current="page"] .ic{background:var(--accent); color:var(--surface);}
+.tabbar button:hover .ic{background:var(--accent-soft); color:var(--accent);}
+.tabbar button[aria-current="page"]:hover .ic{background:var(--accent); color:var(--surface);}
+
+/* ---------- desplegables ---------- */
+details.acc{border:1px solid var(--line-soft); border-radius:9px; background:var(--surface-2); margin-bottom:9px;}
+details.acc > summary{
+  list-style:none; cursor:pointer; padding:12px 14px; display:flex; gap:10px;
+  align-items:center; font-size:13.5px; font-weight:500;}
+details.acc > summary::-webkit-details-marker{display:none;}
+details.acc > summary::before{content:'▸'; color:var(--ink-3); font-size:11px; transition:transform .15s;}
+details.acc[open] > summary::before{transform:rotate(90deg);}
+details.acc > summary .st{margin-left:auto;}
+details.acc .body{padding:2px 14px 14px; border-top:1px solid var(--line-soft);}
+
+/* ---------- asistente de tests ---------- */
+.wizard{border:1px solid var(--accent-soft); background:var(--accent-soft);
+  border-radius:9px; padding:15px; margin-bottom:14px;}
+.wizard .step{font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:5px;}
+.wizard h3{margin:0 0 4px; font-size:16px; font-weight:600;}
+.wizard .how{font-size:13px; color:var(--ink-2); margin:0 0 12px; max-width:62ch;}
+.progress{height:5px; border-radius:3px; background:var(--line-soft); overflow:hidden; margin:10px 0 14px;}
+.progress > i{display:block; height:100%; background:var(--accent);}
+
+/* ---------- siluetas ---------- */
+.bodywrap{display:grid; gap:16px; grid-template-columns:minmax(0,1fr);}
+@media (min-width:760px){ .bodywrap{grid-template-columns:minmax(0,300px) minmax(0,1fr);} }
+.figures{display:flex; gap:8px; justify-content:center; align-items:flex-end;}
+.figure{text-align:center;}
+.figure svg{width:100%; max-width:130px; height:auto; display:block;}
+.figure figcaption{font-family:var(--mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--ink-3); margin-top:6px;}
+.silo{fill:var(--line); }
+.silo-region{fill:var(--accent); opacity:.30;}
+
+/* ---------- lista de cualidades ---------- */
+.qlist{display:grid; gap:7px;}
+.qrow{display:grid; grid-template-columns:minmax(0,1fr) 58px; gap:4px 10px;
+  padding:9px 11px; border:1px solid var(--line-soft); border-radius:8px; background:var(--surface-2);}
+.qrow .nm{font-size:13px; font-weight:500;}
+.qrow .zz{font-family:var(--mono); font-size:12px; text-align:right; color:var(--ink-2);
+  font-variant-numeric:tabular-nums;}
+.qrow .tr{grid-column:1/-1;}
+.qrow .sub{grid-column:1/-1; font-family:var(--mono); font-size:10.5px; color:var(--ink-3);}
+
+/* ---------- tracker semanal ---------- */
+.days{display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:14px;}
+.days button{
+  display:grid; gap:2px; justify-items:center; padding:8px 2px; cursor:pointer;
+  border:1px solid var(--line-soft); border-radius:8px; background:var(--surface-2);
+  font-family:var(--sans); color:var(--ink-3); font-size:10px;}
+.days button .dd{font-family:var(--mono); font-size:14px; color:var(--ink); font-weight:500;}
+.days button .mk{width:6px; height:6px; border-radius:50%; background:var(--line);}
+.days button.has .mk{background:var(--accent);}
+.days button.done .mk{background:var(--ok);}
+.days button[aria-current="date"]{border-color:var(--accent); background:var(--accent-soft);}
+.days button[aria-current="date"] .dd{color:var(--accent);}
+.days button.future{opacity:.45;}
+
+.exlist{display:grid; gap:8px;}
+.exrow{border:1px solid var(--line-soft); border-radius:9px; background:var(--surface-2); padding:11px 12px;}
+.exhead{display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; margin-bottom:7px;}
+.exhead .nm{font-size:13.5px; font-weight:500;}
+.exhead .pr{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-left:auto;}
+.setrow{display:flex; flex-wrap:wrap; gap:7px; align-items:center;}
+.dot{width:30px; height:30px; border-radius:50%; cursor:pointer; flex:none;
+  border:2px solid var(--line); background:transparent; color:var(--ink-3);
+  font-family:var(--mono); font-size:11.5px; display:grid; place-items:center; padding:0;}
+.dot:hover{border-color:var(--accent);}
+.dot.on{background:var(--ok); border-color:var(--ok); color:var(--surface);}
+.dot:disabled{cursor:not-allowed; opacity:.4;}
+.kgreps{display:flex; gap:6px; align-items:center; margin-left:auto;}
+.kgreps input{width:62px; padding:5px 7px; font-size:12.5px; text-align:right;}
+.kgreps span{font-family:var(--mono); font-size:10.5px; color:var(--ink-3);}
+
+/* ---------- barras de evolución ---------- */
+.evo{display:grid; gap:9px;}
+.evorow{display:grid; grid-template-columns:minmax(0,1fr); gap:4px;}
+.evorow .top{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+.evorow .top .nm{font-size:12.5px; color:var(--ink-2);}
+.evorow .top .dl{font-family:var(--mono); font-size:11.5px; font-variant-numeric:tabular-nums;}
+.lane{position:relative; height:22px; border-radius:5px; background:var(--surface-2);
+  border:1px solid var(--line-soft);}
+.lane .mid{position:absolute; top:4px; bottom:4px; width:0; left:50%;
+  border-left:1px dashed var(--line);}
+.lane .seg{position:absolute; top:10px; height:2px; background:var(--line);}
+.lane .pt{position:absolute; top:5px; width:12px; height:12px; border-radius:50%;
+  margin-left:-6px; border:2px solid var(--surface-2);}
+.lane .pt.a{background:var(--ink-3);}
+.lane .pt.b{background:var(--accent);}
+.lane .pt.t{background:transparent; border:0; border-radius:0; width:2px; height:14px;
+  top:4px; margin-left:-1px; background:var(--ink-3); opacity:.75;}
+.scale{display:flex; justify-content:space-between; font-family:var(--mono);
+  font-size:10px; color:var(--ink-3); margin-top:2px;}
+
 </style>
 
 <div class="wrap">
@@ -271,19 +386,20 @@ footer b{color:var(--ink-2); font-weight:500;}
     <div>
       <p class="eyebrow">Arquitectura v1.0</p>
       <h1>Athlete Intelligence System</h1>
-      <p>La rutina no es el producto: es la última salida de la cadena <b style="font-weight:500;color:var(--ink)">Evaluación → Modelado → Diagnóstico → Decisión → Prescripción</b>. Cada módulo es una función de su entrada, y toda decisión queda reproducible.</p>
+      <p id="subtitle">La rutina no es el producto: es la última salida de la cadena <b style="font-weight:500;color:var(--ink)">Evaluación → Modelado → Diagnóstico → Decisión → Prescripción</b>.</p>
     </div>
-    <div class="daychip"><span>Día <b id="dayNum">1</b></span><span id="dateLbl"></span></div>
+    <div class="daychip"><span id="dateLbl"></span><span>·</span><span id="dayNum"></span></div>
   </header>
 
-  <nav id="nav" aria-label="Módulos"></nav>
   <div id="view"></div>
 
   <footer>
-    <p><b>Qué es esto.</b> Implementación de la arquitectura de Athlete Intelligence System en una sola página: capa de dominio, analítica, motor de decisión, aplicación y UI, con las fronteras del documento respetadas. Las reglas del motor son datos versionados (<span style="font-family:var(--mono)">ruleset ais-2026.08</span>), no código: se listan enteras en el módulo Decision Engine, con las que dispararon y las que no.</p>
-    <p><b>Qué no es.</b> No es un dispositivo médico y no predice lesiones: las banderas son señales de gestión de carga. Los arquetipos y las normas de referencia son estimaciones ilustrativas — cada uno declara su procedencia. Los datos se guardan solo en este dispositivo.</p>
+    <p><b>Qué es esto.</b> Los cinco pasos del sistema, uno por ventana. Por debajo corre el motor completo: reglas como datos versionados (<span style="font-family:var(--mono)">ruleset ais-2026.08</span>), guardarraíles no anulables y trazabilidad de cada decisión.</p>
+    <p><b>Qué no es.</b> No es un dispositivo médico y no predice lesiones. Los arquetipos y las normas de referencia son estimaciones ilustrativas, y cada uno declara su procedencia. Los datos se guardan solo en este dispositivo.</p>
   </footer>
 </div>
+
+<nav class="tabbar" id="tabbar" aria-label="Ventanas"></nav>
 
 <script>
 (function(){
@@ -314,15 +430,24 @@ const HALF_LIFE_DAYS = {
 const SOURCE_FACTOR = {lab:1, field:0.9, wearable:0.8, selfReport:0.6, estimated:0.5};
 
 const PROTOCOLS = [
-  {code:'cmj',      name:'Salto contramovimiento', capacity:'power',             unit:'cm', hib:true,  plausible:[10,80],   validityDays:60,  bilateral:false},
-  {code:'sprint10', name:'Sprint 10 m',            capacity:'speed',             unit:'s',  hib:false, plausible:[1.2,3.0], validityDays:90,  bilateral:false},
-  {code:'squat1rm', name:'Sentadilla 1RM',         capacity:'maxStrength',       unit:'kg', hib:true,  plausible:[20,350],  validityDays:120, bilateral:false},
-  {code:'cod505',   name:'505 cambio de dirección',capacity:'changeOfDirection', unit:'s',  hib:false, plausible:[1.8,4.0], validityDays:90,  bilateral:true},
-  {code:'yoyo',     name:'Yo-Yo IR1',              capacity:'aerobicCapacity',   unit:'m',  hib:true,  plausible:[200,3000],validityDays:90,  bilateral:false},
-  {code:'rsa',      name:'RSA 6×30 m (decremento)',capacity:'anaerobicCapacity', unit:'%',  hib:false, plausible:[0,20],    validityDays:90,  bilateral:false},
-  {code:'sitreach', name:'Sit and reach',          capacity:'mobility',          unit:'cm', hib:true,  plausible:[-20,40],  validityDays:120, bilateral:false},
-  {code:'ybt',      name:'Y-Balance compuesto',    capacity:'stability',         unit:'%',  hib:true,  plausible:[60,120],  validityDays:120, bilateral:true},
-  {code:'bodyfat',  name:'Grasa corporal',         capacity:'bodyComposition',   unit:'%',  hib:false, plausible:[3,45],    validityDays:90,  bilateral:false}
+  {code:'cmj',      name:'Salto contramovimiento', capacity:'power',             unit:'cm', hib:true,  plausible:[10,80],   validityDays:60,  bilateral:false,
+   how:'De pie, manos en la cadera. Bajás rápido hasta media sentadilla y saltás lo más alto posible, sin pausa. Tres intentos, se anota el mejor.'},
+  {code:'sprint10', name:'Sprint 10 m',            capacity:'speed',             unit:'s',  hib:false, plausible:[1.2,3.0], validityDays:90,  bilateral:false,
+   how:'Salida detenida, pie adelantado sobre la línea. Cronometrás 10 m. Dos intentos con 3 min de pausa, se anota el mejor.'},
+  {code:'squat1rm', name:'Sentadilla · 1RM',       capacity:'maxStrength',       unit:'kg', hib:true,  plausible:[20,350],  validityDays:120, bilateral:false,
+   how:'Podés medirlo directo o estimarlo: peso × (1 + reps/30) con una serie de hasta 10 repeticiones (fórmula de Epley).'},
+  {code:'cod505',   name:'505 · cambio de dirección',capacity:'changeOfDirection',unit:'s', hib:false, plausible:[1.8,4.0], validityDays:90,  bilateral:true,
+   how:'Corrés 10 m, girás 180° sobre una línea y volvés 5 m. Se cronometran los últimos 5 m de ida y los 5 de vuelta. Un intento por pierna.'},
+  {code:'yoyo',     name:'Yo-Yo IR1',              capacity:'aerobicCapacity',   unit:'m',  hib:true,  plausible:[200,3000],validityDays:90,  bilateral:false,
+   how:'Ida y vuelta de 20 m siguiendo el audio del test, con 10 s de trote entre repeticiones. Se anota la distancia total al abandonar.'},
+  {code:'rsa',      name:'RSA · 6×30 m',           capacity:'anaerobicCapacity', unit:'%',  hib:false, plausible:[0,20],    validityDays:90,  bilateral:false,
+   how:'Seis sprints de 30 m cada 25 s. Se anota el porcentaje de caída entre el mejor y la media.'},
+  {code:'sitreach', name:'Sit and reach',          capacity:'mobility',          unit:'cm', hib:true,  plausible:[-20,40],  validityDays:120, bilateral:false,
+   how:'Sentado, piernas extendidas, pies contra el cajón. Llevás las manos hacia adelante sin rebote. Cero es la punta de los pies.'},
+  {code:'ybt',      name:'Y-Balance compuesto',    capacity:'stability',         unit:'%',  hib:true,  plausible:[60,120],  validityDays:120, bilateral:true,
+   how:'Apoyado en una pierna, alcanzás con la otra en tres direcciones. Se normaliza por el largo del miembro: (suma de los tres / 3 × largo) × 100.'},
+  {code:'bodyfat',  name:'Grasa corporal',         capacity:'bodyComposition',   unit:'%',  hib:false, plausible:[3,45],    validityDays:90,  bilateral:false,
+   how:'Bioimpedancia, pliegues o DEXA. Anotá el método: la app le baja la confianza al autoinforme.'}
 ];
 const PROTO = Object.fromEntries(PROTOCOLS.map(p=>[p.code,p]));
 
@@ -374,32 +499,32 @@ const ARCHETYPES = [
 ];
 
 const EX = {
-  sentadilla:{n:'Sentadilla trasera', pat:'squat', ratio:1},
-  peso_muerto:{n:'Peso muerto', pat:'hinge', ratio:1.2},
-  rdl:{n:'Peso muerto rumano', pat:'hinge', ratio:0.85},
-  hip_thrust:{n:'Hip thrust', pat:'hinge', ratio:1.1},
-  zancada:{n:'Zancada búlgara', pat:'squat'},
-  press_banca:{n:'Press de banca', pat:'push', ratio:0.72},
-  press_militar:{n:'Press militar', pat:'push', ratio:0.45},
-  remo:{n:'Remo con barra', pat:'pull', ratio:0.6},
-  dominadas:{n:'Dominadas', pat:'pull'},
-  nordic:{n:'Nórdico de isquios', pat:'prehab'},
-  copenhagen:{n:'Copenhagen plank', pat:'prehab'},
-  core:{n:'Anti-rotación Pallof', pat:'core'},
-  ybalance:{n:'Y-Balance y propiocepción', pat:'prehab'},
-  movilidad:{n:'Movilidad cadera y torácica', pat:'mob'},
-  farmer:{n:'Farmer walk', pat:'carry'},
-  cmj_ej:{n:'Saltos con contramovimiento', pat:'plyo'},
-  vallas:{n:'Saltos sobre vallas', pat:'plyo'},
-  sprint:{n:'Sprint lanzado', pat:'sprint'},
-  salidas:{n:'Salidas 10 m', pat:'sprint'},
-  cambios:{n:'Cambios de dirección 5-0-5', pat:'agility'},
-  intervalos:{n:'Intervalos 4×4 min', pat:'cond'},
-  continuo:{n:'Continuo aeróbico', pat:'cond'},
-  fartlek:{n:'Fartlek 25 min', pat:'cond'},
-  rsa_ej:{n:'Repeticiones de sprint (RSA)', pat:'cond'},
-  bici:{n:'Bici suave', pat:'mob'},
-  activacion:{n:'Activación neuromuscular', pat:'mob'}
+  sentadilla:{n:'Sentadilla trasera', pat:'squat', ratio:1, caps:['maxStrength']},
+  peso_muerto:{n:'Peso muerto', pat:'hinge', ratio:1.2, caps:['maxStrength']},
+  rdl:{n:'Peso muerto rumano', pat:'hinge', ratio:0.85, caps:['maxStrength','stability']},
+  hip_thrust:{n:'Hip thrust', pat:'hinge', ratio:1.1, caps:['power','maxStrength']},
+  zancada:{n:'Zancada búlgara', pat:'squat', caps:['maxStrength','stability']},
+  press_banca:{n:'Press de banca', pat:'push', ratio:0.72, caps:['maxStrength']},
+  press_militar:{n:'Press militar', pat:'push', ratio:0.45, caps:['maxStrength']},
+  remo:{n:'Remo con barra', pat:'pull', ratio:0.6, caps:['maxStrength']},
+  dominadas:{n:'Dominadas', pat:'pull', caps:['maxStrength']},
+  nordic:{n:'Nórdico de isquios', pat:'prehab', caps:['stability']},
+  copenhagen:{n:'Copenhagen plank', pat:'prehab', caps:['stability']},
+  core:{n:'Anti-rotación Pallof', pat:'core', caps:['stability']},
+  ybalance:{n:'Y-Balance y propiocepción', pat:'prehab', caps:['stability','mobility']},
+  movilidad:{n:'Movilidad cadera y torácica', pat:'mob', caps:['mobility']},
+  farmer:{n:'Farmer walk', pat:'carry', caps:['maxStrength','stability']},
+  cmj_ej:{n:'Saltos con contramovimiento', pat:'plyo', caps:['power']},
+  vallas:{n:'Saltos sobre vallas', pat:'plyo', caps:['power']},
+  sprint:{n:'Sprint lanzado', pat:'sprint', caps:['speed']},
+  salidas:{n:'Salidas 10 m', pat:'sprint', caps:['speed']},
+  cambios:{n:'Cambios de dirección 5-0-5', pat:'agility', caps:['changeOfDirection']},
+  intervalos:{n:'Intervalos 4×4 min', pat:'cond', caps:['aerobicCapacity']},
+  continuo:{n:'Continuo aeróbico', pat:'cond', caps:['aerobicCapacity','bodyComposition']},
+  fartlek:{n:'Fartlek 25 min', pat:'cond', caps:['aerobicCapacity']},
+  rsa_ej:{n:'Repeticiones de sprint (RSA)', pat:'cond', caps:['anaerobicCapacity']},
+  bici:{n:'Bici suave', pat:'mob', caps:[]},
+  activacion:{n:'Activación neuromuscular', pat:'mob', caps:[]}
 };
 
 /* una "cualidad de sesión" es la forma entrenable de una capacidad */
@@ -937,13 +1062,22 @@ function buildTargetProfile(model, archetype, horizonWeeks){
   return {archetypeId:archetype.id, horizonWeeks, targets, evidence:archetype.evidence};
 }
 
-const OFFSETS = {3:[0,2,4], 4:[0,1,3,5], 5:[0,1,2,4,5], 6:[0,1,2,3,4,5]};
-const trainOffsets = n => OFFSETS[n] || OFFSETS[3];
+/* getDay(): 0 domingo … 6 sábado. El microciclo va de lunes a domingo. */
+const WEEKDAYS = {3:[1,3,5], 4:[1,2,4,6], 5:[1,2,3,5,6], 6:[1,2,3,4,5,6]};
+const trainWeekdays = n => WEEKDAYS[n] || WEEKDAYS[3];
+/** Lunes de la semana que contiene a `date` (ISO). */
+function weekStartOf(dateIso){
+  const d = parseDate(dateIso);
+  const back = (d.getDay()+6)%7;
+  d.setDate(d.getDate()-back);
+  return isoDate(d);
+}
 
 /* El plan es una SALIDA del motor: las prioridades deciden qué cualidades entran. */
-function generatePlan(model, priorities, daysPerWeek, weekIdx, today, oneRm){
+function generatePlan(model, priorities, daysPerWeek, weekIdx, weekStart, oneRm){
   const W = WEEKS[weekIdx % 4];
-  const offsets = trainOffsets(daysPerWeek);
+  const days = trainWeekdays(daysPerWeek);          // días de la semana que entrenan
+  const offsets = days.map(d=>(d+6)%7);             // 0 = lunes
 
   /* cada prioridad aporta sus cualidades; se completa con soporte general */
   const seq = [];
@@ -967,7 +1101,8 @@ function generatePlan(model, priorities, daysPerWeek, weekIdx, today, oneRm){
   const levelFactor = {beginner:0.85, intermediate:1, advanced:1.15}[model.profile.level] || 1;
   const week = [];
   for(let off=0; off<7; off++){
-    const date = new Date(parseDate(today)); date.setDate(date.getDate()+off);
+    const d = parseDate(weekStart); d.setDate(d.getDate()+off);
+    const date = isoDate(d);
     const k = offsets.indexOf(off);
     if(k===-1 || !seq[k]){ week.push({off, date, rest:true}); continue; }
     const q = QUALITIES[seq[k]];
@@ -976,7 +1111,7 @@ function generatePlan(model, priorities, daysPerWeek, weekIdx, today, oneRm){
       min, rpe:q.rpe, load:Math.round(min*q.rpe),
       items:q.items.map(([key,role])=>prescribe(key, role, W, oneRm))});
   }
-  return {week, W, weekIdx:weekIdx%4, seq};
+  return {weekStart, week, W, weekIdx:weekIdx%4, seq};
 }
 
 function prescribe(key, role, W, oneRm){
@@ -995,7 +1130,11 @@ function prescribe(key, role, W, oneRm){
     const kg = (e.ratio && oneRm>0) ? ' · '+Math.round(oneRm*W.pct*e.ratio/2.5)*2.5+' kg' : '';
     p = `${W.sets} × ${reps} @ ${Math.round(W.pct*100)} % 1RM${kg}`;
   } else p = '3 × 10 · RIR '+W.rir;
-  return {name:e.n, p, role};
+  const setsN = (e.pat==='core'||e.pat==='prehab') ? 3
+              : (e.pat==='mob'||e.pat==='cond'||e.pat==='sprint'||e.pat==='agility') ? 1
+              : (role==='main' ? W.sets : 3);
+  return {code:key, name:e.n, p, role, caps:e.caps||[], sets:setsN,
+          loggable: !!e.ratio || role==='acc'};
 }
 
 function planStats(plan, entries){
@@ -1017,6 +1156,8 @@ function planStats(plan, entries){
     maxConsecutiveDays: maxStreak
   };
 }
+
+const hashSettings = s => `${s.archetypeId}|${s.horizonWeeks}|${s.daysPerWeek}`;
 
 /* ══════════════════════════════════════════════════════════════════
    INFRAESTRUCTURA — adaptador de almacenamiento tras una interfaz.
@@ -1102,8 +1243,16 @@ const Repos = {
     list(){ return this.index().map(x=>Store.read('decision:'+x.id,null)).filter(Boolean); },
     clear(){ for(const x of this.index()) Store.remove('decision:'+x.id); Store.write('index:decisions:demo', []); }
   },
+  plans:{
+    get(weekStart){ return Store.read('plan:demo:'+weekStart, null); },
+    save(plan){ Store.write('plan:demo:'+plan.weekStart, plan); },
+    clear(){ for(const k of Store.read('index:plans:demo', [])) Store.remove('plan:demo:'+k);
+             Store.write('index:plans:demo', []); },
+    track(weekStart){ const i = Store.read('index:plans:demo', []);
+      if(!i.includes(weekStart)){ i.push(weekStart); Store.write('index:plans:demo', i); } }
+  },
   settings:{
-    get(){ return Store.read('settings:demo', {archetypeId:'rugby_fwd', horizonWeeks:12, daysPerWeek:4}); },
+    get(){ return Store.read('settings:demo', {archetypeId:'rugby_fwd', horizonWeeks:12, daysPerWeek:5}); },
     save(s){ Store.write('settings:demo', s); }
   }
 };
@@ -1136,15 +1285,29 @@ const App = {
 
     /* primera pasada: decisiones sin plan; genera prioridades */
     let outcome = Decision.decide(model, target, ctx);
+    const weekStart = weekStartOf(today);
     const weekIdx = Math.floor(entries.length/7);
-    let plan = generatePlan(model, outcome.priorities, settings.daysPerWeek, weekIdx, today, this.oneRm(assessments));
+    /* el plan de la semana se persiste: lo prescrito un día pasado no cambia
+       retroactivamente porque hoy tengas datos nuevos */
+    let plan = Repos.plans.get(weekStart);
+    if(!plan || plan.settingsHash !== hashSettings(settings)){
+      plan = generatePlan(model, outcome.priorities, settings.daysPerWeek, weekIdx,
+                          weekStart, this.oneRm(assessments));
+      plan.settingsHash = hashSettings(settings);
+      plan.priorities = outcome.priorities;
+      Repos.plans.save(plan); Repos.plans.track(weekStart);
+    }
     /* segunda pasada: ahora los guardarraíles pueden evaluar el plan */
     ctx.planStats = planStats(plan, entries);
     outcome = Decision.decide(model, target, ctx);
 
     this.state = {profile, entries, assessments, settings, model, archetype, target,
-                  ctx, outcome, plan, today, calibration};
+                  ctx, outcome, plan, today, weekStart, calibration};
     return this.state;
+  },
+  todayPlan(){
+    const s = this.state;
+    return s.plan.week.find(d=>d.date===s.today) || {rest:true, date:s.today};
   },
   oneRm(assessments){
     for(let i=assessments.length-1;i>=0;i--){
@@ -1168,6 +1331,60 @@ const App = {
     entry.updatedAt = new Date().toISOString();
     Repos.entries.save(entry);
     this.reload();
+  },
+  /** Marca o desmarca una serie concreta de un ejercicio en un día cualquiera. */
+  toggleSet(date, exerciseCode, setIndex){
+    const entry = Repos.entries.get(date) || {date, sessions:[], totalLoadAu:0};
+    const ex = (entry.execution = entry.execution || {});
+    const item = (ex[exerciseCode] = ex[exerciseCode] || {sets:[], kg:null, reps:null});
+    item.sets[setIndex] = !item.sets[setIndex];
+    entry.updatedAt = new Date().toISOString();
+    Repos.entries.save(entry);
+    this.recomputeDay(date);
+  },
+  setLoad(date, exerciseCode, field, value){
+    const entry = Repos.entries.get(date) || {date, sessions:[], totalLoadAu:0};
+    const ex = (entry.execution = entry.execution || {});
+    const item = (ex[exerciseCode] = ex[exerciseCode] || {sets:[], kg:null, reps:null});
+    item[field] = isFinite(value) ? value : null;
+    Repos.entries.save(entry);
+    this.recomputeDay(date);
+  },
+  setDayRpe(date, rpe){
+    const entry = Repos.entries.get(date) || {date, sessions:[], totalLoadAu:0};
+    entry.sessionRpe = rpe;
+    Repos.entries.save(entry);
+    this.recomputeDay(date);
+  },
+  /** La carga del día sale de lo efectivamente completado × el sRPE reportado. */
+  recomputeDay(date){
+    const entry = Repos.entries.get(date);
+    if(!entry) return;
+    const plan = Repos.plans.get(weekStartOf(date));
+    const day = plan && plan.week.find(d=>d.date===date);
+    if(day && !day.rest){
+      const total = day.items.reduce((t,i)=>t+i.sets,0);
+      const done = day.items.reduce((t,i)=>{
+        const e = entry.execution && entry.execution[i.code];
+        return t + (e ? e.sets.filter(Boolean).length : 0);
+      },0);
+      const pct = total ? done/total : 0;
+      const rpe = entry.sessionRpe || day.rpe;
+      const min = Math.round(day.min*pct);
+      entry.completionPct = Math.round(pct*100);
+      entry.sessions = done ? [{durationMin:min, sessionRpe:rpe, internalLoadAu:Math.round(min*rpe)}] : [];
+      entry.totalLoadAu = done ? Math.round(min*rpe) : 0;
+      Repos.entries.save(entry);
+    }
+    this.reload();
+  },
+  tonnage(entry, day){
+    if(!entry || !entry.execution || !day || day.rest) return 0;
+    return day.items.reduce((t,i)=>{
+      const e = entry.execution[i.code];
+      if(!e || !e.kg || !e.reps) return t;
+      return t + e.sets.filter(Boolean).length * e.kg * e.reps;
+    },0);
   },
   logSession(min, rpe){
     const s = this.state;
@@ -1218,17 +1435,16 @@ const App = {
                      position:'Segunda línea', level:'intermediate',
                      timezone:'America/Argentina/Buenos_Aires', heightCm:190, weightKg:98};
     Repos.profile.save(profile);
-    Repos.settings.save({archetypeId:'rugby_fwd', horizonWeeks:12, daysPerWeek:4});
+    Repos.settings.save({archetypeId:'rugby_fwd', horizonWeeks:12, daysPerWeek:5});
 
     /* 42 días de historial reproducible */
     let seed = 20260820;
     const rnd = () => { seed = (seed*1664525+1013904223)>>>0; return seed/4294967296; };
     const today = new Date(); today.setHours(0,0,0,0);
-    const offs = trainOffsets(4);
+    const days = trainWeekdays(5);
     for(let i=41;i>=0;i--){
       const d = new Date(today); d.setDate(d.getDate()-i);
-      const off = ((Math.round((d-today)/MS_DAY)%7)+7)%7;
-      const trains = offs.includes(off);
+      const trains = days.includes(d.getDay());
       const min = trains ? Math.round(68*(0.85+rnd()*0.35)) : 0;
       const rpe = trains ? Math.round((6+rnd()*2.2)*2)/2 : 0;
       Repos.entries.save({
@@ -1245,6 +1461,9 @@ const App = {
     /* evaluación inicial: deja dos cualidades sin medir y una vencida, a propósito,
        para que el motor tenga algo real que decir sobre los datos que faltan */
     const raw = [
+      /* ronda vieja, para que la ventana de evolución tenga algo que mostrar */
+      {code:'cmj', value:36.5, days:75, source:'field'},
+      {code:'squat1rm', value:118, days:75, source:'field'},
       {code:'cmj', value:39, days:20, source:'field'},
       {code:'sprint10', value:1.82, days:20, source:'field'},
       {code:'squat1rm', value:132, days:34, source:'field'},
@@ -1268,7 +1487,11 @@ const App = {
     }
   },
   reset(){ Repos.entries.clear(); Repos.assessments.clear(); Repos.decisions.clear();
-           Store.remove('athlete:demo:profile'); this.init(); },
+           Repos.plans.clear(); Store.remove('athlete:demo:profile'); this.init(); },
+  saveProfile(patch){
+    const p = {...Repos.profile.get(), ...patch};
+    Repos.profile.save(p); Repos.plans.clear(); this.reload();
+  },
   exportJson(){
     return JSON.stringify({
       schemaVersion:SCHEMA_VERSION, exportedAt:new Date().toISOString(),
@@ -1280,462 +1503,619 @@ const App = {
 };
 
 /* ══════════════════════════════════════════════════════════════════
-   CAPA DE UI — presenta y captura. Cero cálculo: si hay un umbral acá,
-   está en el lugar equivocado.
+   CAPA DE UI — cinco ventanas. Presenta y captura; cero cálculo.
+   Los siete módulos del brief siguen existiendo por debajo: acá se
+   agrupan en los cinco pasos que recorre una persona de verdad.
    ══════════════════════════════════════════════════════════════════ */
-const MODULES = [
-  {id:'tracker',   n:'5', label:'Daily Tracker'},
-  {id:'athlete',   n:'7', label:'Digital Athlete'},
-  {id:'assess',    n:'1', label:'Assessment Lab'},
-  {id:'archetype', n:'2', label:'Archetype Designer'},
-  {id:'decision',  n:'3', label:'Decision Engine'},
-  {id:'program',   n:'4', label:'Program Generator'},
-  {id:'analytics', n:'6', label:'Analytics Center'}
+const WINDOWS = [
+  {id:'perfil',  ic:'1', label:'Perfil'},
+  {id:'explora', ic:'2', label:'Explorar'},
+  {id:'rutina',  ic:'3', label:'Rutina'},
+  {id:'tracker', ic:'4', label:'Semana'},
+  {id:'evolucion',ic:'5',label:'Evolución'}
 ];
-let current = 'tracker';
+let current = 'perfil';
+let selectedDate = null;        // día abierto en el tracker
+let wizardCode = null;          // test que el asistente está pidiendo
+
 const el = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function renderNav(){
-  el('nav').innerHTML = MODULES.map(m =>
-    `<button data-mod="${m.id}"${m.id===current?' aria-current="page"':''}>
-      <span class="n">${m.n}</span>${m.label}</button>`).join('');
-  el('nav').querySelectorAll('button').forEach(b =>
-    b.addEventListener('click', ()=>{ current = b.dataset.mod; render(); }));
-}
+const MONTHS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const dayLabel = iso => { const d=parseDate(iso); return DOW[d.getDay()]+' '+d.getDate()+' '+MONTHS[d.getMonth()]; };
 
 function bandChip(band){
-  const meta = BAND_META[band];
-  return `<span class="band ${meta.cls}"><span class="dot"></span>${meta.txt}</span>`;
+  const m = BAND_META[band];
+  return `<span class="band ${m.cls}"><span class="dot" style="width:8px;height:8px;border:0;padding:0"></span>${m.txt}</span>`;
+}
+
+function renderTabs(){
+  el('tabbar').innerHTML = WINDOWS.map(w=>
+    `<button data-win="${w.id}"${w.id===current?' aria-current="page"':''}>
+       <span class="ic">${w.ic}</span><span>${w.label}</span></button>`).join('');
+  el('tabbar').querySelectorAll('button').forEach(b=>
+    b.addEventListener('click', ()=>{ current = b.dataset.win; window.scrollTo(0,0); render(); }));
 }
 
 function render(){
   const s = App.state;
-  const d = parseDate(s.today);
-  el('dayNum').textContent = String(s.entries.length-41);
-  el('dateLbl').textContent = DOW[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1);
-  renderNav();
+  if(!selectedDate) selectedDate = s.today;
+  el('dateLbl').textContent = dayLabel(s.today);
+  el('dayNum').textContent = 'día '+(s.entries.length-41);
+  renderTabs();
   el('view').innerHTML = VIEWS[current](s);
   wire(s);
-  if(current==='analytics' || current==='tracker') drawChart(s);
+  if(current==='evolucion') drawChart(s);
+}
+
+/* ── qué falta completar: el hilo que guía la ventana 1 ── */
+function nextStep(s){
+  const p = s.profile;
+  if(!p.birthDate || !p.sex) return {sec:'identidad', txt:'Completá los datos personales'};
+  if(!p.heightCm || !p.weightKg) return {sec:'antropo', txt:'Cargá altura y peso'};
+  if(!p.sport || !p.level) return {sec:'deporte', txt:'Elegí deporte y nivel'};
+  const pending = pendingTests(s);
+  if(pending.length) return {sec:'tests', txt:`Faltan ${pending.length} tests para determinar todas tus cualidades`, code:pending[0].code};
+  return null;
+}
+/* tests pendientes o vencidos, ordenados por lo que más pesa en el arquetipo */
+function pendingTests(s){
+  return PROTOCOLS.filter(pr=>{
+    const c = s.model.capacities.find(x=>x.capacity===pr.capacity);
+    return !c || c.currentZ==null || c.isStale;
+  }).sort((a,b)=>{
+    const wa = (s.archetype.targets[a.capacity]||{w:0}).w;
+    const wb = (s.archetype.targets[b.capacity]||{w:0}).w;
+    return wb-wa;
+  });
 }
 
 const VIEWS = {
 
-/* ── módulo 5: Daily Tracker ─────────────────────────────────────── */
-tracker(s){
-  const ci = (s.entries[s.entries.length-1] || {}).checkIn || {};
-  const r = s.model.readiness;
-  const today = s.plan.week[0];
-  const act = s.outcome.actions;
-  const sub = act.find(a=>a.type==='substituteSession');
-  const red = act.find(a=>a.type==='reduceVolume');
-  let sessionHtml;
-  if(today.rest) sessionHtml = '<p class="rest">Hoy no hay sesión programada.</p>';
-  else {
-    const q = sub ? QUALITIES[sub.withQuality] : null;
-    const factor = red ? red.factor : 1;
-    const min = q ? q.min : Math.round(today.min*factor);
-    const rpe = q ? q.rpe : today.rpe;
-    sessionHtml = `
-      <div class="day today"><div class="dow">hoy</div><div>
-        <div class="title">${esc(q ? q.label : today.label)}
-          ${sub ? '<span class="chip crit">sesión sustituida</span>'
-                : red ? `<span class="chip ${factor<0.8?'warn':''}">volumen −${Math.round((1-factor)*100)} %${red.keepIntensity?' · intensidad mantenida':''}</span>`
-                      : '<span class="chip ok">sin cambios</span>'}
-        </div>
-        <div class="meta"><span>${min} min</span><span>RPE objetivo ${rpe}</span>
-          <span>${fmt(min*rpe)} UA</span></div>
-        <ul class="items">${(q ? q.items.map(([k,ro])=>prescribe(k,ro,s.plan.W,App.oneRm(s.assessments))) : today.items)
-          .map(i=>`<li><span>${esc(i.name)}</span><span class="p">${esc(i.p)}</span></li>`).join('')}</ul>
-      </div>`;
-  }
+/* ═══ VENTANA 1 · PERFIL — carga de datos crudos, guiada ═══════════ */
+perfil(s){
+  const p = s.profile;
+  const step = nextStep(s);
+  const pend = pendingTests(s);
+  const determined = s.model.capacities.filter(c=>c.currentZ!=null && !c.isStale).length;
+  const code = wizardCode || (pend[0] && pend[0].code);
+  const pr = code ? PROTO[code] : null;
+  const openSec = step ? step.sec : 'tests';
 
   return `
-  ${Store.persistent ? '' : '<div class="banner"><span>⚠</span><span><b>Sin almacenamiento local.</b> Este navegador bloquea localStorage, así que los datos viven solo mientras la página esté abierta.</span></div>'}
-  <div class="cols split">
-    <div class="stack">
-      <section class="card">
-        <h2>Check-in de hoy</h2>
-        <p class="hint">Veinte segundos y una mano. Cada campo de más se paga en adherencia.</p>
-        <div class="row2">
-          <div class="field"><label for="sleepH">Sueño (h)</label>
-            <input type="number" id="sleepH" step="0.1" min="0" max="14" value="${ci.sleepHours ?? 7.5}"></div>
-          <div class="field"><label for="hrv">ln rMSSD</label>
-            <input type="number" id="hrv" step="0.01" min="2" max="6" value="${ci.lnRmssd ?? 4.20}"></div>
-        </div>
-        ${slider('sleepQuality','Calidad de sueño', ci.sleepQuality ?? 4)}
-        ${slider('fatigue','Fatiga', ci.fatigue ?? 4)}
-        ${slider('soreness','Dolor muscular', ci.soreness ?? 4)}
-        ${slider('stress','Estrés', ci.stress ?? 4)}
-        ${slider('mood','Ánimo', ci.mood ?? 4)}
-        <div class="btnrow">
-          <button class="act primary" id="btnTrain">Registrar entrenamiento</button>
-          <button class="act" id="btnRest">Día sin entrenar</button>
-        </div>
-        <div class="btnrow">
-          <button class="act ghost sm" id="btnBad">Simular semana dura</button>
-          <button class="act ghost sm" id="btnReset">Reiniciar datos</button>
-          <button class="act ghost sm" id="btnExport">Exportar JSON</button>
-        </div>
-      </section>
-    </div>
+  ${Store.persistent ? '' : '<div class="banner"><span>⚠</span><span><b>Sin almacenamiento local.</b> Este navegador bloquea localStorage: los datos viven solo mientras la página esté abierta.</span></div>'}
 
-    <div class="stack">
-      <section class="card">
-        <h2>Readiness</h2>
-        <p class="hint">Índice compuesto. Los pesos de los componentes sin dato se redistribuyen; nunca se imputa un valor.</p>
-        <div class="ready">
-          <div class="score">
-            <div class="num">${r.score==null?'—':r.score.toFixed(0)}</div>
-            <div class="of">sobre 100</div>
-            ${bandChip(r.band)}
-          </div>
-          <div class="comps">${r.components.map(c=>{
-            const pct = c.normalized==null ? 0 : Math.round(c.normalized*100);
-            return `<div class="comp${c.normalized==null?' missing':''}">
-              <div class="name">${esc(c.name)} <em>${Math.round(c.w*100)} %</em></div>
-              <div class="track"><i style="width:${pct}%"></i></div>
-              <div class="v">${c.normalized==null?'s/d':pct}</div></div>`;
-          }).join('')}</div>
-        </div>
-      </section>
+  <section class="card">
+    <h2>Perfil del atleta</h2>
+    <p class="hint">La app te va pidiendo lo que falta, en el orden en que le sirve al motor. No hace falta completar todo de una.</p>
+    <div class="progress"><i style="width:${Math.round(100*determined/CAPACITIES.length)}%"></i></div>
+    <p class="hint" style="margin:0">
+      <b style="color:var(--ink)">${determined} de ${CAPACITIES.length}</b> cualidades determinadas ·
+      ${step ? `siguiente: ${esc(step.txt)}` : '<span style="color:var(--ok)">perfil completo</span>'}
+    </p>
+  </section>
 
-      <section class="card">
-        <h2>Sesión de hoy</h2>
-        <p class="hint">Ya con el ajuste que decidió el motor aplicado.</p>
-        ${sessionHtml}
-      </section>
-
-      <section class="card">
-        <h2>Carga reciente</h2>
-        <p class="hint">Carga interna diaria: duración × sRPE.</p>
-        <div class="chartwrap"><canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días"></canvas>
-          <div class="tip" id="tip"></div></div>
-        <div class="legend">
-          <span><i class="swatch"></i>Carga diaria (UA)</span>
-          <span><i class="swatch line"></i>Aguda 7 d</span>
-          <span><i class="swatch line dash"></i>Crónica 28 d</span>
-        </div>
-      </section>
-    </div>
-  </div>`;
-},
-
-/* ── módulo 7: Digital Athlete ───────────────────────────────────── */
-athlete(s){
-  const m = s.model;
-  const cal = m.calibration;
-  return `
-  <div class="stack">
-    <section class="card">
-      <h2>Modelo del atleta</h2>
-      <p class="hint">No es un perfil editable: es el resultado de <code>buildAthleteModel(evaluaciones, días, calibración)</code>. Se puede borrar entero y reconstruir.</p>
-      <div class="metrics">
-        <div class="metric"><div class="k">Atleta</div><div class="v" style="font-size:15px">${esc(s.profile.position)}</div><div class="n">${esc(s.profile.sport)} · ${esc(s.profile.level)}</div></div>
-        <div class="metric"><div class="k">Edad</div><div class="v">${Math.floor(daysBetween(s.profile.birthDate, s.today)/365.25)}</div><div class="n">años</div></div>
-        <div class="metric"><div class="k">Completitud de datos</div><div class="v${m.dataCompletenessPct<50?' flag-warn':''}">${fmt(m.dataCompletenessPct,0)} %</div><div class="n">evaluaciones + check-in</div></div>
-        <div class="metric"><div class="k">Calibración</div><div class="v" style="font-size:15px">${cal.isCalibrated?'Calibrado':'Por defecto'}</div><div class="n">${cal.sampleDays} de 84 días</div></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Capacidades</h2>
-      <p class="hint">Cada dato arrastra de dónde salió y cuánto vale hoy: la confianza decae con la antigüedad, más rápido en las cualidades que se pierden antes.</p>
-      <div class="tablewrap"><table>
-        <thead><tr><th>Cualidad</th><th>Estado</th><th class="num">z actual</th><th class="num">Medido</th><th class="num">Confianza</th><th>Fuente</th></tr></thead>
-        <tbody>${m.capacities.map(c=>{
-          const st = c.currentZ==null ? '<span class="chip mute">sin medir</span>'
-                   : c.isStale ? '<span class="chip warn">vencido</span>'
-                   : '<span class="chip ok">vigente</span>';
-          return `<tr>
-            <td>${esc(CAP_LABEL[c.capacity])}${c.protocolCode?`<br><span style="color:var(--ink-3);font-size:11.5px">${esc(PROTO[c.protocolCode].name)}: ${fmt(c.raw,c.raw<10?2:0)} ${esc(PROTO[c.protocolCode].unit)}</span>`:''}</td>
-            <td>${st}</td>
-            <td class="num">${c.currentZ==null?'—':sign(c.currentZ)}</td>
-            <td class="num">${c.ageDays==null?'—':c.ageDays+' d'}</td>
-            <td class="num">${c.currentZ==null?'—':fmt(c.confidence*100,0)+' %'}</td>
-            <td>${c.source?esc(c.source):'—'}</td></tr>`;
-        }).join('')}</tbody>
-      </table></div>
-    </section>
-
-    <section class="card">
-      <h2>Estado de carga</h2>
-      ${metricsGrid(m.load)}
-    </section>
-  </div>`;
-},
-
-/* ── módulo 1: Assessment Lab ────────────────────────────────────── */
-assess(s){
-  return `
-  <div class="cols split">
-    <section class="card">
-      <h2>Nueva medición</h2>
-      <p class="hint">Se valida contra el rango plausible del protocolo: un CMJ de 95 cm es un error de tipeo, no un récord.</p>
-      <div class="field"><label for="protoSel">Protocolo</label>
-        <select id="protoSel">${PROTOCOLS.map(p=>`<option value="${p.code}">${esc(p.name)} (${esc(p.unit)})</option>`).join('')}</select></div>
+  ${pr ? `
+  <section class="card">
+    <h2>Asistente de evaluación</h2>
+    <p class="hint">Test ${pend.findIndex(x=>x.code===code)+1} de ${pend.length} pendientes, ordenados por lo que más pesa en tu perfil deportivo.</p>
+    <div class="wizard">
+      <div class="step">Mide: ${esc(CAP_LABEL[pr.capacity])}</div>
+      <h3>${esc(pr.name)}</h3>
+      <p class="how">${esc(pr.how)}</p>
       <div class="row2">
-        <div class="field"><label for="protoVal">Valor</label><input type="number" id="protoVal" step="0.01"></div>
-        <div class="field"><label for="protoSrc">Fuente</label>
-          <select id="protoSrc"><option value="lab">Laboratorio</option><option value="field" selected>Campo</option>
+        <div class="field"><label for="wizVal">Resultado (${esc(pr.unit)})</label>
+          <input type="number" id="wizVal" step="0.01" placeholder="${pr.plausible[0]}–${pr.plausible[1]}"></div>
+        <div class="field"><label for="wizSrc">Cómo lo mediste</label>
+          <select id="wizSrc"><option value="lab">Laboratorio</option><option value="field" selected>Campo</option>
             <option value="selfReport">Autoinforme</option><option value="estimated">Estimado</option></select></div>
       </div>
-      <div class="btnrow"><button class="act primary" id="btnAddTest">Guardar medición</button></div>
-      <p class="hint" id="testMsg" style="margin-top:10px"></p>
-    </section>
-
-    <div class="stack">
-      <section class="card">
-        <h2>Protocolos</h2>
-        <p class="hint">Cada uno declara su unidad, su rango plausible y a los cuántos días caduca.</p>
-        <div class="tablewrap"><table>
-          <thead><tr><th>Protocolo</th><th>Cualidad</th><th class="num">Rango</th><th class="num">Validez</th></tr></thead>
-          <tbody>${PROTOCOLS.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(CAP_LABEL[p.capacity])}</td>
-            <td class="num">${p.plausible[0]}–${p.plausible[1]} ${esc(p.unit)}</td>
-            <td class="num">${p.validityDays} d</td></tr>`).join('')}</tbody>
-        </table></div>
-      </section>
-
-      <section class="card">
-        <h2>Historial</h2>
-        <p class="hint">${s.assessments.length} evaluaciones registradas.</p>
-        <div class="tablewrap"><table>
-          <thead><tr><th>Fecha</th><th>Protocolo</th><th class="num">Valor</th><th class="num">z</th><th>Fuente</th></tr></thead>
-          <tbody>${s.assessments.slice().reverse().flatMap(a=>a.results.map(r=>`<tr>
-            <td>${esc(a.performedOn)}</td><td>${esc(PROTO[r.protocolCode].name)}</td>
-            <td class="num">${fmt(r.value, r.value<10?2:0)} ${esc(r.unit)}</td>
-            <td class="num">${r.zScore==null?'—':sign(r.zScore)}</td>
-            <td>${esc(r.source)}</td></tr>`)).join('') || '<tr><td colspan="5" class="empty">Sin evaluaciones.</td></tr>'}</tbody>
-        </table></div>
-      </section>
+      <div class="btnrow">
+        <button class="act primary" id="wizSave">Guardar y seguir</button>
+        <button class="act ghost" id="wizSkip">Ahora no</button>
+      </div>
+      <p class="hint" id="wizMsg" style="margin:10px 0 0"></p>
     </div>
-  </div>`;
+  </section>` : ''}
+
+  <section class="card">
+    <h2>Datos crudos</h2>
+    <p class="hint">Todo lo que el sistema sabe de vos, en bruto. Se puede editar en cualquier momento.</p>
+
+    <details class="acc"${openSec==='identidad'?' open':''}>
+      <summary>Datos personales ${chipOk(p.birthDate&&p.sex)}</summary>
+      <div class="body">
+        <div class="row2">
+          <div class="field"><label for="pfBirth">Fecha de nacimiento</label>
+            <input type="text" id="pfBirth" value="${esc(p.birthDate||'')}" placeholder="AAAA-MM-DD"></div>
+          <div class="field"><label for="pfSex">Sexo</label>
+            <select id="pfSex">
+              <option value="male"${p.sex==='male'?' selected':''}>Masculino</option>
+              <option value="female"${p.sex==='female'?' selected':''}>Femenino</option>
+              <option value="other"${p.sex==='other'?' selected':''}>Otro</option>
+            </select></div>
+        </div>
+        <p class="hint" style="margin:0">El sexo ajusta las normas contra las que se calcula tu z. Si elegís «otro», se usan las masculinas y conviene tomar los percentiles con pinzas.</p>
+      </div>
+    </details>
+
+    <details class="acc"${openSec==='antropo'?' open':''}>
+      <summary>Antropometría ${chipOk(p.heightCm&&p.weightKg)}</summary>
+      <div class="body">
+        <div class="row2">
+          <div class="field"><label for="pfH">Altura (cm)</label>
+            <input type="number" id="pfH" value="${p.heightCm||''}" step="0.5"></div>
+          <div class="field"><label for="pfW">Peso (kg)</label>
+            <input type="number" id="pfW" value="${p.weightKg||''}" step="0.1"></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc"${openSec==='deporte'?' open':''}>
+      <summary>Deporte y disponibilidad ${chipOk(p.sport&&p.level)}</summary>
+      <div class="body">
+        <div class="row2">
+          <div class="field"><label for="pfSport">Deporte</label>
+            <select id="pfSport">${['rugby','football','hockey','running','strength']
+              .map(x=>`<option value="${x}"${p.sport===x?' selected':''}>${esc(SPORT_ES[x])}</option>`).join('')}</select></div>
+          <div class="field"><label for="pfPos">Posición</label>
+            <input type="text" id="pfPos" value="${esc(p.position||'')}"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="pfLevel">Nivel</label>
+            <select id="pfLevel">
+              <option value="beginner"${p.level==='beginner'?' selected':''}>Principiante</option>
+              <option value="intermediate"${p.level==='intermediate'?' selected':''}>Intermedio</option>
+              <option value="advanced"${p.level==='advanced'?' selected':''}>Avanzado</option>
+            </select></div>
+          <div class="field"><label for="pfDays">Días por semana</label>
+            <select id="pfDays">${[3,4,5,6].map(n=>`<option${n===s.settings.daysPerWeek?' selected':''}>${n}</option>`).join('')}</select></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc"${openSec==='tests'?' open':''}>
+      <summary>Tests físicos ${chipCount(determined, CAPACITIES.length)}</summary>
+      <div class="body">
+        <div class="tablewrap"><table>
+          <thead><tr><th>Cualidad</th><th>Test</th><th class="num">Resultado</th><th class="num">z</th><th>Estado</th></tr></thead>
+          <tbody>${CAPACITIES.map(c=>{
+            const st = s.model.capacities.find(x=>x.capacity===c.key);
+            const proto = PROTOCOLS.find(x=>x.capacity===c.key);
+            const state = !st || st.currentZ==null ? '<span class="chip mute">pendiente</span>'
+                        : st.isStale ? `<span class="chip warn">vencido · ${st.ageDays} d</span>`
+                        : `<span class="chip ok">vigente · ${st.ageDays} d</span>`;
+            return `<tr><td>${esc(c.label)}</td><td>${esc(proto?proto.name:'—')}</td>
+              <td class="num">${st&&st.raw!=null?fmt(st.raw, st.raw<10?2:0)+' '+esc(PROTO[st.protocolCode].unit):'—'}</td>
+              <td class="num">${st&&st.currentZ!=null?sign(st.currentZ):'—'}</td>
+              <td>${state}</td></tr>`;
+          }).join('')}</tbody>
+        </table></div>
+        <div class="btnrow" style="margin-top:12px">
+          <button class="act ghost sm" id="btnReset">Reiniciar datos de demo</button>
+          <button class="act ghost sm" id="btnExport">Exportar JSON</button>
+        </div>
+      </div>
+    </details>
+  </section>`;
 },
 
-/* ── módulo 2: Archetype Designer ────────────────────────────────── */
-archetype(s){
-  const a = s.archetype, t = s.target;
-  return `
-  <div class="cols split">
-    <section class="card">
-      <h2>Perfil objetivo</h2>
-      <p class="hint">El arquetipo es la plantilla; el objetivo es esa plantilla interpolada hacia tu punto de partida según el horizonte.</p>
-      <div class="field"><label for="archSel">Arquetipo</label>
-        <select id="archSel">${ARCHETYPES.map(x=>`<option value="${x.id}"${x.id===a.id?' selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
-      <div class="field"><label for="horizon">Horizonte (semanas)</label>
-        <input type="number" id="horizon" min="4" max="52" step="1" value="${s.settings.horizonWeeks}"></div>
-      <div class="field"><label for="daysSel">Días por semana</label>
-        <select id="daysSel">${[3,4,5,6].map(n=>`<option${n===s.settings.daysPerWeek?' selected':''}>${n}</option>`).join('')}</select></div>
-      <p class="hint" style="margin-top:12px">
-        <span class="chip ${a.evidence.grade==='published'?'ok':'warn'}">${esc(a.evidence.grade)}</span><br>
-        ${esc(a.evidence.reference)}
-      </p>
-    </section>
+/* ═══ VENTANA 2 · EXPLORAR — siluetas y cualidades del perfil ══════ */
+explora(s){
+  const sel = wizardArch || s.settings.archetypeId;
+  const a = ARCHETYPES.find(x=>x.id===sel) || ARCHETYPES[0];
+  const rows = CAPACITIES.map(c=>({...c, t:a.targets[c.key]}))
+    .filter(x=>x.t).sort((x,y)=>y.t.w-x.t.w);
+  const zPos = z => clamp((z+2)/4*100, 2, 98);
 
-    <section class="card">
-      <h2>Objetivos por cualidad</h2>
-      <p class="hint">Interpolación al ${Math.round(clamp01(s.settings.horizonWeeks/26)*100)} % del camino hacia el arquetipo (26 semanas = 100 %).</p>
-      <div class="tablewrap"><table>
-        <thead><tr><th>Cualidad</th><th class="num">Actual</th><th class="num">Objetivo</th><th class="num">Arquetipo</th><th class="num">Peso</th><th class="num">Mínimo</th></tr></thead>
-        <tbody>${CAPACITIES.map(c=>{
-          const st = s.model.capacities.find(x=>x.capacity===c.key);
-          const tt = t.targets[c.key], at = a.targets[c.key];
-          return `<tr><td>${esc(c.label)}</td>
-            <td class="num">${st && st.currentZ!=null?sign(st.currentZ):'—'}</td>
-            <td class="num">${sign(tt.z)}</td>
-            <td class="num">${at?sign(at.z):'—'}</td>
-            <td class="num">${fmt(tt.w,1)}</td>
-            <td class="num">${tt.min!=null?sign(tt.min):'—'}</td></tr>`;
-        }).join('')}</tbody>
-      </table></div>
-    </section>
-  </div>`;
+  return `
+  <section class="card">
+    <h2>Explorar perfiles</h2>
+    <p class="hint">Modo consulta: elegí un perfil deportivo y mirá qué cualidades lo maximizan, sin tocar tu plan. La figura es una referencia anatómica fija — todavía no reacciona a la selección.</p>
+    <div class="field" style="max-width:340px">
+      <label for="expSel">Perfil deportivo</label>
+      <select id="expSel">${ARCHETYPES.map(x=>`<option value="${x.id}"${x.id===sel?' selected':''}>${esc(x.name)}</option>`).join('')}</select>
+    </div>
+
+    <div class="bodywrap">
+      <div>
+        <div class="figures">
+          <figure class="figure">${silhouette('front')}<figcaption>Frente</figcaption></figure>
+          <figure class="figure">${silhouette('back')}<figcaption>Espalda</figcaption></figure>
+        </div>
+        <p class="hint" style="text-align:center;margin-top:10px">
+          <span class="chip mute">${esc(a.evidence.grade)}</span><br>${esc(a.evidence.reference)}
+        </p>
+      </div>
+
+      <div class="qlist">
+        ${rows.map(r=>`
+          <div class="qrow">
+            <div class="nm">${esc(r.label)}</div>
+            <div class="zz">${sign(r.t.z)}</div>
+            <div class="tr">
+              <div class="lane" style="height:16px">
+                <div class="mid"></div>
+                <div class="pt b" style="left:${zPos(r.t.z)}%; top:2px"></div>
+                ${r.t.min!=null?`<div class="pt t" style="left:${zPos(r.t.min)}%; top:3px"></div>`:''}
+              </div>
+            </div>
+            <div class="sub">peso ${fmt(r.t.w,1)} en el perfil${r.t.min!=null?` · mínimo ${sign(r.t.min)}`:''}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Comparación con vos</h2>
+    <p class="hint">Tu z actual contra lo que pide este perfil. Es una consulta: para que cambie tu rutina hay que elegirlo como objetivo.</p>
+    <div class="evo">
+      ${rows.map(r=>{
+        const st = s.model.capacities.find(x=>x.capacity===r.key);
+        const cur = st ? st.currentZ : null;
+        return `<div class="evorow">
+          <div class="top"><span class="nm">${esc(r.label)}</span>
+            <span class="dl">${cur==null?'<span style="color:var(--ink-3)">sin medir</span>':
+              (cur>=r.t.z?'<span style="color:var(--ok)">en objetivo</span>':'faltan '+fmt(r.t.z-cur,2))}</span></div>
+          <div class="lane">
+            <div class="mid"></div>
+            ${cur!=null?`<div class="seg" style="left:${Math.min(zPos(cur),zPos(r.t.z))}%; width:${Math.abs(zPos(r.t.z)-zPos(cur))}%"></div>`:''}
+            ${cur!=null?`<div class="pt a" style="left:${zPos(cur)}%"></div>`:''}
+            <div class="pt b" style="left:${zPos(r.t.z)}%"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="legend" style="margin-top:10px">
+      <span><i class="swatch" style="background:var(--ink-3);border-radius:50%"></i>Tu z actual</span>
+      <span><i class="swatch" style="background:var(--accent);border-radius:50%"></i>Objetivo del perfil</span>
+    </div>
+    <div class="btnrow" style="margin-top:14px">
+      <button class="act${sel===s.settings.archetypeId?'':' primary'}" id="expAdopt"
+        ${sel===s.settings.archetypeId?'disabled':''}>
+        ${sel===s.settings.archetypeId?'Ya es tu perfil objetivo':'Usar este perfil como objetivo'}</button>
+    </div>
+  </section>`;
 },
 
-/* ── módulo 3: Decision Engine ───────────────────────────────────── */
-decision(s){
-  const o = s.outcome;
-  const decisions = Repos.decisions.list();
+/* ═══ VENTANA 3 · RUTINA — por punto a mejorar ════════════════════ */
+rutina(s){
+  const o = s.outcome, plan = s.plan;
+  const prios = plan.priorities && plan.priorities.length ? plan.priorities : o.priorities;
+
+  /* qué sesiones y ejercicios de la semana atacan cada prioridad */
+  const coverage = prios.map(pr=>{
+    const sessions = plan.week.filter(d=>!d.rest &&
+      d.items.some(i=>i.caps.includes(pr.capacity)));
+    const items = [];
+    for(const d of sessions)
+      for(const i of d.items)
+        if(i.caps.includes(pr.capacity)) items.push({...i, day:d.date, session:d.label});
+    const gap = o.gaps.find(g=>g.capacity===pr.capacity);
+    return {...pr, sessions:sessions.length, items, gap};
+  });
+
   return `
-  <div class="stack">
-    <section class="card">
-      <h2>Prioridades</h2>
-      <p class="hint">Tres como máximo: un plan que persigue nueve cualidades no persigue ninguna. La brecha se pondera por la importancia en el arquetipo y se penaliza si el dato es dudoso.</p>
-      ${o.priorities.length ? `<div class="tablewrap"><table>
-        <thead><tr><th class="num">#</th><th>Cualidad</th><th class="num">Puntaje</th><th class="num">Brecha</th><th class="num">Confianza</th></tr></thead>
-        <tbody>${o.priorities.map((p,i)=>{
-          const g = o.gaps.find(x=>x.capacity===p.capacity);
-          return `<tr><td class="num">${i+1}</td><td>${esc(p.label)}</td>
-            <td class="num">${fmt(p.score,2)}</td>
-            <td class="num">${g.deltaZ==null?'sin dato':sign(g.deltaZ)}</td>
-            <td class="num">${fmt(g.confidence*100,0)} %</td></tr>`;
-        }).join('')}</tbody></table></div>`
-      : '<p class="empty">Sin prioridades activas: no hay brechas que superen el umbral.</p>'}
-    </section>
+  <section class="card">
+    <h2>Qué hay que mejorar</h2>
+    <p class="hint">Las prioridades salen de tus brechas contra el perfil objetivo, ponderadas por lo que pesa cada cualidad y penalizadas si el dato es viejo. Tres como máximo.</p>
+    ${prios.length ? coverage.map((c,i)=>`
+      <details class="acc"${i===0?' open':''}>
+        <summary>
+          <span class="chip">${i+1}</span> ${esc(c.label)}
+          <span class="st">${c.sessions ? `<span class="chip ok">${c.items.length} ejercicios · ${c.sessions} sesiones</span>`
+                                         : '<span class="chip crit">sin cobertura</span>'}</span>
+        </summary>
+        <div class="body">
+          <p class="hint" style="margin:10px 0">
+            ${c.gap && c.gap.deltaZ!=null
+              ? `Estás en ${sign(c.gap.currentZ)} y el objetivo es ${sign(c.gap.targetZ)}: faltan <b style="color:var(--ink)">${fmt(c.gap.deltaZ,2)}</b> desviaciones. Confianza del dato: ${fmt(c.gap.confidence*100,0)} %.`
+              : 'Sin dato actual: primero hay que medir.'}
+          </p>
+          <div class="tablewrap"><table>
+            <thead><tr><th>Ejercicio</th><th>Prescripción</th><th>Día</th></tr></thead>
+            <tbody>${c.items.map(i=>`<tr>
+              <td>${esc(i.name)}</td><td style="font-family:var(--mono);font-size:11.5px">${esc(i.p)}</td>
+              <td>${esc(dayLabel(i.day))}</td></tr>`).join('')
+              || '<tr><td colspan="3" class="empty">Ningún ejercicio de la semana ataca esta cualidad.</td></tr>'}</tbody>
+          </table></div>
+        </div>
+      </details>`).join('')
+    : '<p class="empty">Sin prioridades activas: no hay brechas que superen el umbral.</p>'}
+  </section>
 
-    <section class="card">
-      <h2>Brechas contra el perfil</h2>
-      <p class="hint">Una brecha sin dato actual no es cero: es <code>null</code>, y genera una acción distinta — medir, no entrenar.</p>
-      <div class="tablewrap"><table>
-        <thead><tr><th>Cualidad</th><th class="num">Actual</th><th class="num">Objetivo</th><th class="num">Δz</th><th class="num">Δ ponderada</th><th>Estado</th></tr></thead>
-        <tbody>${o.gaps.map(g=>`<tr>
-          <td>${esc(g.label)}</td>
-          <td class="num">${g.currentZ==null?'—':sign(g.currentZ)}</td>
-          <td class="num">${sign(g.targetZ)}</td>
-          <td class="num">${g.deltaZ==null?'—':sign(g.deltaZ)}</td>
-          <td class="num">${g.weightedDelta==null?'—':sign(g.weightedDelta)}</td>
-          <td>${g.isBlocking?'<span class="chip crit">bajo el mínimo</span>':
-               !g.hasData?'<span class="chip mute">sin medir</span>':
-               g.isStale?'<span class="chip warn">vencido</span>':
-               g.deltaZ>0.3?'<span class="chip">brecha</span>':'<span class="chip ok">en objetivo</span>'}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>
-    </section>
+  <section class="card">
+    <h2>Microciclo</h2>
+    <p class="hint">Semana ${plan.weekIdx+1} de 4 — ${esc(plan.W.name)} (volumen ×${plan.W.vol.toFixed(2)}, intensidad ${Math.round(plan.W.pct*100)} % 1RM). Cada ejercicio lleva la cualidad que entrena.</p>
+    <div class="week">${plan.week.map(day=>{
+      const isToday = day.date===s.today;
+      const lbl = dayLabel(day.date).replace(' ','<br>');
+      if(day.rest) return `<div class="day${isToday?' today':''}"><div class="dow">${lbl}</div>
+        <div><div class="rest">Descanso${isToday?' — hoy':''}</div></div></div>`;
+      return `<div class="day${isToday?' today':''}">
+        <div class="dow">${lbl}${isToday?'<br>hoy':''}</div>
+        <div><div class="title">${esc(day.label)}</div>
+        <div class="meta"><span>${day.min} min</span><span>RPE ${day.rpe}</span><span>${fmt(day.load)} UA</span></div>
+        <ul class="items">${day.items.map(i=>`<li>
+          <span>${esc(i.name)} ${i.caps.map(c=>`<span class="chip mute">${esc(CAP_LABEL[c])}</span>`).join(' ')}</span>
+          <span class="p">${esc(i.p)}</span></li>`).join('')}</ul>
+        </div></div>`;
+    }).join('')}</div>
+  </section>
 
-    <section class="card">
-      <h2>Diagnósticos</h2>
-      <p class="hint">Agrupan reglas disparadas en afirmaciones con su evidencia. Un diagnóstico sin evidencia citable es un bug.</p>
-      ${o.diagnoses.length ? `<div class="diags">${o.diagnoses.map(d=>`
-        <div class="diag ${esc(d.severity)}">
-          <div class="t">${esc(d.title)} <span class="chip ${d.severity==='critical'?'crit':d.severity==='action'?'warn':''}">${esc(d.severity)}</span>
-            <span class="chip mute">${esc(d.ruleId)}</span></div>
-          <ul>${d.evidence.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>
-        </div>`).join('')}</div>`
+  <section class="card">
+    <h2>Por qué esta rutina</h2>
+    <p class="hint">Diagnósticos activos y guardarraíles. Las reglas son datos versionados: se evalúan todas y se registra también cuáles no dispararon.</p>
+    ${o.diagnoses.length ? `<div class="diags">${o.diagnoses.slice(0,6).map(d=>`
+      <div class="diag ${esc(d.severity)}">
+        <div class="t">${esc(d.title)} <span class="chip ${d.severity==='critical'?'crit':d.severity==='action'?'warn':''}">${esc(d.severity)}</span>
+          <span class="chip mute">${esc(d.ruleId)}</span></div>
+        <ul>${d.evidence.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>`).join('')}</div>`
       : '<p class="empty">Ningún diagnóstico activo.</p>'}
-    </section>
 
-    <section class="card">
-      <h2>Traza del ruleset <span class="chip mute">${esc(RULESET.version)}</span></h2>
-      <p class="hint">Las reglas son datos, no código. Se evalúan todas y se registran también las que <em>no</em> dispararon: saber que el ACWR estaba en 1,21 y no disparó informa tanto como el disparo.</p>
-      <div class="rules">${o.trace.filter(t=>!t.item || t.fired).map(t=>`
+    <details class="acc" style="margin-top:14px">
+      <summary>Traza del ruleset <span class="st"><span class="chip mute">${esc(RULESET.version)}</span></span></summary>
+      <div class="body"><div class="rules" style="margin-top:10px">${
+        o.trace.filter(t=>!t.item || t.fired).map(t=>`
         <div class="rule${t.fired?' fired':''}">
           <span class="id">${t.fired?'●':'○'} ${esc(t.rule.id)}</span>
           <span>${esc(t.rule.name)}${t.rule.isGuardrail?' <span class="chip crit">guardarraíl</span>':''}</span>
-          <span class="obs">${esc(t.observed)}</span>
-        </div>`).join('')}</div>
-    </section>
-
-    <section class="card">
-      <h2>Log de decisiones</h2>
-      <p class="hint">${decisions.length} registradas. Cada una guarda el snapshot de entradas, las reglas disparadas y la versión del ruleset: cualquier decisión se reproduce exactamente.</p>
-      ${decisions.length ? `<div class="log">${decisions.slice(0,8).map(d=>`
-        <div class="entry${d.actions.length?' act':''}">
-          <div class="head"><span>${esc(d.date)}</span><span>${esc(d.kind)}</span>
-            <span>${esc(d.rulesetVersion)}</span>${d.requiresReview?'<span class="chip crit">revisión</span>':''}</div>
-          <p class="why">${esc(d.rationaleEs)}</p>
-          <div class="entry rules-inline">${d.firedRules.map(r=>`<code>${esc(r.ruleId)}</code>`).join('')}</div>
-        </div>`).join('')}</div>`
-      : '<p class="empty">Todavía no registraste ninguna sesión.</p>'}
-    </section>
-  </div>`;
+          <span class="obs">${esc(t.observed)}</span></div>`).join('')}</div></div>
+    </details>
+    ${o.requiresReview ? '<div class="banner" style="margin:14px 0 0"><span>⚠</span><span><b>Requiere revisión humana.</b> Un guardarraíl disparó: el plan queda en borrador hasta que alguien con rol técnico lo apruebe.</span></div>' : ''}
+  </section>`;
 },
 
-/* ── módulo 4: Program Generator ─────────────────────────────────── */
-program(s){
-  const p = s.plan, st = s.ctx.planStats, o = s.outcome;
-  const guards = o.trace.filter(t=>t.rule.isGuardrail && !t.item);
+/* ═══ VENTANA 4 · SEMANA — tracker con círculos por serie ══════════ */
+tracker(s){
+  const plan = s.plan;
+  const day = plan.week.find(d=>d.date===selectedDate) || {rest:true, date:selectedDate};
+  const entry = Repos.entries.get(selectedDate);
+  const isFuture = selectedDate > s.today;
+  const ci = (entry && entry.checkIn) || {};
+
+  const totalSets = day.rest ? 0 : day.items.reduce((t,i)=>t+i.sets,0);
+  const doneSets = day.rest ? 0 : day.items.reduce((t,i)=>{
+    const e = entry && entry.execution && entry.execution[i.code];
+    return t + (e ? e.sets.filter(Boolean).length : 0);
+  },0);
+  const tonnage = App.tonnage(entry, day);
+  /* un día del historial puede tener carga registrada sin detalle por serie:
+     mostrar "0 / 19" ahí sería mentir sobre lo que se hizo */
+  const hasDetail = !!(entry && entry.execution && Object.keys(entry.execution).length);
+
+  const weekDone = plan.week.filter(d=>!d.rest).map(d=>{
+    const e = Repos.entries.get(d.date);
+    return e && e.totalLoadAu>0;
+  });
+
   return `
-  <div class="stack">
-    <section class="card">
-      <h2>Microciclo</h2>
-      <p class="hint">Semana ${p.weekIdx+1} de 4 — ${esc(p.W.name)} (volumen ×${p.W.vol.toFixed(2)}, intensidad ${Math.round(p.W.pct*100)} % 1RM).
-      Las cualidades salen de las prioridades del motor: ${o.priorities.map(x=>esc(x.label)).join(', ') || 'soporte general'}.</p>
-      <div class="week">${p.week.map(day=>{
-        const isToday = day.off===0;
-        const lbl = DOW[day.date.getDay()]+' '+day.date.getDate();
-        if(day.rest) return `<div class="day${isToday?' today':''}"><div class="dow">${lbl}</div>
-          <div><div class="rest">Descanso${isToday?' — hoy':''}</div></div></div>`;
-        return `<div class="day${isToday?' today':''}">
-          <div class="dow">${lbl}${isToday?'<br>hoy':''}</div>
-          <div><div class="title">${esc(day.label)}</div>
-          <div class="meta"><span>${day.min} min</span><span>RPE ${day.rpe}</span><span>${fmt(day.load)} UA</span></div>
-          <ul class="items">${day.items.map(i=>`<li><span>${esc(i.name)}</span><span class="p">${esc(i.p)}</span></li>`).join('')}</ul>
-          </div></div>`;
-      }).join('')}</div>
-    </section>
+  <section class="card">
+    <h2>Semana del ${esc(dayLabel(plan.weekStart))}</h2>
+    <p class="hint">Tocá un día para abrirlo. Podés completar días anteriores: el círculo se marca cuando hiciste la serie.</p>
+    <div class="days">${plan.week.map(d=>{
+      const e = Repos.entries.get(d.date);
+      const has = !d.rest;
+      const done = e && e.totalLoadAu>0;
+      const dt = parseDate(d.date);
+      return `<button data-date="${d.date}" class="${has?'has ':''}${done?'done ':''}${d.date>s.today?'future':''}"
+        ${d.date===selectedDate?'aria-current="date"':''}>
+        <span>${DOW[dt.getDay()]}</span><span class="dd">${dt.getDate()}</span>
+        <span class="mk"></span></button>`;
+    }).join('')}</div>
 
-    <section class="card">
-      <h2>Guardarraíles</h2>
-      <p class="hint">Reglas duras: ninguna regla de prioridad menor puede anularlas. Si una falla, el plan no se publica sin revisión humana.</p>
-      <div class="rules">${guards.map(t=>`
-        <div class="rule${t.fired?' fired':''}">
-          <span class="id">${t.fired?'✕':'✓'} ${esc(t.rule.id)}</span>
-          <span>${esc(t.rule.name)}</span>
-          <span class="obs">${esc(t.observed)}</span>
-        </div>`).join('')}</div>
-      ${o.requiresReview ? '<div class="banner" style="margin:14px 0 0"><span>⚠</span><span><b>Requiere revisión humana.</b> Un guardarraíl disparó: el plan queda en borrador hasta que alguien con rol técnico lo apruebe.</span></div>' : ''}
-    </section>
+    <div class="metrics">
+      <div class="metric"><div class="k">Sesiones completadas</div>
+        <div class="v">${weekDone.filter(Boolean).length}<span style="font-size:13px;color:var(--ink-3)"> / ${weekDone.length}</span></div>
+        <div class="n">de la semana</div></div>
+      <div class="metric"><div class="k">Series del día</div>
+        <div class="v">${hasDetail ? doneSets+'<span style="font-size:13px;color:var(--ink-3)"> / '+totalSets+'</span>' : '—'}</div>
+        <div class="n">${hasDetail ? esc(dayLabel(selectedDate)) : 'registrado sin detalle'}</div></div>
+      <div class="metric"><div class="k">Tonelaje del día</div>
+        <div class="v">${fmt(tonnage)}</div><div class="n">kg levantados</div></div>
+      <div class="metric"><div class="k">Carga del día</div>
+        <div class="v">${entry && entry.totalLoadAu ? fmt(entry.totalLoadAu) : '—'}</div>
+        <div class="n">UA · duración × sRPE</div></div>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>Carga planificada</h2>
-      <div class="metrics">
-        <div class="metric"><div class="k">Semana planificada</div><div class="v">${fmt(st.plannedWeeklyAu)}</div><div class="n">UA</div></div>
-        <div class="metric"><div class="k">Incremento</div><div class="v${st.weeklyIncreasePct>0.15?' flag-crit':''}">${(st.weeklyIncreasePct>=0?'+':'')+fmt(st.weeklyIncreasePct*100,0)} %</div><div class="n">vs. 3 semanas previas</div></div>
-        <div class="metric"><div class="k">ACWR proyectado</div><div class="v${st.projectedAcwr>1.3?' flag-crit':''}">${fmt(st.projectedAcwr,2)}</div><div class="n">banda 0,80–1,30</div></div>
-        <div class="metric"><div class="k">Monotonía proyectada</div><div class="v${st.projectedMonotony>2?' flag-warn':''}">${fmt(st.projectedMonotony,2)}</div><div class="n">límite 2,00</div></div>
-      </div>
-    </section>
-  </div>`;
+  ${day.rest ? `<section class="card"><h2>${esc(dayLabel(selectedDate))}</h2>
+    <p class="hint">Día de descanso. Podés registrar igual cómo te sentiste.</p></section>`
+  : `
+  <section class="card">
+    <h2>${esc(day.label)}</h2>
+    <p class="hint">${esc(dayLabel(selectedDate))} · ${day.min} min · RPE objetivo ${day.rpe}
+      ${isFuture?'<span class="chip mute">programado</span>':''}</p>
+    <div class="exlist">${day.items.map(i=>{
+      const e = (entry && entry.execution && entry.execution[i.code]) || {sets:[], kg:null, reps:null};
+      return `<div class="exrow">
+        <div class="exhead">
+          <span class="nm">${esc(i.name)}</span>
+          ${i.caps.map(c=>`<span class="chip mute">${esc(CAP_LABEL[c])}</span>`).join(' ')}
+          <span class="pr">${esc(i.p)}</span>
+        </div>
+        <div class="setrow">
+          ${Array.from({length:i.sets}, (_,k)=>
+            `<button class="dot${e.sets[k]?' on':''}" data-ex="${i.code}" data-set="${k}"
+              ${isFuture?'disabled':''} aria-label="Serie ${k+1}">${e.sets[k]?'✓':k+1}</button>`).join('')}
+          ${i.loggable?`<span class="kgreps">
+            <input type="number" step="0.5" placeholder="kg" data-load="${i.code}" data-f="kg"
+              value="${e.kg??''}" ${isFuture?'disabled':''}><span>×</span>
+            <input type="number" step="1" placeholder="reps" data-load="${i.code}" data-f="reps"
+              value="${e.reps??''}" ${isFuture?'disabled':''}></span>`:''}
+        </div></div>`;
+    }).join('')}</div>
+
+    ${isFuture?'':`
+    <div style="margin-top:16px">
+      ${sliderRow('dayRpe','Esfuerzo percibido de la sesión (sRPE)', entry&&entry.sessionRpe||day.rpe, 1, 10)}
+    </div>`}
+  </section>`}
+
+  <section class="card">
+    <h2>Cómo te sentiste</h2>
+    <p class="hint">El check-in del día seleccionado. Veinte segundos: alimenta el readiness y, con él, el ajuste del plan.</p>
+    <div class="row2">
+      <div class="field"><label for="sleepH">Sueño (h)</label>
+        <input type="number" id="sleepH" step="0.1" min="0" max="14" value="${ci.sleepHours ?? ''}" placeholder="7.5"></div>
+      <div class="field"><label for="hrv">ln rMSSD</label>
+        <input type="number" id="hrv" step="0.01" min="2" max="6" value="${ci.lnRmssd ?? ''}" placeholder="4.20"></div>
+    </div>
+    ${slider('sleepQuality','Calidad de sueño', ci.sleepQuality ?? 4)}
+    ${slider('fatigue','Fatiga', ci.fatigue ?? 4)}
+    ${slider('soreness','Dolor muscular', ci.soreness ?? 4)}
+    ${slider('stress','Estrés', ci.stress ?? 4)}
+    ${slider('mood','Ánimo', ci.mood ?? 4)}
+    ${selectedDate===s.today ? `
+      <div style="margin-top:14px">${bandChip(s.model.readiness.band)}
+        <span style="font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-left:8px">
+          readiness ${s.model.readiness.score==null?'—':s.model.readiness.score.toFixed(0)}/100</span></div>` : ''}
+    <div class="btnrow" style="margin-top:14px">
+      <button class="act ghost sm" id="btnBad">Simular semana dura</button>
+    </div>
+  </section>`;
 },
 
-/* ── módulo 6: Analytics Center ──────────────────────────────────── */
-analytics(s){
+/* ═══ VENTANA 5 · EVOLUCIÓN ═══════════════════════════════════════ */
+evolucion(s){
   const m = s.model;
+  const zPos = z => clamp((z+2)/4*100, 2, 98);
+
+  /* primer y último valor de cada cualidad, cuando hay más de una medición */
+  const evo = CAPACITIES.map(c=>{
+    const hits = [];
+    for(const a of s.assessments)
+      for(const r of a.results)
+        if(PROTO[r.protocolCode] && PROTO[r.protocolCode].capacity===c.key && r.zScore!=null)
+          hits.push({z:r.zScore, on:a.performedOn, raw:r.value, code:r.protocolCode});
+    if(!hits.length) return null;
+    const first = hits[0], last = hits[hits.length-1];
+    const target = s.target.targets[c.key];
+    return {label:c.label, first, last, target:target?target.z:null, n:hits.length};
+  }).filter(Boolean);
+
   const loads = s.entries.map(e=>e.totalLoadAu);
-  const sleeps = s.entries.map(e=>e.checkIn && e.checkIn.sleepHours);
-  const hrvs = s.entries.map(e=>e.checkIn && e.checkIn.lnRmssd);
-  const kpis = [
-    {label:'Adherencia 14 d', value: 100*s.entries.slice(-14).filter(e=>e.totalLoadAu>0).length/Math.min(14,s.entries.length), unit:'%', good:v=>v>=60},
-    {label:'Check-in completado', value: 100*s.entries.slice(-14).filter(e=>e.checkIn).length/Math.min(14,s.entries.length), unit:'%', good:v=>v>=70},
-    {label:'Carga media diaria', value: mean(loads.slice(-14)), unit:'UA', good:()=>true},
-    {label:'Sueño medio 14 d', value: mean(sleeps.slice(-14).filter(v=>v!=null)), unit:'h', good:v=>v>=7}
-  ];
-  const tL = Analytics.trend(loads, 21), tH = Analytics.trend(hrvs.filter(v=>v!=null), 21);
+  const adher = 100*s.entries.slice(-14).filter(e=>e.totalLoadAu>0).length/Math.min(14,s.entries.length);
+  const checked = 100*s.entries.slice(-14).filter(e=>e.checkIn).length/Math.min(14,s.entries.length);
+  const tL = Analytics.trend(loads, 21);
+  const hrvs = s.entries.map(e=>e.checkIn&&e.checkIn.lnRmssd).filter(v=>v!=null);
+  const tH = Analytics.trend(hrvs, 21);
+
   return `
-  <div class="stack">
-    <section class="card">
-      <h2>Indicadores</h2>
-      <p class="hint">Sin datos diarios el motor no decide: la adherencia es el indicador que sostiene a todos los demás.</p>
-      <div class="metrics">${kpis.map(k=>`
-        <div class="metric"><div class="k">${esc(k.label)}</div>
-          <div class="v${k.good(k.value)?'':' flag-warn'}">${fmt(k.value, k.unit==='h'?1:0)}</div>
-          <div class="n">${esc(k.unit)}</div></div>`).join('')}</div>
-    </section>
+  <section class="card">
+    <h2>Evolución de tus cualidades</h2>
+    <p class="hint">Primera medición contra la última, en desviaciones respecto de la norma. El círculo hueco es el objetivo de tu perfil.</p>
+    ${evo.length ? `<div class="evo">${evo.map(e=>{
+      const d = e.last.z - e.first.z;
+      const changed = e.n>1;
+      return `<div class="evorow">
+        <div class="top"><span class="nm">${esc(e.label)}
+          <span style="color:var(--ink-3);font-family:var(--mono);font-size:11px">${e.n} med.</span></span>
+          <span class="dl" style="color:${!changed?'var(--ink-3)':d>0?'var(--ok)':'var(--crit)'}">
+            ${changed ? (d>=0?'+':'')+fmt(d,2)+' z' : 'sin repetir'}</span></div>
+        <div class="lane">
+          <div class="mid"></div>
+          ${changed?`<div class="seg" style="left:${Math.min(zPos(e.first.z),zPos(e.last.z))}%;width:${Math.abs(zPos(e.last.z)-zPos(e.first.z))}%"></div>`:''}
+          ${changed?`<div class="pt a" style="left:${zPos(e.first.z)}%"></div>`:''}
+          <div class="pt b" style="left:${zPos(e.last.z)}%"></div>
+          ${e.target!=null?`<div class="pt t" style="left:${zPos(e.target)}%"></div>`:''}
+        </div>
+        <div class="scale"><span>−2</span><span>media</span><span>+2</span></div>
+      </div>`;
+    }).join('')}</div>
+    <div class="legend" style="margin-top:12px">
+      <span><i class="swatch" style="background:var(--ink-3);border-radius:50%"></i>Primera medición</span>
+      <span><i class="swatch" style="background:var(--accent);border-radius:50%"></i>Última</span>
+      <span><i class="swatch" style="width:2px;background:var(--ink-3);border-radius:0"></i>Objetivo</span>
+    </div>`
+    : '<p class="empty">Todavía no hay mediciones cargadas.</p>'}
+  </section>
 
-    <section class="card">
-      <h2>Carga interna</h2>
-      <p class="hint">28 días. La línea llena es la carga aguda (7 d); la punteada, la crónica (28 d).</p>
-      <div class="chartwrap"><canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días"></canvas>
-        <div class="tip" id="tip"></div></div>
-      <div class="legend">
-        <span><i class="swatch"></i>Carga diaria (UA)</span>
-        <span><i class="swatch line"></i>Aguda 7 d</span>
-        <span><i class="swatch line dash"></i>Crónica 28 d</span>
-      </div>
-    </section>
+  <section class="card">
+    <h2>Constancia</h2>
+    <p class="hint">Sin datos diarios el motor no decide: la adherencia sostiene a todo lo demás.</p>
+    <div class="metrics">
+      <div class="metric"><div class="k">Adherencia 14 d</div><div class="v${adher>=60?'':' flag-warn'}">${fmt(adher)} %</div><div class="n">sesiones hechas</div></div>
+      <div class="metric"><div class="k">Check-in 14 d</div><div class="v${checked>=70?'':' flag-warn'}">${fmt(checked)} %</div><div class="n">días respondidos</div></div>
+      <div class="metric"><div class="k">Días con datos</div><div class="v">${s.entries.length}</div><div class="n">de 84 para calibrar</div></div>
+      <div class="metric"><div class="k">Completitud</div><div class="v${m.dataCompletenessPct<50?' flag-warn':''}">${fmt(m.dataCompletenessPct)} %</div><div class="n">del modelo</div></div>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>Estado de carga</h2>
-      ${metricsGrid(m.load)}
-    </section>
+  <section class="card">
+    <h2>Carga interna</h2>
+    <p class="hint">28 días. Línea llena, carga aguda (7 d); punteada, crónica (28 d).</p>
+    <div class="chartwrap"><canvas id="chart" aria-label="Carga interna diaria de los últimos 28 días"></canvas>
+      <div class="tip" id="tip"></div></div>
+    <div class="legend">
+      <span><i class="swatch"></i>Carga diaria (UA)</span>
+      <span><i class="swatch line"></i>Aguda 7 d</span>
+      <span><i class="swatch line dash"></i>Crónica 28 d</span>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>Tendencias (21 días)</h2>
-      <p class="hint">Pendiente por regresión lineal. Se marca como significativa solo si supera dos errores estándar — si no, es ruido.</p>
-      <div class="tablewrap"><table>
-        <thead><tr><th>Serie</th><th class="num">Pendiente/día</th><th>Lectura</th></tr></thead>
-        <tbody>
-          <tr><td>Carga diaria</td><td class="num">${fmt(tL.slope,1)} UA</td>
-            <td>${tL.isSignificant ? (tL.slope>0?'<span class="chip warn">en aumento</span>':'<span class="chip">en descenso</span>') : '<span class="chip mute">sin cambio significativo</span>'}</td></tr>
-          <tr><td>ln rMSSD</td><td class="num">${fmt(tH.slope,3)}</td>
-            <td>${tH.isSignificant ? (tH.slope<0?'<span class="chip warn">en descenso</span>':'<span class="chip ok">en aumento</span>') : '<span class="chip mute">sin cambio significativo</span>'}</td></tr>
-        </tbody>
-      </table></div>
-    </section>
-  </div>`;
+  <section class="card">
+    <h2>Estado de carga</h2>
+    ${metricsGrid(m.load)}
+  </section>
+
+  <section class="card">
+    <h2>Tendencias (21 días)</h2>
+    <p class="hint">Pendiente por regresión lineal, marcada como significativa solo si supera dos errores estándar. Si no, es ruido.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Serie</th><th class="num">Pendiente/día</th><th>Lectura</th></tr></thead>
+      <tbody>
+        <tr><td>Carga diaria</td><td class="num">${fmt(tL.slope,1)} UA</td>
+          <td>${tL.isSignificant?(tL.slope>0?'<span class="chip warn">en aumento</span>':'<span class="chip">en descenso</span>'):'<span class="chip mute">sin cambio significativo</span>'}</td></tr>
+        <tr><td>ln rMSSD</td><td class="num">${fmt(tH.slope,3)}</td>
+          <td>${tH.isSignificant?(tH.slope<0?'<span class="chip warn">en descenso</span>':'<span class="chip ok">en aumento</span>'):'<span class="chip mute">sin cambio significativo</span>'}</td></tr>
+      </tbody>
+    </table></div>
+  </section>`;
 }
 };
+
+const SPORT_ES = {rugby:'Rugby', football:'Fútbol', hockey:'Hockey', running:'Running', strength:'Fuerza'};
+let wizardArch = null;
+
+const chipOk = ok => ok ? '<span class="st"><span class="chip ok">completo</span></span>'
+                        : '<span class="st"><span class="chip warn">falta</span></span>';
+const chipCount = (a,b) => `<span class="st"><span class="chip ${a===b?'ok':'mute'}">${a} de ${b}</span></span>`;
+
+/* silueta: maniquí anatómico estilizado, deliberadamente esquemático */
+function silhouette(side){
+  const regions = side==='front'
+    ? `<ellipse class="silo-region" cx="50" cy="92" rx="19" ry="13"/>
+       <rect class="silo-region" x="38" y="110" width="24" height="34" rx="8"/>
+       <rect class="silo-region" x="30" y="196" width="16" height="46" rx="8"/>
+       <rect class="silo-region" x="54" y="196" width="16" height="46" rx="8"/>`
+    : `<rect class="silo-region" x="33" y="82" width="34" height="46" rx="12"/>
+       <ellipse class="silo-region" cx="50" cy="172" rx="21" ry="14"/>
+       <rect class="silo-region" x="31" y="196" width="15" height="40" rx="7"/>
+       <rect class="silo-region" x="54" y="196" width="15" height="40" rx="7"/>
+       <rect class="silo-region" x="33" y="268" width="12" height="30" rx="6"/>
+       <rect class="silo-region" x="55" y="268" width="12" height="30" rx="6"/>`;
+  return `<svg viewBox="0 0 100 340" role="img" aria-label="Silueta humana, vista ${side==='front'?'frontal':'posterior'}">
+    <g class="silo">
+      <ellipse cx="50" cy="26" rx="13" ry="16"/>
+      <rect x="45" y="40" width="10" height="10" rx="4"/>
+      <path d="M50 48 C64 48 74 54 76 64 L72 120 C71 138 69 150 68 162 L32 162 C31 150 29 138 28 120 L24 64 C26 54 36 48 50 48 Z"/>
+      <circle cx="27" cy="60" r="8"/>
+      <circle cx="73" cy="60" r="8"/>
+      <rect x="17" y="58" width="12" height="66" rx="6" transform="rotate(9 23 91)"/>
+      <rect x="71" y="58" width="12" height="66" rx="6" transform="rotate(-9 77 91)"/>
+      <rect x="13" y="118" width="11" height="58" rx="5.5" transform="rotate(5 18 147)"/>
+      <rect x="76" y="118" width="11" height="58" rx="5.5" transform="rotate(-5 82 147)"/>
+      <rect x="30" y="160" width="40" height="26" rx="10"/>
+      <rect x="29" y="184" width="18" height="82" rx="9"/>
+      <rect x="53" y="184" width="18" height="82" rx="9"/>
+      <rect x="32" y="262" width="14" height="62" rx="7"/>
+      <rect x="54" y="262" width="14" height="62" rx="7"/>
+      <ellipse cx="39" cy="330" rx="9" ry="6"/>
+      <ellipse cx="61" cy="330" rx="9" ry="6"/>
+    </g>
+    ${regions}
+  </svg>`;
+}
 
 function metricsGrid(load){
   const w = (bad,worse)=> worse?' flag-crit':bad?' flag-warn':'';
@@ -1764,101 +2144,130 @@ function slider(id, label, value){
     <div class="top"><span>${label}</span><span class="val" id="${id}v">${value} · ${LBL[id][value-1]}</span></div>
     <input type="range" id="${id}" min="1" max="5" value="${value}"></div>`;
 }
+function sliderRow(id, label, value, min, max){
+  return `<div class="slider">
+    <div class="top"><span>${label}</span><span class="val" id="${id}v">${value}</span></div>
+    <input type="range" id="${id}" min="${min}" max="${max}" step="0.5" value="${value}"></div>`;
+}
 
-/* ── enlazado de eventos ── */
+/* ── enlazado de eventos ────────────────────────────────────────── */
 function wire(s){
+  const on = (id, ev, fn) => { const n = el(id); if(n) n.addEventListener(ev, fn); };
+
+  if(current==='perfil'){
+    const saveProfile = () => App.saveProfile({
+      birthDate: el('pfBirth').value.trim(),
+      sex: el('pfSex').value,
+      heightCm: parseFloat(el('pfH').value)||null,
+      weightKg: parseFloat(el('pfW').value)||null,
+      sport: el('pfSport').value,
+      position: el('pfPos').value.trim(),
+      level: el('pfLevel').value
+    });
+    ['pfBirth','pfSex','pfH','pfW','pfSport','pfPos','pfLevel'].forEach(id=>
+      on(id,'change',()=>{ saveProfile(); render(); }));
+    on('pfDays','change',()=>{
+      const st = Repos.settings.get();
+      Repos.settings.save({...st, daysPerWeek: parseInt(el('pfDays').value,10)});
+      App.reload(); render();
+    });
+
+    on('wizSave','click',()=>{
+      const code = wizardCode || pendingTests(s)[0].code;
+      const pr = PROTO[code];
+      const v = parseFloat(el('wizVal').value);
+      const msg = el('wizMsg');
+      if(!isFinite(v)){ msg.textContent = 'Falta el resultado.'; return; }
+      if(v<pr.plausible[0] || v>pr.plausible[1]){
+        msg.innerHTML = `<span style="color:var(--crit)">${fmt(v,2)} ${esc(pr.unit)} está fuera del rango plausible (${pr.plausible[0]}–${pr.plausible[1]}). Revisá la unidad antes de guardar.</span>`;
+        return;
+      }
+      Repos.assessments.save({
+        id:'as_'+Date.now().toString(36), athleteId:'demo', performedOn:s.today, batteryCode:'guiado',
+        results:[{protocolCode:code, value:v, unit:pr.unit, source:el('wizSrc').value,
+                  zScore: zScoreOf(code, v, s.profile.sport, s.profile.sex)}],
+        createdAt:new Date().toISOString()
+      });
+      Repos.plans.clear();      // cambian las brechas: la semana se reprograma
+      wizardCode = null;
+      App.reload(); render();
+    });
+    on('wizSkip','click',()=>{
+      const pend = pendingTests(s);
+      const i = pend.findIndex(x=>x.code===(wizardCode||pend[0].code));
+      wizardCode = pend[(i+1)%pend.length].code;
+      render();
+    });
+    on('btnReset','click',()=>{ App.reset(); selectedDate=null; wizardCode=null; render(); });
+    on('btnExport','click',()=>{
+      const w = window.open('','_blank');
+      if(w){ w.document.write('<pre style="white-space:pre-wrap;font:12px monospace">'+esc(App.exportJson())+'</pre>'); w.document.close(); }
+    });
+  }
+
+  if(current==='explora'){
+    on('expSel','change',()=>{ wizardArch = el('expSel').value; render(); });
+    on('expAdopt','click',()=>{
+      const st = Repos.settings.get();
+      Repos.settings.save({...st, archetypeId: wizardArch || st.archetypeId});
+      Repos.plans.clear(); wizardArch = null;
+      App.reload(); current='rutina'; render();
+    });
+  }
+
   if(current==='tracker'){
+    document.querySelectorAll('.days button').forEach(b=>
+      b.addEventListener('click',()=>{ selectedDate = b.dataset.date; render(); }));
+    document.querySelectorAll('.dot').forEach(b=>
+      b.addEventListener('click',()=>{
+        App.toggleSet(selectedDate, b.dataset.ex, parseInt(b.dataset.set,10));
+        render();
+      }));
+    document.querySelectorAll('[data-load]').forEach(inp=>
+      inp.addEventListener('change',()=>{
+        App.setLoad(selectedDate, inp.dataset.load, inp.dataset.f, parseFloat(inp.value));
+        render();
+      }));
+    on('dayRpe','input',()=>{ el('dayRpev').textContent = el('dayRpe').value; });
+    on('dayRpe','change',()=>{ App.setDayRpe(selectedDate, parseFloat(el('dayRpe').value)); render(); });
+
     const collect = () => ({
       sleepHours: parseFloat(el('sleepH').value),
       lnRmssd: parseFloat(el('hrv').value),
       sleepQuality:+el('sleepQuality').value, fatigue:+el('fatigue').value,
       soreness:+el('soreness').value, stress:+el('stress').value, mood:+el('mood').value
     });
+    const saveCi = () => {
+      const entry = Repos.entries.get(selectedDate) || {date:selectedDate, sessions:[], totalLoadAu:0};
+      entry.checkIn = {...(entry.checkIn||{}), ...collect()};
+      entry.updatedAt = new Date().toISOString();
+      Repos.entries.save(entry);
+      App.reload(); render();
+    };
     ['sleepQuality','fatigue','soreness','stress','mood'].forEach(id=>{
-      el(id).addEventListener('input', ()=>{
-        el(id+'v').textContent = el(id).value+' · '+LBL[id][el(id).value-1];
-      });
-      el(id).addEventListener('change', ()=>{ App.saveCheckIn(collect()); render(); });
+      on(id,'input',()=>{ el(id+'v').textContent = el(id).value+' · '+LBL[id][el(id).value-1]; });
+      on(id,'change',saveCi);
     });
-    ['sleepH','hrv'].forEach(id=>
-      el(id).addEventListener('change', ()=>{ App.saveCheckIn(collect()); render(); }));
+    ['sleepH','hrv'].forEach(id=>on(id,'change',saveCi));
 
-    el('btnTrain').addEventListener('click', ()=>{
-      App.saveCheckIn(collect());
-      const st = App.state;
-      const today = st.plan.week[0];
-      const sub = st.outcome.actions.find(a=>a.type==='substituteSession');
-      const red = st.outcome.actions.find(a=>a.type==='reduceVolume');
-      if(today.rest && !sub){ App.recordDecision('dailyAdjustment','Día sin sesión programada.'); App.advanceDay(); }
-      else if(sub){ const q = QUALITIES[sub.withQuality]; App.logSession(q.min, q.rpe); }
-      else App.logSession(Math.round(today.min*(red?red.factor:1)), today.rpe);
-      render();
-    });
-    el('btnRest').addEventListener('click', ()=>{
-      App.saveCheckIn(collect());
-      App.recordDecision('dailyAdjustment','Día sin entrenar registrado.');
-      App.advanceDay(); render();
-    });
-    el('btnBad').addEventListener('click', ()=>{
+    on('btnBad','click',()=>{
       for(let i=0;i<6;i++){
         const st = App.state;
         const e = Repos.entries.get(st.today) || {date:st.today, sessions:[], totalLoadAu:0};
         e.sessions = [{durationMin:85, sessionRpe:8.5, internalLoadAu:723}];
-        e.totalLoadAu = 723;
+        e.totalLoadAu = 723; e.sessionRpe = 8.5;
         e.checkIn = {...(e.checkIn||{}), sleepHours:6.0, sleepQuality:2, fatigue:2,
-                     soreness:2, stress:3, mood:3, lnRmssd: 4.20-0.05*(i+1)};
+                     soreness:2, stress:3, mood:3, lnRmssd:4.20-0.05*(i+1)};
         Repos.entries.save(e);
         App.advanceDay();
       }
       App.recordDecision('manualOverride','Se cargaron seis días seguidos de 85 min a sRPE 8,5 para ver cómo reaccionan las métricas y los guardarraíles.');
-      App.reload(); render();
+      App.reload(); selectedDate = App.state.today; render();
     });
-    el('btnReset').addEventListener('click', ()=>{ App.reset(); render(); });
-    el('btnExport').addEventListener('click', ()=>{
-      const w = window.open('', '_blank');
-      if(w){ w.document.write('<pre style="white-space:pre-wrap;font:12px monospace">'
-              + esc(App.exportJson()) + '</pre>'); w.document.close(); }
-    });
-  }
-
-  if(current==='assess'){
-    el('btnAddTest').addEventListener('click', ()=>{
-      const code = el('protoSel').value;
-      const v = parseFloat(el('protoVal').value);
-      const src = el('protoSrc').value;
-      const p = PROTO[code];
-      const msg = el('testMsg');
-      if(!isFinite(v)){ msg.textContent = 'Falta el valor.'; return; }
-      if(v < p.plausible[0] || v > p.plausible[1]){
-        msg.innerHTML = `<span style="color:var(--crit)">${fmt(v,2)} ${esc(p.unit)} está fuera del rango plausible (${p.plausible[0]}–${p.plausible[1]}). Revisá la unidad antes de guardar.</span>`;
-        return;
-      }
-      const st = App.state;
-      Repos.assessments.save({
-        id:'as_'+Date.now().toString(36), athleteId:'demo', performedOn:st.today,
-        batteryCode:'manual',
-        results:[{protocolCode:code, value:v, unit:p.unit, source:src,
-                  zScore: zScoreOf(code, v, st.profile.sport, st.profile.sex)}],
-        createdAt:new Date().toISOString()
-      });
-      App.reload(); render();
-    });
-  }
-
-  if(current==='archetype'){
-    const save = () => {
-      Repos.settings.save({
-        archetypeId: el('archSel').value,
-        horizonWeeks: clamp(parseInt(el('horizon').value,10)||12, 4, 52),
-        daysPerWeek: parseInt(el('daysSel').value,10)
-      });
-      App.reload(); render();
-    };
-    ['archSel','horizon','daysSel'].forEach(id=>el(id).addEventListener('change', save));
   }
 }
 
-/* ── gráfico de carga ── */
+/* ── gráfico de carga ───────────────────────────────────────────── */
 let chartData = null;
 function drawChart(s){
   const cv = el('chart'); if(!cv) return;
@@ -1880,7 +2289,6 @@ function drawChart(s){
   const all = s.entries.map(x=>x.totalLoadAu);
   const padL=4, padR=4, padT=10, padB=16;
   const plotW = w-padL-padR, plotH = h-padT-padB;
-
   const acuteS=[], chronS=[];
   for(let i=all.length-hist.length;i<all.length;i++){
     acuteS.push(mean(all.slice(Math.max(0,i-6), i+1)));
@@ -1921,26 +2329,26 @@ function drawChart(s){
   chartData = {hist, x, padL, plotW, n};
   const tip = el('tip');
   const move = ev=>{
-    if(!chartData) return;
+    if(!chartData || !tip) return;
     const r = cv.getBoundingClientRect();
     const px = (ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
     const i = clamp(Math.floor((px-chartData.padL)/(chartData.plotW/chartData.n)), 0, chartData.n-1);
     const d = chartData.hist[i], dt = parseDate(d.date);
-    tip.style.opacity='1'; tip.style.left=chartData.x(i)+'px'; tip.style.top='-2px';
     const ses = d.sessions && d.sessions[0];
+    tip.style.opacity='1'; tip.style.left=chartData.x(i)+'px'; tip.style.top='-2px';
     tip.textContent = DOW[dt.getDay()]+' '+dt.getDate()+'/'+(dt.getMonth()+1)+' · '
       + (d.totalLoadAu ? fmt(d.totalLoadAu)+' UA ('+ses.durationMin+' min × RPE '+ses.sessionRpe+')' : 'descanso');
   };
   cv.addEventListener('pointermove', move);
   cv.addEventListener('pointerdown', move);
-  cv.addEventListener('pointerleave', ()=> tip.style.opacity='0');
+  cv.addEventListener('pointerleave', ()=>{ if(tip) tip.style.opacity='0'; });
 }
 
 let rt;
-window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>drawChart(App.state),120); });
+window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(current==='evolucion') drawChart(App.state); },120); });
 if(window.matchMedia){
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
-  const h = ()=>drawChart(App.state);
+  const h = ()=>{ if(current==='evolucion') drawChart(App.state); };
   mq.addEventListener ? mq.addEventListener('change',h) : mq.addListener(h);
 }
 
