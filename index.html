@@ -19,6 +19,7 @@
   --crit:#a83a2c; --crit-soft:#f4dedb;
   --bar:#4f80cf; --bar-rest:#c2cddb;
   --shadow:0 1px 2px rgba(19,32,48,.05), 0 10px 26px -16px rgba(19,32,48,.28);
+  --dim-fuerza:#2C5FD0; --dim-volumen:#A4348C; --dim-potencia:#C06A12; --dim-movilidad:#0E8C6E;
   --sans:'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --serif:'IBM Plex Serif', Georgia, serif;
@@ -32,6 +33,7 @@
     --ok:#5cbf90; --ok-soft:#123024;
     --warn:#dda948; --warn-soft:#32270f;
     --crit:#e5786a; --crit-soft:#371d19;
+    --dim-fuerza:#4A7FE0; --dim-volumen:#B054A6; --dim-potencia:#B87C24; --dim-movilidad:#1E9C7C;
     --bar:#5a8ede; --bar-rest:#2b3b4e;
     --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.75);
   }
@@ -44,6 +46,7 @@
   --ok:#5cbf90; --ok-soft:#123024;
   --warn:#dda948; --warn-soft:#32270f;
   --crit:#e5786a; --crit-soft:#371d19;
+  --dim-fuerza:#4A7FE0; --dim-volumen:#B054A6; --dim-potencia:#B87C24; --dim-movilidad:#1E9C7C;
   --bar:#5a8ede; --bar-rest:#2b3b4e;
   --shadow:0 1px 2px rgba(0,0,0,.45), 0 14px 30px -18px rgba(0,0,0,.75);
 }
@@ -267,6 +270,59 @@ footer{margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
   font-size:12px; color:var(--ink-3); max-width:80ch;}
 footer p{margin:0 0 7px;}
 footer b{color:var(--ink-2); font-weight:500;}
+
+/* ---------- listado de tests tocable ---------- */
+.testlist{display:grid; gap:6px;}
+.testitem{border:1px solid var(--line-soft); border-radius:8px; background:var(--surface-2); overflow:hidden;}
+.testitem.open{border-color:var(--accent);}
+.testhead{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 10px;
+  width:100%; text-align:left; background:transparent; border:0; cursor:pointer;
+  padding:11px 12px; font-family:var(--sans); color:var(--ink); font-size:13.5px;}
+.testhead .tn{grid-area:1/1/2/3;}
+.testhead .tv{grid-area:2/1; align-self:center;}
+.testhead > .chip{grid-area:2/2; justify-self:end; align-self:center;}
+@media (min-width:600px){
+  .testhead{grid-template-columns:minmax(0,1fr) auto auto; align-items:center;}
+  .testhead .tn, .testhead .tv, .testhead > .chip{grid-area:auto;}
+}
+.testhead:hover{background:var(--accent-soft);}
+.testhead .tn{font-weight:500;}
+.testhead .tn em{display:block; font-style:normal; font-family:var(--mono);
+  font-size:10.5px; color:var(--ink-3); letter-spacing:.05em; text-transform:uppercase;}
+.testhead .tv{font-family:var(--mono); font-size:12px; color:var(--ink-2);
+  font-variant-numeric:tabular-nums; white-space:nowrap;}
+.testbody{padding:0 12px 13px; border-top:1px solid var(--line-soft);}
+.testbody .how{font-size:12.5px; color:var(--ink-2); margin:11px 0 12px; max-width:62ch;}
+
+/* ---------- comparador de disciplinas ---------- */
+.pills{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;}
+.pill{font-family:var(--sans); font-size:12.5px; font-weight:500; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface-2); color:var(--ink-2);
+  border-radius:999px; padding:6px 13px; display:inline-flex; align-items:center; gap:7px;}
+.pill:hover{border-color:var(--accent);}
+.pill .sw{width:9px; height:9px; border-radius:2px; background:var(--line);}
+.pill[aria-pressed="true"]{border-color:var(--dim); color:var(--dim); background:transparent;}
+.pill[aria-pressed="true"] .sw{background:var(--dim);}
+.pill.disc[aria-pressed="true"]{border-color:var(--accent); color:var(--accent); background:var(--accent-soft);}
+.pill.disc[aria-pressed="true"] .sw{background:var(--accent);}
+.pill.disc .sw{border-radius:50%;}
+
+.cmp{display:grid; gap:18px; grid-template-columns:minmax(0,1fr);}
+@media (min-width:820px){ .cmp{grid-template-columns:200px minmax(0,1fr);} }
+.figure2{text-align:center;}
+.figure2 svg{width:100%; max-width:172px; max-height:440px; height:auto; display:block; margin:0 auto;}
+.silo2{fill:var(--line-soft);}
+.scalebar{height:8px; border-radius:4px; margin:12px 0 4px;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--dim) 12%, transparent), var(--dim));}
+
+/* mapa de calor tabular: una escala secuencial del hue de la dimensión activa */
+td.hm{position:relative; text-align:right; padding:0; height:34px; width:76px;}
+td.hm .fillbar{position:absolute; inset:2px; border-radius:4px; background:var(--dim);}
+td.hm b{position:relative; font-family:var(--mono); font-weight:500; font-size:12.5px;
+  font-variant-numeric:tabular-nums; padding-right:10px; display:block; line-height:34px;}
+td.hm.top b{color:var(--surface-2);}
+th.rot{font-size:10px; text-align:right; padding-right:10px;}
+
 @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 
 /* ---------- barra de ventanas (abajo) ---------- */
@@ -302,36 +358,8 @@ details.acc[open] > summary::before{transform:rotate(90deg);}
 details.acc > summary .st{margin-left:auto;}
 details.acc .body{padding:2px 14px 14px; border-top:1px solid var(--line-soft);}
 
-/* ---------- asistente de tests ---------- */
-.wizard{border:1px solid var(--accent-soft); background:var(--accent-soft);
-  border-radius:9px; padding:15px; margin-bottom:14px;}
-.wizard .step{font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
-  text-transform:uppercase; color:var(--accent); margin-bottom:5px;}
-.wizard h3{margin:0 0 4px; font-size:16px; font-weight:600;}
-.wizard .how{font-size:13px; color:var(--ink-2); margin:0 0 12px; max-width:62ch;}
 .progress{height:5px; border-radius:3px; background:var(--line-soft); overflow:hidden; margin:10px 0 14px;}
 .progress > i{display:block; height:100%; background:var(--accent);}
-
-/* ---------- siluetas ---------- */
-.bodywrap{display:grid; gap:16px; grid-template-columns:minmax(0,1fr);}
-@media (min-width:760px){ .bodywrap{grid-template-columns:minmax(0,300px) minmax(0,1fr);} }
-.figures{display:flex; gap:8px; justify-content:center; align-items:flex-end;}
-.figure{text-align:center;}
-.figure svg{width:100%; max-width:130px; height:auto; display:block;}
-.figure figcaption{font-family:var(--mono); font-size:10px; text-transform:uppercase;
-  letter-spacing:.09em; color:var(--ink-3); margin-top:6px;}
-.silo{fill:var(--line); }
-.silo-region{fill:var(--accent); opacity:.30;}
-
-/* ---------- lista de cualidades ---------- */
-.qlist{display:grid; gap:7px;}
-.qrow{display:grid; grid-template-columns:minmax(0,1fr) 58px; gap:4px 10px;
-  padding:9px 11px; border:1px solid var(--line-soft); border-radius:8px; background:var(--surface-2);}
-.qrow .nm{font-size:13px; font-weight:500;}
-.qrow .zz{font-family:var(--mono); font-size:12px; text-align:right; color:var(--ink-2);
-  font-variant-numeric:tabular-nums;}
-.qrow .tr{grid-column:1/-1;}
-.qrow .sub{grid-column:1/-1; font-family:var(--mono); font-size:10.5px; color:var(--ink-3);}
 
 /* ---------- tracker semanal ---------- */
 .days{display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:14px;}
@@ -502,6 +530,54 @@ const ARCHETYPES = [
             anaerobicCapacity:{z:0.2,w:0.4}, mobility:{z:0.3,w:0.5},
             stability:{z:0.7,w:0.7}, bodyComposition:{z:0.5,w:0.6}}}
 ];
+
+
+/* ── Grupos musculares y su exigencia por disciplina ─────────────────
+   Puntaje 0–100 en cuatro dimensiones: [fuerza, volumen, potencia, movilidad].
+   Procedencia: expertEstimate — perfil de demanda estimado por staff, igual
+   que los arquetipos. No son valores publicados. */
+const MUSCLES = [
+  {key:'pecho',      label:'Pecho'},
+  {key:'espalda',    label:'Espalda (dorsal)'},
+  {key:'hombros',    label:'Hombros'},
+  {key:'biceps',     label:'Bíceps'},
+  {key:'triceps',    label:'Tríceps'},
+  {key:'core',       label:'Core'},
+  {key:'gluteos',    label:'Glúteos'},
+  {key:'cuadriceps', label:'Cuádriceps'},
+  {key:'isquios',    label:'Isquiotibiales'},
+  {key:'gemelos',    label:'Gemelos'}
+];
+const DIMS = [
+  {key:'fuerza',    label:'Fuerza',    i:0},
+  {key:'volumen',   label:'Volumen',   i:1},
+  {key:'potencia',  label:'Potencia',  i:2},
+  {key:'movilidad', label:'Movilidad', i:3}
+];
+const MUSCLE_PROFILE = {
+  rugby_fwd:{
+    pecho:[85,85,70,35], espalda:[90,85,70,40], hombros:[85,80,75,45],
+    biceps:[70,70,55,30], triceps:[80,75,70,30], core:[90,70,75,50],
+    gluteos:[95,80,85,55], cuadriceps:[95,85,85,50], isquios:[85,70,80,60], gemelos:[70,60,70,45]},
+  rugby_back:{
+    pecho:[65,55,65,40], espalda:[80,65,75,45], hombros:[70,60,70,50],
+    biceps:[60,50,55,35], triceps:[65,55,65,35], core:[90,65,85,60],
+    gluteos:[95,70,95,65], cuadriceps:[85,70,90,60], isquios:[95,70,95,70], gemelos:[85,60,90,60]},
+  football_mid:{
+    pecho:[45,35,45,40], espalda:[70,50,60,50], hombros:[55,40,55,50],
+    biceps:[45,35,40,35], triceps:[45,35,45,35], core:[85,55,75,65],
+    gluteos:[90,60,85,70], cuadriceps:[85,60,85,65], isquios:[90,60,90,75], gemelos:[85,55,85,65]},
+  runner_10k:{
+    pecho:[30,20,30,40], espalda:[55,30,40,55], hombros:[40,25,40,55],
+    biceps:[30,20,30,35], triceps:[35,25,35,35], core:[80,40,60,65],
+    gluteos:[85,45,75,75], cuadriceps:[70,40,65,70], isquios:[85,45,75,80], gemelos:[90,50,85,75]},
+  strength_gen:{
+    pecho:[90,90,65,40], espalda:[90,90,65,45], hombros:[85,85,65,50],
+    biceps:[80,85,55,35], triceps:[85,85,60,35], core:[80,65,60,50],
+    gluteos:[90,85,70,55], cuadriceps:[95,90,70,55], isquios:[85,80,70,60], gemelos:[70,65,60,45]}
+};
+/* cualidades que no son de un músculo concreto: se comparan aparte */
+const SYSTEMIC = ['aerobicCapacity','anaerobicCapacity','speed','changeOfDirection','stability','bodyComposition'];
 
 const EX = {
   sentadilla:{n:'Sentadilla trasera', pat:'squat', ratio:1, caps:['maxStrength']},
@@ -1521,7 +1597,9 @@ const WINDOWS = [
 ];
 let current = 'perfil';
 let selectedDate = null;        // día abierto en el tracker
-let wizardCode = null;          // test que el asistente está pidiendo
+let openTest = null;            // test desplegado en el listado
+let selDim = 'fuerza';          // dimensión activa del comparador
+let selDiscs = [];              // disciplinas comparadas (la primera pinta la figura)
 
 const el = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1559,7 +1637,7 @@ function nextStep(s){
   if(!p.heightCm || !p.weightKg) return {sec:'antropo', txt:'Cargá altura y peso'};
   if(!p.sport || !p.level) return {sec:'deporte', txt:'Elegí deporte y nivel'};
   const pending = pendingTests(s);
-  if(pending.length) return {sec:'tests', txt:`Faltan ${pending.length} tests para determinar todas tus cualidades`, code:pending[0].code};
+  if(pending.length) return {sec:'tests', txt:`${pending.length} tests por cargar`};
   return null;
 }
 /* tests pendientes o vencidos, ordenados por lo que más pesa en el arquetipo */
@@ -1576,14 +1654,11 @@ function pendingTests(s){
 
 const VIEWS = {
 
-/* ═══ VENTANA 1 · PERFIL — carga de datos crudos, guiada ═══════════ */
+/* ═══ VENTANA 1 · PERFIL — carga de datos crudos ══════════════════ */
 perfil(s){
   const p = s.profile;
   const step = nextStep(s);
-  const pend = pendingTests(s);
   const determined = s.model.capacities.filter(c=>c.currentZ!=null && !c.isStale).length;
-  const code = wizardCode || (pend[0] && pend[0].code);
-  const pr = code ? PROTO[code] : null;
   const openSec = step ? step.sec : 'tests';
 
   return `
@@ -1591,40 +1666,17 @@ perfil(s){
 
   <section class="card">
     <h2>Perfil del atleta</h2>
-    <p class="hint">La app te va pidiendo lo que falta, en el orden en que le sirve al motor. No hace falta completar todo de una.</p>
+    <p class="hint">Todo lo que el sistema sabe de vos, en bruto. Se puede completar en cualquier orden y editar cuando quieras.</p>
     <div class="progress"><i style="width:${Math.round(100*determined/CAPACITIES.length)}%"></i></div>
     <p class="hint" style="margin:0">
-      <b style="color:var(--ink)">${determined} de ${CAPACITIES.length}</b> cualidades determinadas ·
-      ${step ? `siguiente: ${esc(step.txt)}` : '<span style="color:var(--ok)">perfil completo</span>'}
+      <b style="color:var(--ink)">${determined} de ${CAPACITIES.length}</b> cualidades determinadas${
+        step ? ` · falta: ${esc(step.txt)}` : ' · <span style="color:var(--ok)">perfil completo</span>'}
     </p>
   </section>
 
-  ${pr ? `
-  <section class="card">
-    <h2>Asistente de evaluación</h2>
-    <p class="hint">Test ${pend.findIndex(x=>x.code===code)+1} de ${pend.length} pendientes, ordenados por lo que más pesa en tu perfil deportivo.</p>
-    <div class="wizard">
-      <div class="step">Mide: ${esc(CAP_LABEL[pr.capacity])}</div>
-      <h3>${esc(pr.name)}</h3>
-      <p class="how">${esc(pr.how)}</p>
-      <div class="row2">
-        <div class="field"><label for="wizVal">Resultado (${esc(pr.unit)})</label>
-          <input type="number" id="wizVal" step="0.01" placeholder="${pr.plausible[0]}–${pr.plausible[1]}"></div>
-        <div class="field"><label for="wizSrc">Cómo lo mediste</label>
-          <select id="wizSrc"><option value="lab">Laboratorio</option><option value="field" selected>Campo</option>
-            <option value="selfReport">Autoinforme</option><option value="estimated">Estimado</option></select></div>
-      </div>
-      <div class="btnrow">
-        <button class="act primary" id="wizSave">Guardar y seguir</button>
-        <button class="act ghost" id="wizSkip">Ahora no</button>
-      </div>
-      <p class="hint" id="wizMsg" style="margin:10px 0 0"></p>
-    </div>
-  </section>` : ''}
-
   <section class="card">
     <h2>Datos crudos</h2>
-    <p class="hint">Todo lo que el sistema sabe de vos, en bruto. Se puede editar en cualquier momento.</p>
+    <p class="hint">Cada bloque muestra si está completo.</p>
 
     <details class="acc"${openSec==='identidad'?' open':''}>
       <summary>Datos personales ${chipOk(p.birthDate&&p.sex)}</summary>
@@ -1639,7 +1691,7 @@ perfil(s){
               <option value="other"${p.sex==='other'?' selected':''}>Otro</option>
             </select></div>
         </div>
-        <p class="hint" style="margin:0">El sexo ajusta las normas contra las que se calcula tu z. Si elegís «otro», se usan las masculinas y conviene tomar los percentiles con pinzas.</p>
+        <p class="hint" style="margin:0">El sexo ajusta las normas contra las que se calcula tu z. Con «otro» se usan las masculinas, así que conviene tomar los percentiles con pinzas.</p>
       </div>
     </details>
 
@@ -1681,21 +1733,40 @@ perfil(s){
     <details class="acc"${openSec==='tests'?' open':''}>
       <summary>Tests físicos ${chipCount(determined, CAPACITIES.length)}</summary>
       <div class="body">
-        <div class="tablewrap"><table>
-          <thead><tr><th>Cualidad</th><th>Test</th><th class="num">Resultado</th><th class="num">z</th><th>Estado</th></tr></thead>
-          <tbody>${CAPACITIES.map(c=>{
-            const st = s.model.capacities.find(x=>x.capacity===c.key);
-            const proto = PROTOCOLS.find(x=>x.capacity===c.key);
-            const state = !st || st.currentZ==null ? '<span class="chip mute">pendiente</span>'
-                        : st.isStale ? `<span class="chip warn">vencido · ${st.ageDays} d</span>`
-                        : `<span class="chip ok">vigente · ${st.ageDays} d</span>`;
-            return `<tr><td>${esc(c.label)}</td><td>${esc(proto?proto.name:'—')}</td>
-              <td class="num">${st&&st.raw!=null?fmt(st.raw, st.raw<10?2:0)+' '+esc(PROTO[st.protocolCode].unit):'—'}</td>
-              <td class="num">${st&&st.currentZ!=null?sign(st.currentZ):'—'}</td>
-              <td>${state}</td></tr>`;
-          }).join('')}</tbody>
-        </table></div>
-        <div class="btnrow" style="margin-top:12px">
+        <p class="hint" style="margin:11px 0 12px">Tocá un test para cargar el resultado. Cada uno mide una cualidad y caduca a los días que indica su protocolo.</p>
+        <div class="testlist">${PROTOCOLS.map(pr=>{
+          const st = s.model.capacities.find(x=>x.capacity===pr.capacity);
+          const has = st && st.currentZ!=null;
+          const state = !has ? '<span class="chip mute">pendiente</span>'
+                      : st.isStale ? `<span class="chip warn">vencido · ${st.ageDays} d</span>`
+                      : `<span class="chip ok">vigente · ${st.ageDays} d</span>`;
+          const open = openTest===pr.code;
+          return `<div class="testitem${open?' open':''}">
+            <button class="testhead" data-test="${pr.code}" aria-expanded="${open}">
+              <span class="tn">${esc(pr.name)}<em>${esc(CAP_LABEL[pr.capacity])}</em></span>
+              <span class="tv">${has && st.protocolCode===pr.code
+                ? fmt(st.raw, st.raw<10?2:0)+' '+esc(pr.unit)+' · z '+sign(st.currentZ) : '—'}</span>
+              ${state}
+            </button>
+            ${open ? `<div class="testbody">
+              <p class="how">${esc(pr.how)}</p>
+              <div class="row2">
+                <div class="field"><label for="tVal">Resultado (${esc(pr.unit)})</label>
+                  <input type="number" id="tVal" step="0.01" placeholder="${pr.plausible[0]}–${pr.plausible[1]}" autofocus></div>
+                <div class="field"><label for="tSrc">Cómo lo mediste</label>
+                  <select id="tSrc"><option value="lab">Laboratorio</option><option value="field" selected>Campo</option>
+                    <option value="selfReport">Autoinforme</option><option value="estimated">Estimado</option></select></div>
+              </div>
+              <div class="btnrow">
+                <button class="act primary" id="tSave">Guardar</button>
+                <button class="act ghost" id="tCancel">Cerrar</button>
+              </div>
+              <p class="hint" id="tMsg" style="margin:10px 0 0"></p>
+            </div>` : ''}
+          </div>`;
+        }).join('')}</div>
+
+        <div class="btnrow" style="margin-top:14px">
           <button class="act ghost sm" id="btnReset">Reiniciar datos de demo</button>
           <button class="act ghost sm" id="btnExport">Exportar JSON</button>
         </div>
@@ -1704,80 +1775,73 @@ perfil(s){
   </section>`;
 },
 
-/* ═══ VENTANA 2 · EXPLORAR — siluetas y cualidades del perfil ══════ */
+/* ═══ VENTANA 2 · EXPLORAR — comparar disciplinas ═════════════════ */
 explora(s){
-  const sel = wizardArch || s.settings.archetypeId;
-  const a = ARCHETYPES.find(x=>x.id===sel) || ARCHETYPES[0];
-  const rows = CAPACITIES.map(c=>({...c, t:a.targets[c.key]}))
-    .filter(x=>x.t).sort((x,y)=>y.t.w-x.t.w);
-  const zPos = z => clamp((z+2)/4*100, 2, 98);
+  const dim = DIMS.find(d=>d.key===selDim) || DIMS[0];
+  const discs = selDiscs.length ? selDiscs : [s.settings.archetypeId];
+  const primary = ARCHETYPES.find(a=>a.id===discs[0]) || ARCHETYPES[0];
+  const scoreOf = (discId, mKey) => (MUSCLE_PROFILE[discId] || {})[mKey][dim.i];
+
+  /* filas ordenadas por lo que más exige la disciplina primaria: leer de arriba
+     hacia abajo ya es la respuesta a "qué entrena este deporte" */
+  const rows = MUSCLES.slice().sort((a,b)=>scoreOf(primary.id,b.key)-scoreOf(primary.id,a.key));
+  const sysRows = SYSTEMIC.map(k=>({key:k, label:CAP_LABEL[k]}));
+  const sysScore = (discId,k)=>{
+    const a = ARCHETYPES.find(x=>x.id===discId);
+    const t = a && a.targets[k];
+    return t ? Math.round(clamp((t.z+2)/4*100, 0, 100)) : null;
+  };
+
+  const cell = v => v==null ? '<td class="hm"><b style="color:var(--ink-3)">—</b></td>'
+    : `<td class="hm${v>=70?' top':''}"><span class="fillbar" style="opacity:${(0.10+0.85*v/100).toFixed(2)}"></span><b>${v}</b></td>`;
 
   return `
-  <section class="card">
-    <h2>Explorar perfiles</h2>
-    <p class="hint">Modo consulta: elegí un perfil deportivo y mirá qué cualidades lo maximizan, sin tocar tu plan. La figura es una referencia anatómica fija — todavía no reacciona a la selección.</p>
-    <div class="field" style="max-width:340px">
-      <label for="expSel">Perfil deportivo</label>
-      <select id="expSel">${ARCHETYPES.map(x=>`<option value="${x.id}"${x.id===sel?' selected':''}>${esc(x.name)}</option>`).join('')}</select>
-    </div>
+  <section class="card" style="--dim:var(--dim-${dim.key})">
+    <h2>Comparar disciplinas</h2>
+    <p class="hint">Qué le pide cada deporte a cada grupo muscular. Elegí la dimensión y hasta cuatro disciplinas; la figura pinta la primera.</p>
 
-    <div class="bodywrap">
-      <div>
-        <div class="figures">
-          <figure class="figure">${silhouette('front')}<figcaption>Frente</figcaption></figure>
-          <figure class="figure">${silhouette('back')}<figcaption>Espalda</figcaption></figure>
-        </div>
-        <p class="hint" style="text-align:center;margin-top:10px">
-          <span class="chip mute">${esc(a.evidence.grade)}</span><br>${esc(a.evidence.reference)}
-        </p>
+    <div class="pills">${DIMS.map(d=>
+      `<button class="pill" data-dim="${d.key}" aria-pressed="${d.key===dim.key}"
+        style="--dim:var(--dim-${d.key})"><span class="sw"></span>${esc(d.label)}</button>`).join('')}</div>
+
+    <div class="pills">${ARCHETYPES.map(a=>
+      `<button class="pill disc" data-disc="${a.id}" aria-pressed="${discs.includes(a.id)}">
+        <span class="sw"></span>${esc(a.name)}</button>`).join('')}</div>
+
+    <div class="cmp">
+      <div class="figure2">
+        ${bodyFront(m=>scoreOf(primary.id, m))}
+        <div class="scalebar"></div>
+        <div class="scale"><span>0</span><span>${esc(dim.label)} · ${esc(primary.name)}</span><span>100</span></div>
       </div>
 
-      <div class="qlist">
-        ${rows.map(r=>`
-          <div class="qrow">
-            <div class="nm">${esc(r.label)}</div>
-            <div class="zz">${sign(r.t.z)}</div>
-            <div class="tr">
-              <div class="lane" style="height:16px">
-                <div class="mid"></div>
-                <div class="pt b" style="left:${zPos(r.t.z)}%; top:2px"></div>
-                ${r.t.min!=null?`<div class="pt t" style="left:${zPos(r.t.min)}%; top:3px"></div>`:''}
-              </div>
-            </div>
-            <div class="sub">peso ${fmt(r.t.w,1)} en el perfil${r.t.min!=null?` · mínimo ${sign(r.t.min)}`:''}</div>
-          </div>`).join('')}
+      <div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Grupo muscular</th>
+            ${discs.map(d=>`<th class="rot">${esc(ARCHETYPES.find(a=>a.id===d).name)}</th>`).join('')}</tr></thead>
+          <tbody>${rows.map(m=>`<tr><td>${esc(m.label)}</td>
+            ${discs.map(d=>cell(scoreOf(d,m.key))).join('')}</tr>`).join('')}</tbody>
+        </table></div>
       </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>Comparación con vos</h2>
-    <p class="hint">Tu z actual contra lo que pide este perfil. Es una consulta: para que cambie tu rutina hay que elegirlo como objetivo.</p>
-    <div class="evo">
-      ${rows.map(r=>{
-        const st = s.model.capacities.find(x=>x.capacity===r.key);
-        const cur = st ? st.currentZ : null;
-        return `<div class="evorow">
-          <div class="top"><span class="nm">${esc(r.label)}</span>
-            <span class="dl">${cur==null?'<span style="color:var(--ink-3)">sin medir</span>':
-              (cur>=r.t.z?'<span style="color:var(--ok)">en objetivo</span>':'faltan '+fmt(r.t.z-cur,2))}</span></div>
-          <div class="lane">
-            <div class="mid"></div>
-            ${cur!=null?`<div class="seg" style="left:${Math.min(zPos(cur),zPos(r.t.z))}%; width:${Math.abs(zPos(r.t.z)-zPos(cur))}%"></div>`:''}
-            ${cur!=null?`<div class="pt a" style="left:${zPos(cur)}%"></div>`:''}
-            <div class="pt b" style="left:${zPos(r.t.z)}%"></div>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
-    <div class="legend" style="margin-top:10px">
-      <span><i class="swatch" style="background:var(--ink-3);border-radius:50%"></i>Tu z actual</span>
-      <span><i class="swatch" style="background:var(--accent);border-radius:50%"></i>Objetivo del perfil</span>
-    </div>
-    <div class="btnrow" style="margin-top:14px">
-      <button class="act${sel===s.settings.archetypeId?'':' primary'}" id="expAdopt"
-        ${sel===s.settings.archetypeId?'disabled':''}>
-        ${sel===s.settings.archetypeId?'Ya es tu perfil objetivo':'Usar este perfil como objetivo'}</button>
+  <section class="card" style="--dim:var(--dim-${dim.key})">
+    <h2>Cualidades sistémicas</h2>
+    <p class="hint">Las que no son de un músculo concreto: capacidad aeróbica, cambio de dirección y compañía. Misma escala, mismo color que la dimensión activa.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Cualidad</th>
+        ${discs.map(d=>`<th class="rot">${esc(ARCHETYPES.find(a=>a.id===d).name)}</th>`).join('')}</tr></thead>
+      <tbody>${sysRows.map(r=>`<tr><td>${esc(r.label)}</td>
+        ${discs.map(d=>cell(sysScore(d,r.key))).join('')}</tr>`).join('')}</tbody>
+    </table></div>
+    <p class="hint" style="margin-top:12px">
+      <span class="chip mute">${esc(primary.evidence.grade)}</span> ${esc(primary.evidence.reference)}
+    </p>
+    <div class="btnrow" style="margin-top:12px">
+      <button class="act${primary.id===s.settings.archetypeId?'':' primary'}" id="expAdopt"
+        ${primary.id===s.settings.archetypeId?'disabled':''}>
+        ${primary.id===s.settings.archetypeId?'Ya es tu perfil objetivo':'Usar '+esc(primary.name)+' como objetivo'}</button>
     </div>
   </section>`;
 },
@@ -2080,45 +2144,54 @@ evolucion(s){
 };
 
 const SPORT_ES = {rugby:'Rugby', football:'Fútbol', hockey:'Hockey', running:'Running', strength:'Fuerza'};
-let wizardArch = null;
 
 const chipOk = ok => ok ? '<span class="st"><span class="chip ok">completo</span></span>'
                         : '<span class="st"><span class="chip warn">falta</span></span>';
 const chipCount = (a,b) => `<span class="st"><span class="chip ${a===b?'ok':'mute'}">${a} de ${b}</span></span>`;
 
-/* silueta: maniquí anatómico estilizado, deliberadamente esquemático */
-function silhouette(side){
-  const regions = side==='front'
-    ? `<ellipse class="silo-region" cx="50" cy="92" rx="19" ry="13"/>
-       <rect class="silo-region" x="38" y="110" width="24" height="34" rx="8"/>
-       <rect class="silo-region" x="30" y="196" width="16" height="46" rx="8"/>
-       <rect class="silo-region" x="54" y="196" width="16" height="46" rx="8"/>`
-    : `<rect class="silo-region" x="33" y="82" width="34" height="46" rx="12"/>
-       <ellipse class="silo-region" cx="50" cy="172" rx="21" ry="14"/>
-       <rect class="silo-region" x="31" y="196" width="15" height="40" rx="7"/>
-       <rect class="silo-region" x="54" y="196" width="15" height="40" rx="7"/>
-       <rect class="silo-region" x="33" y="268" width="12" height="30" rx="6"/>
-       <rect class="silo-region" x="55" y="268" width="12" height="30" rx="6"/>`;
-  return `<svg viewBox="0 0 100 340" role="img" aria-label="Silueta humana, vista ${side==='front'?'frontal':'posterior'}">
-    <g class="silo">
-      <ellipse cx="50" cy="26" rx="13" ry="16"/>
-      <rect x="45" y="40" width="10" height="10" rx="4"/>
-      <path d="M50 48 C64 48 74 54 76 64 L72 120 C71 138 69 150 68 162 L32 162 C31 150 29 138 28 120 L24 64 C26 54 36 48 50 48 Z"/>
-      <circle cx="27" cy="60" r="8"/>
-      <circle cx="73" cy="60" r="8"/>
-      <rect x="17" y="58" width="12" height="66" rx="6" transform="rotate(9 23 91)"/>
-      <rect x="71" y="58" width="12" height="66" rx="6" transform="rotate(-9 77 91)"/>
-      <rect x="13" y="118" width="11" height="58" rx="5.5" transform="rotate(5 18 147)"/>
-      <rect x="76" y="118" width="11" height="58" rx="5.5" transform="rotate(-5 82 147)"/>
-      <rect x="30" y="160" width="40" height="26" rx="10"/>
-      <rect x="29" y="184" width="18" height="82" rx="9"/>
-      <rect x="53" y="184" width="18" height="82" rx="9"/>
-      <rect x="32" y="262" width="14" height="62" rx="7"/>
-      <rect x="54" y="262" width="14" height="62" rx="7"/>
-      <ellipse cx="39" cy="330" rx="9" ry="6"/>
-      <ellipse cx="61" cy="330" rx="9" ry="6"/>
-    </g>
-    ${regions}
+/* Silueta frontal única. Las formas de las regiones se recortan contra el
+   contorno del cuerpo (clipPath), así una elipse simple nunca se desborda. */
+const BODY_OUTLINE = `
+  <ellipse cx="100" cy="40" rx="23" ry="32"/>
+  <rect x="92" y="62" width="16" height="28" rx="6"/>
+  <path d="M100 84 C121 84 142 93 149 106 L143 150 C140 176 137 196 135 226
+           C134 246 133 262 131 280 L69 280 C67 262 66 246 65 226
+           C63 196 60 176 57 150 L51 106 C58 93 79 84 100 84 Z"/>
+  <path d="M52 100 C43 107 39 122 37 140 L32 210 C30 234 28 256 27 280
+           C26 291 26 299 26 306 L41 306 C42 296 43 286 45 274 L51 210 L57 150 Z"/>
+  <path d="M148 100 C157 107 161 122 163 140 L168 210 C170 234 172 256 173 280
+           C174 291 174 299 174 306 L159 306 C158 296 157 286 155 274 L149 210 L143 150 Z"/>
+  <path d="M69 276 L98 276 L96 402 C95 434 93 456 91 484 L89 524 L71 524 L69 484
+           C68 456 67 434 67 402 Z"/>
+  <path d="M131 276 L102 276 L104 402 C105 434 107 456 109 484 L111 524 L129 524 L131 484
+           C132 456 133 434 133 402 Z"/>
+  <ellipse cx="80" cy="530" rx="13" ry="8"/>
+  <ellipse cx="120" cy="530" rx="13" ry="8"/>`;
+
+const REGIONS = {
+  pecho:      '<ellipse cx="85" cy="124" rx="18" ry="18"/><ellipse cx="115" cy="124" rx="18" ry="18"/>',
+  espalda:    '<ellipse cx="63" cy="160" rx="10" ry="30"/><ellipse cx="137" cy="160" rx="10" ry="30"/>',
+  hombros:    '<ellipse cx="56" cy="107" rx="16" ry="17"/><ellipse cx="144" cy="107" rx="16" ry="17"/>',
+  biceps:     '<ellipse cx="45" cy="170" rx="8" ry="28"/><ellipse cx="155" cy="170" rx="8" ry="28"/>',
+  triceps:    '<ellipse cx="34" cy="176" rx="6" ry="26"/><ellipse cx="166" cy="176" rx="6" ry="26"/>',
+  core:       '<rect x="82" y="152" width="36" height="84" rx="15"/>',
+  gluteos:    '<ellipse cx="74" cy="262" rx="17" ry="21"/><ellipse cx="126" cy="262" rx="17" ry="21"/>',
+  cuadriceps: '<ellipse cx="82" cy="332" rx="17" ry="50"/><ellipse cx="118" cy="332" rx="17" ry="50"/>',
+  isquios:    '<ellipse cx="69" cy="344" rx="8" ry="44"/><ellipse cx="131" cy="344" rx="8" ry="44"/>',
+  gemelos:    '<ellipse cx="80" cy="452" rx="12" ry="34"/><ellipse cx="120" cy="452" rx="12" ry="34"/>'
+};
+
+function bodyFront(scoreFn){
+  const regions = MUSCLES.map(m=>{
+    const v = scoreFn(m.key);
+    if(v==null) return '';
+    const op = (0.10 + 0.85*v/100).toFixed(2);
+    return `<g style="fill:var(--dim);fill-opacity:${op}"><title>${m.label}: ${v}</title>${REGIONS[m.key]}</g>`;
+  }).join('');
+  return `<svg viewBox="0 0 200 560" role="img" aria-label="Figura humana de frente con los grupos musculares coloreados según su exigencia">
+    <defs><clipPath id="clipBody">${BODY_OUTLINE}</clipPath></defs>
+    <g class="silo2">${BODY_OUTLINE}</g>
+    <g clip-path="url(#clipBody)">${regions}</g>
   </svg>`;
 }
 
@@ -2177,33 +2250,33 @@ function wire(s){
       App.reload(); render();
     });
 
-    on('wizSave','click',()=>{
-      const code = wizardCode || pendingTests(s)[0].code;
-      const pr = PROTO[code];
-      const v = parseFloat(el('wizVal').value);
-      const msg = el('wizMsg');
+    document.querySelectorAll('.testhead').forEach(b=>
+      b.addEventListener('click',()=>{
+        openTest = (openTest===b.dataset.test) ? null : b.dataset.test;
+        render();
+        const inp = el('tVal'); if(inp) inp.focus();
+      }));
+    on('tCancel','click',()=>{ openTest=null; render(); });
+    on('tSave','click',()=>{
+      const pr = PROTO[openTest];
+      const v = parseFloat(el('tVal').value);
+      const msg = el('tMsg');
       if(!isFinite(v)){ msg.textContent = 'Falta el resultado.'; return; }
       if(v<pr.plausible[0] || v>pr.plausible[1]){
         msg.innerHTML = `<span style="color:var(--crit)">${fmt(v,2)} ${esc(pr.unit)} está fuera del rango plausible (${pr.plausible[0]}–${pr.plausible[1]}). Revisá la unidad antes de guardar.</span>`;
         return;
       }
       Repos.assessments.save({
-        id:'as_'+Date.now().toString(36), athleteId:'demo', performedOn:s.today, batteryCode:'guiado',
-        results:[{protocolCode:code, value:v, unit:pr.unit, source:el('wizSrc').value,
-                  zScore: zScoreOf(code, v, s.profile.sport, s.profile.sex)}],
+        id:'as_'+Date.now().toString(36), athleteId:'demo', performedOn:s.today, batteryCode:'manual',
+        results:[{protocolCode:openTest, value:v, unit:pr.unit, source:el('tSrc').value,
+                  zScore: zScoreOf(openTest, v, s.profile.sport, s.profile.sex)}],
         createdAt:new Date().toISOString()
       });
       Repos.plans.clear();      // cambian las brechas: la semana se reprograma
-      wizardCode = null;
+      openTest = null;
       App.reload(); render();
     });
-    on('wizSkip','click',()=>{
-      const pend = pendingTests(s);
-      const i = pend.findIndex(x=>x.code===(wizardCode||pend[0].code));
-      wizardCode = pend[(i+1)%pend.length].code;
-      render();
-    });
-    on('btnReset','click',()=>{ App.reset(); selectedDate=null; wizardCode=null; render(); });
+    on('btnReset','click',()=>{ App.reset(); selectedDate=null; openTest=null; render(); });
     on('btnExport','click',()=>{
       const w = window.open('','_blank');
       if(w){ w.document.write('<pre style="white-space:pre-wrap;font:12px monospace">'+esc(App.exportJson())+'</pre>'); w.document.close(); }
@@ -2211,11 +2284,25 @@ function wire(s){
   }
 
   if(current==='explora'){
-    on('expSel','change',()=>{ wizardArch = el('expSel').value; render(); });
+    document.querySelectorAll('[data-dim]').forEach(b=>
+      b.addEventListener('click',()=>{ selDim = b.dataset.dim; render(); }));
+    document.querySelectorAll('[data-disc]').forEach(b=>
+      b.addEventListener('click',()=>{
+        const id = b.dataset.disc;
+        if(!selDiscs.length) selDiscs = [App.state.settings.archetypeId];
+        if(selDiscs.includes(id)){
+          if(selDiscs.length>1) selDiscs = selDiscs.filter(x=>x!==id);   // nunca queda vacío
+        } else if(selDiscs.length<4){
+          selDiscs = selDiscs.concat([id]);
+        } else {
+          selDiscs = selDiscs.slice(0,3).concat([id]);
+        }
+        render();
+      }));
     on('expAdopt','click',()=>{
       const st = Repos.settings.get();
-      Repos.settings.save({...st, archetypeId: wizardArch || st.archetypeId});
-      Repos.plans.clear(); wizardArch = null;
+      Repos.settings.save({...st, archetypeId: (selDiscs[0] || st.archetypeId)});
+      Repos.plans.clear();
       App.reload(); current='rutina'; render();
     });
   }
