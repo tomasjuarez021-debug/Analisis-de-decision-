@@ -482,15 +482,15 @@ const PROTO = Object.fromEntries(PROTOCOLS.map(p=>[p.code,p]));
 /* Normas de referencia. evidence: 'expertEstimate' — valores ilustrativos, NO publicados.
    La procedencia se muestra en la UI junto a cada brecha (§0.1 de la arquitectura). */
 const NORMS = {
-  cmj:      {evidence:'expertEstimate', femaleFactor:0.80, bySport:{rugby:{m:42,s:6},  football:{m:40,s:5}, hockey:{m:38,s:5}, running:{m:34,s:5}, strength:{m:40,s:7}}},
-  sprint10: {evidence:'expertEstimate', femaleFactor:1.09, bySport:{rugby:{m:1.78,s:.09},football:{m:1.75,s:.08},hockey:{m:1.80,s:.08},running:{m:1.86,s:.10},strength:{m:1.85,s:.11}}},
-  squat1rm: {evidence:'expertEstimate', femaleFactor:0.72, bySport:{rugby:{m:150,s:28},football:{m:125,s:22},hockey:{m:120,s:22},running:{m:95,s:20}, strength:{m:160,s:35}}},
-  cod505:   {evidence:'expertEstimate', femaleFactor:1.07, bySport:{rugby:{m:2.42,s:.12},football:{m:2.35,s:.11},hockey:{m:2.38,s:.11},running:{m:2.55,s:.14},strength:{m:2.52,s:.15}}},
-  yoyo:     {evidence:'expertEstimate', femaleFactor:0.75, bySport:{rugby:{m:1480,s:340},football:{m:1840,s:380},hockey:{m:1720,s:350},running:{m:2000,s:400},strength:{m:1000,s:300}}},
-  rsa:      {evidence:'expertEstimate', femaleFactor:1.05, bySport:{rugby:{m:5.2,s:1.6},football:{m:4.6,s:1.4},hockey:{m:4.9,s:1.5},running:{m:6.0,s:1.8},strength:{m:7.0,s:2.0}}},
-  sitreach: {evidence:'expertEstimate', femaleFactor:1.15, bySport:{rugby:{m:8,s:7},   football:{m:10,s:7}, hockey:{m:12,s:7},  running:{m:6,s:7},   strength:{m:6,s:8}}},
-  ybt:      {evidence:'expertEstimate', femaleFactor:1.00, bySport:{rugby:{m:96,s:7},  football:{m:98,s:7}, hockey:{m:97,s:7},  running:{m:95,s:7},  strength:{m:94,s:8}}},
-  bodyfat:  {evidence:'expertEstimate', femaleFactor:1.45, bySport:{rugby:{m:14,s:4},  football:{m:11,s:3}, hockey:{m:12,s:3},  running:{m:10,s:3},  strength:{m:13,s:4}}}
+  cmj:      {evidence:'expertEstimate', femaleFactor:0.80, bySport:{triathlon:{m:32,s:5},surf:{m:38,s:6},wakeboard:{m:40,s:6},snowboard:{m:41,s:6},calisthenics:{m:43,s:7},rugby:{m:42,s:6},  football:{m:40,s:5}, hockey:{m:38,s:5}, running:{m:34,s:5}, strength:{m:40,s:7}}},
+  sprint10: {evidence:'expertEstimate', femaleFactor:1.09, bySport:{triathlon:{m:1.88,s:0.1},surf:{m:1.84,s:0.09},wakeboard:{m:1.84,s:0.09},snowboard:{m:1.83,s:0.09},calisthenics:{m:1.82,s:0.1},rugby:{m:1.78,s:.09},football:{m:1.75,s:.08},hockey:{m:1.80,s:.08},running:{m:1.86,s:.10},strength:{m:1.85,s:.11}}},
+  squat1rm: {evidence:'expertEstimate', femaleFactor:0.72, bySport:{triathlon:{m:95,s:20},surf:{m:105,s:22},wakeboard:{m:115,s:24},snowboard:{m:125,s:26},calisthenics:{m:115,s:25},rugby:{m:150,s:28},football:{m:125,s:22},hockey:{m:120,s:22},running:{m:95,s:20}, strength:{m:160,s:35}}},
+  cod505:   {evidence:'expertEstimate', femaleFactor:1.07, bySport:{triathlon:{m:2.55,s:0.14},surf:{m:2.42,s:0.12},wakeboard:{m:2.44,s:0.12},snowboard:{m:2.42,s:0.12},calisthenics:{m:2.45,s:0.13},rugby:{m:2.42,s:.12},football:{m:2.35,s:.11},hockey:{m:2.38,s:.11},running:{m:2.55,s:.14},strength:{m:2.52,s:.15}}},
+  yoyo:     {evidence:'expertEstimate', femaleFactor:0.75, bySport:{triathlon:{m:1900,s:380},surf:{m:1300,s:320},wakeboard:{m:1100,s:300},snowboard:{m:1250,s:310},calisthenics:{m:1150,s:300},rugby:{m:1480,s:340},football:{m:1840,s:380},hockey:{m:1720,s:350},running:{m:2000,s:400},strength:{m:1000,s:300}}},
+  rsa:      {evidence:'expertEstimate', femaleFactor:1.05, bySport:{triathlon:{m:5.8,s:1.7},surf:{m:5.0,s:1.5},wakeboard:{m:5.5,s:1.6},snowboard:{m:5.2,s:1.5},calisthenics:{m:5.6,s:1.7},rugby:{m:5.2,s:1.6},football:{m:4.6,s:1.4},hockey:{m:4.9,s:1.5},running:{m:6.0,s:1.8},strength:{m:7.0,s:2.0}}},
+  sitreach: {evidence:'expertEstimate', femaleFactor:1.15, bySport:{triathlon:{m:6,s:7},surf:{m:12,s:7},wakeboard:{m:10,s:7},snowboard:{m:11,s:7},calisthenics:{m:14,s:8},rugby:{m:8,s:7},   football:{m:10,s:7}, hockey:{m:12,s:7},  running:{m:6,s:7},   strength:{m:6,s:8}}},
+  ybt:      {evidence:'expertEstimate', femaleFactor:1.00, bySport:{triathlon:{m:96,s:7},surf:{m:100,s:7},wakeboard:{m:99,s:7},snowboard:{m:100,s:7},calisthenics:{m:101,s:7},rugby:{m:96,s:7},  football:{m:98,s:7}, hockey:{m:97,s:7},  running:{m:95,s:7},  strength:{m:94,s:8}}},
+  bodyfat:  {evidence:'expertEstimate', femaleFactor:1.45, bySport:{triathlon:{m:9,s:3},surf:{m:11,s:3},wakeboard:{m:12,s:3},snowboard:{m:12,s:3},calisthenics:{m:9,s:3},rugby:{m:14,s:4},  football:{m:11,s:3}, hockey:{m:12,s:3},  running:{m:10,s:3},  strength:{m:13,s:4}}}
 };
 
 const ARCHETYPES = [
@@ -518,6 +518,36 @@ const ARCHETYPES = [
             changeOfDirection:{z:-0.3,w:0.2}, aerobicCapacity:{z:1.5,w:1.0,min:0.5},
             anaerobicCapacity:{z:0.5,w:0.6}, mobility:{z:0.4,w:0.5},
             stability:{z:0.6,w:0.7,min:-0.2}, bodyComposition:{z:0.9,w:0.7}}},
+  {id:'triathlon', name:'Triatlón · olímpico', sport:'triathlon', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Perfil de resistencia en tres disciplinas, estimado por staff'},
+   targets:{maxStrength:{z:0.0,w:0.4}, power:{z:0.0,w:0.3}, speed:{z:0.0,w:0.3},
+            changeOfDirection:{z:-0.4,w:0.2}, aerobicCapacity:{z:1.7,w:1.0,min:0.8},
+            anaerobicCapacity:{z:0.6,w:0.6}, mobility:{z:0.5,w:0.6},
+            stability:{z:0.7,w:0.7,min:-0.2}, bodyComposition:{z:1.0,w:0.7}}},
+  {id:'surf', name:'Surf', sport:'surf', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Remada intermitente, pop-up explosivo y estabilidad, estimado por staff'},
+   targets:{maxStrength:{z:0.4,w:0.6}, power:{z:0.9,w:0.9,min:-0.2}, speed:{z:0.3,w:0.4},
+            changeOfDirection:{z:0.7,w:0.7}, aerobicCapacity:{z:0.8,w:0.8},
+            anaerobicCapacity:{z:0.9,w:0.9}, mobility:{z:1.0,w:0.9,min:0.0},
+            stability:{z:1.1,w:1.0,min:0.2}, bodyComposition:{z:0.6,w:0.5}}},
+  {id:'wakeboard', name:'Wakeboard', sport:'wakeboard', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Tracción sostenida, aterrizajes y control de tronco, estimado por staff'},
+   targets:{maxStrength:{z:0.7,w:0.8}, power:{z:0.9,w:0.9,min:-0.2}, speed:{z:0.0,w:0.2},
+            changeOfDirection:{z:0.6,w:0.6}, aerobicCapacity:{z:0.2,w:0.4},
+            anaerobicCapacity:{z:0.8,w:0.8}, mobility:{z:0.7,w:0.7},
+            stability:{z:1.2,w:1.0,min:0.3}, bodyComposition:{z:0.5,w:0.5}}},
+  {id:'snowboard', name:'Snowboard', sport:'snowboard', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Isometría de piernas, absorción de impacto y tobillo, estimado por staff'},
+   targets:{maxStrength:{z:0.8,w:0.8,min:-0.2}, power:{z:0.8,w:0.8}, speed:{z:0.1,w:0.3},
+            changeOfDirection:{z:0.8,w:0.8}, aerobicCapacity:{z:0.5,w:0.6},
+            anaerobicCapacity:{z:0.9,w:0.9}, mobility:{z:0.8,w:0.8,min:0.0},
+            stability:{z:1.2,w:1.0,min:0.3}, bodyComposition:{z:0.4,w:0.4}}},
+  {id:'calisthenics', name:'Calistenia', sport:'calisthenics', level:'intermediate',
+   evidence:{grade:'expertEstimate', reference:'Fuerza relativa al peso corporal y control articular, estimado por staff'},
+   targets:{maxStrength:{z:1.2,w:1.0,min:0.3}, power:{z:0.8,w:0.8}, speed:{z:0.0,w:0.2},
+            changeOfDirection:{z:0.0,w:0.2}, aerobicCapacity:{z:0.2,w:0.4},
+            anaerobicCapacity:{z:0.5,w:0.5}, mobility:{z:1.2,w:0.9,min:0.2},
+            stability:{z:1.2,w:1.0,min:0.3}, bodyComposition:{z:1.2,w:0.8,min:0.2}}},
   {id:'strength_gen', name:'Fuerza · desarrollo general', sport:'strength', level:'intermediate',
    evidence:{grade:'expertEstimate', reference:'Objetivo de fuerza general, estimado por staff'},
    targets:{maxStrength:{z:1.3,w:1.0,min:0.2}, power:{z:0.7,w:0.7}, speed:{z:0.0,w:0.3},
@@ -566,6 +596,26 @@ const MUSCLE_PROFILE = {
     pecho:[30,20,30,40], espalda:[55,30,40,55], hombros:[40,25,40,55],
     biceps:[30,20,30,35], triceps:[35,25,35,35], core:[80,40,60,65],
     gluteos:[85,45,75,75], cuadriceps:[70,40,65,70], isquios:[85,45,75,80], gemelos:[90,50,85,75]},
+  triathlon:{
+    pecho:[40,25,35,45], espalda:[70,40,55,55], hombros:[65,35,55,70],
+    biceps:[40,25,35,40], triceps:[50,30,45,40], core:[85,45,65,65],
+    gluteos:[85,45,80,75], cuadriceps:[80,45,75,70], isquios:[85,45,75,75], gemelos:[85,45,80,70]},
+  surf:{
+    pecho:[70,50,65,55], espalda:[85,60,75,60], hombros:[85,60,80,80],
+    biceps:[65,45,55,45], triceps:[70,50,65,45], core:[95,65,85,75],
+    gluteos:[80,55,80,70], cuadriceps:[75,55,80,70], isquios:[70,50,70,70], gemelos:[65,45,65,65]},
+  wakeboard:{
+    pecho:[55,45,55,45], espalda:[90,70,80,55], hombros:[75,55,70,60],
+    biceps:[80,60,65,45], triceps:[55,45,55,40], core:[95,70,90,65],
+    gluteos:[85,60,85,60], cuadriceps:[90,70,85,60], isquios:[80,55,80,65], gemelos:[70,50,70,60]},
+  snowboard:{
+    pecho:[45,35,45,45], espalda:[75,55,65,55], hombros:[60,45,60,60],
+    biceps:[50,35,45,40], triceps:[50,40,50,40], core:[95,65,85,70],
+    gluteos:[90,65,85,70], cuadriceps:[95,75,85,70], isquios:[85,60,80,70], gemelos:[80,55,75,75]},
+  calisthenics:{
+    pecho:[90,70,80,60], espalda:[95,75,80,60], hombros:[90,70,80,80],
+    biceps:[85,70,70,50], triceps:[90,70,80,50], core:[95,70,85,75],
+    gluteos:[70,50,70,65], cuadriceps:[70,50,70,70], isquios:[70,50,70,75], gemelos:[60,40,60,60]},
   strength_gen:{
     pecho:[90,90,65,40], espalda:[90,90,65,45], hombros:[85,85,65,50],
     biceps:[80,85,55,35], triceps:[85,85,60,35], core:[80,65,60,50],
@@ -1098,8 +1148,11 @@ function buildAthleteModel(profile, assessments, entries, calibration, today){
                       confidence:0, trend:'unknown', source:null, raw:null, protocolCode:null};
     const ageDays = daysBetween(best.performedOn, today);
     const p = PROTO[best.protocolCode];
+    /* El z se deriva del valor crudo contra las normas del perfil ACTUAL: si el
+       atleta cambia de deporte, un z guardado quedaría medido contra otra norma. */
+    const z = zScoreOf(best.protocolCode, best.value, profile.sport, profile.sex);
     return {
-      capacity:c.key, currentZ:best.zScore, ageDays,
+      capacity:c.key, currentZ: z!=null ? z : best.zScore, ageDays,
       isStale: ageDays > p.validityDays,
       confidence: confidenceOf(best.source, c.key, ageDays),
       trend:'unknown', source:best.source, raw:best.value, protocolCode:best.protocolCode,
@@ -1707,7 +1760,7 @@ perfil(s){
       <div class="body">
         <div class="row2">
           <div class="field"><label for="pfSport">Deporte</label>
-            <select id="pfSport">${['rugby','football','hockey','running','strength']
+            <select id="pfSport">${SPORT_KEYS
               .map(x=>`<option value="${x}"${p.sport===x?' selected':''}>${esc(SPORT_ES[x])}</option>`).join('')}</select></div>
           <div class="field"><label for="pfPos">Posición</label>
             <input type="text" id="pfPos" value="${esc(p.position||'')}"></div>
@@ -2138,7 +2191,10 @@ evolucion(s){
 }
 };
 
-const SPORT_ES = {rugby:'Rugby', football:'Fútbol', hockey:'Hockey', running:'Running', strength:'Fuerza'};
+const SPORT_ES = {rugby:'Rugby', football:'Fútbol', hockey:'Hockey', running:'Running',
+  strength:'Fuerza', triathlon:'Triatlón', surf:'Surf', wakeboard:'Wakeboard',
+  snowboard:'Snowboard', calisthenics:'Calistenia'};
+const SPORT_KEYS = Object.keys(SPORT_ES);
 
 const chipOk = ok => ok ? '<span class="st"><span class="chip ok">completo</span></span>'
                         : '<span class="st"><span class="chip warn">falta</span></span>';
